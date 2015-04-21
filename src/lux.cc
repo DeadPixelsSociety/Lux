@@ -19,6 +19,7 @@
 #include <cassert>
 #include <cstdint>
 #include <cmath>
+#include <ctime>
 
 #include <iostream>
 
@@ -28,18 +29,29 @@
 #include "local/Enemy.h"
 #include "local/Group.h"
 #include "local/Hero.h"
+#include "local/Random.h"
 #include "local/Sensor.h"
+#include "local/Stars.h"
 
 
 int main() {
+  Engine engine(std::time(nullptr));
+
   sf::RenderWindow window(sf::VideoMode(WINDOW_W, WINDOW_H), "Lux");
 
   Sensor sensor(window);
   Enemy enemy(sf::Vector2f(WINDOW_W * 0.5f, -1.0f), sf::Vector2f(0.0f, WINDOW_H / 3.0f));
   Hero hero(sensor);
 
+  Stars stars1(engine, 200, 3);
+  Stars stars2(engine, 100, 2);
+  Stars stars3(engine, 20, 1);
+
   Group group;
   group.addEntity(sensor).addEntity(enemy).addEntity(hero);
+  group.addEntity(stars1);
+  group.addEntity(stars2);
+  group.addEntity(stars3);
 
   sf::Clock clock;
   while (window.isOpen()) {

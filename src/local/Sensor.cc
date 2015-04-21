@@ -50,20 +50,20 @@ void Sensor::update(float dt) {
 }
 
 void Sensor::render(sf::RenderWindow& window) {
-  float w = (WINDOW_W / SENSOR_W);
-  float h = (WINDOW_H / SENSOR_H);
-
-  for (std::size_t j = 0; j < SENSOR_H; ++j) {
-    for (std::size_t i = 0; i < SENSOR_W; ++i) {
-      float x = i * w;
-      float y = j * h;
-
-      sf::RectangleShape shape({ w, h });
-      shape.setFillColor(sf::Color(0xFF, 0xFF, 0xFF, values[j][i] * 2));
-      shape.setPosition(x, y);
-      window.draw(shape);
-    }
-  }
+//   float w = (WINDOW_W / SENSOR_W);
+//   float h = (WINDOW_H / SENSOR_H);
+//
+//   for (std::size_t j = 0; j < SENSOR_H; ++j) {
+//     for (std::size_t i = 0; i < SENSOR_W; ++i) {
+//       float x = i * w;
+//       float y = j * h;
+//
+//       sf::RectangleShape shape({ w, h });
+//       shape.setFillColor(sf::Color(0xFF, 0xFF, 0xFF, values[j][i] * 2));
+//       shape.setPosition(x, y);
+//       window.draw(shape);
+//     }
+//   }
 
 
 }

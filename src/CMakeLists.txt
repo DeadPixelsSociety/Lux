@@ -17,6 +17,7 @@ add_executable(lux
   local/Group.cc
   local/Hero.cc
   local/Sensor.cc
+  local/Stars.cc
 )
 
 target_link_libraries(lux
