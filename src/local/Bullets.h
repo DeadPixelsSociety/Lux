@@ -6,7 +6,7 @@
 class Bullets : public Entity {
 public:
 
-  void fire(const sf::Vector2f& pos, const sf::Vector2f& velocity, const sf::Color& color);
+  void addBullet(const sf::Vector2f& pos, const sf::Vector2f& velocity, const sf::Color& color);
 
   virtual void update(float dt) override;
   virtual void render(sf::RenderWindow& window) override;

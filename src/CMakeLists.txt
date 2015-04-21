@@ -12,10 +12,12 @@ include_directories(${SFML2_INCLUDE_DIRS})
 
 add_executable(lux
   lux.cc
+  local/Bullets.cc
   local/Enemy.cc
   local/Entity.cc
   local/Group.cc
   local/Hero.cc
+  local/PhysicEngine.cc
   local/Sensor.cc
   local/Stars.cc
 )

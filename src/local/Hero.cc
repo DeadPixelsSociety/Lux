@@ -20,6 +20,14 @@
 
 void Hero::update(float dt) {
   m_pos = m_sensor.getCenter();
+  
+  m_elapsedTime += dt;
+  
+  if (m_elapsedTime >= 500.0f) {
+    sf::Vector2f velocity(1.0f, 1.0f);
+    m_physicEngine.shoot(*this, m_pos, velocity, sf::Color::Green);
+    m_elapsedTime = 0.0f;
+  }
 }
 
 void Hero::render(sf::RenderWindow& window) {
