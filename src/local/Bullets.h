@@ -13,8 +13,9 @@ public:
   virtual void update(float dt) override;
   virtual void render(sf::RenderWindow& window) override;
 
-  EventStatus onHeroPositionEvent(EventType type, Event *event);
-  EventStatus onEnemyPositionEvent(EventType type, Event *event);
+private:
+  EventStatus onPositionEvent(EventType type, Event *event);
+  EventStatus onShootEvent(EventType type, Event *event);
 
 private:
   struct Bullet {

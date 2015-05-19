@@ -2,11 +2,12 @@
 
 #include <iostream>
 
-static constexpr float RADIUS = 1.0f;
+static constexpr float RADIUS = 3.0f;
 
 Bullets::Bullets(EventManager& events) {
-  events.registerHandler<HeroPositionEvent>(&Bullets::onHeroPositionEvent, this);
-  events.registerHandler<EnemyPositionEvent>(&Bullets::onEnemyPositionEvent, this);
+  events.registerHandler<HeroPositionEvent>(&Bullets::onPositionEvent, this);
+  events.registerHandler<EnemyPositionEvent>(&Bullets::onPositionEvent, this);
+  events.registerHandler<ShootEvent>(&Bullets::onShootEvent, this);
 }
 
 
@@ -21,7 +22,7 @@ void Bullets::addBullet(Origin origin, const sf::Vector2f& pos, const sf::Vector
 }
 
 void Bullets::update(float dt) {
-  for (Bullet bullet : m_bullets) {
+  for (Bullet& bullet : m_bullets) {
     bullet.pos += bullet.velocity * dt;
   }
 }
@@ -36,10 +37,14 @@ void Bullets::render(sf::RenderWindow& window) {
   }
 }
 
-EventStatus Bullets::onHeroPositionEvent(EventType type, Event *event) {
+EventStatus Bullets::onPositionEvent(EventType type, Event *event) {
   return EventStatus::KEEP;
 }
 
-EventStatus Bullets::onEnemyPositionEvent(EventType type, Event *event) {
+EventStatus Bullets::onShootEvent(EventType type, Event *event) {
+  auto shoot = static_cast<ShootEvent *>(event);
+
+  addBullet(shoot->origin, shoot->pos, shoot->velocity, shoot->color);
+
   return EventStatus::KEEP;
 }

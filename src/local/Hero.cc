@@ -20,6 +20,9 @@
 
 #include "Game.h"
 
+static constexpr float SHOOT_PERIOD = 0.5f;
+static constexpr float SHOOT_VELOCITY = 400.0f;
+
 void Hero::update(float dt) {
   m_pos = m_sensor.getCenter();
 
@@ -29,8 +32,14 @@ void Hero::update(float dt) {
 
   m_elapsedTime += dt;
 
-  if (m_elapsedTime >= 500.0f) {
-    sf::Vector2f velocity(1.0f, 1.0f);
+  if (m_elapsedTime >= SHOOT_PERIOD) {
+    ShootEvent shoot;
+    shoot.origin = Origin::HERO;
+    shoot.pos = m_pos;
+    shoot.velocity = sf::Vector2f(0.0f, -SHOOT_VELOCITY);
+    shoot.color = sf::Color::Yellow;
+
+    m_events.triggerEvent(&shoot);
     m_elapsedTime = 0.0f;
   }
 }
