@@ -15,9 +15,9 @@ add_executable(lux
   local/Bullets.cc
   local/Enemy.cc
   local/Entity.cc
+  local/Event.cc
   local/Group.cc
   local/Hero.cc
-  local/PhysicEngine.cc
   local/Sensor.cc
   local/Stars.cc
 )

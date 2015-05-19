@@ -20,11 +20,14 @@
 #define LOCAL_ENEMY_H
 
 #include "Entity.h"
+#include "Event.h"
 
 class Enemy : public Entity {
 public:
-  Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel)
-  : m_pos(pos), m_vel(vel) {
+  Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel, EventManager& events)
+  : m_pos(pos), m_vel(vel)
+  , m_events(events)
+  {
   }
 
   virtual void update(float dt) override;
@@ -36,6 +39,7 @@ private:
 
   sf::Vector2f m_pos;
   sf::Vector2f m_vel;
+  EventManager& m_events;
 };
 
 #endif // LOCAL_ENEMY_H

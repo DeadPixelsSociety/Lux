@@ -18,14 +18,19 @@
  */
 #include "Hero.h"
 
+#include "Game.h"
+
 void Hero::update(float dt) {
   m_pos = m_sensor.getCenter();
-  
+
+  HeroPositionEvent event;
+  event.pos = m_pos;
+  m_events.triggerEvent(&event);
+
   m_elapsedTime += dt;
-  
+
   if (m_elapsedTime >= 500.0f) {
     sf::Vector2f velocity(1.0f, 1.0f);
-    m_physicEngine.shoot(*this, m_pos, velocity, sf::Color::Green);
     m_elapsedTime = 0.0f;
   }
 }

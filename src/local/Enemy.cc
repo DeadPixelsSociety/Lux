@@ -18,8 +18,14 @@
  */
 #include "Enemy.h"
 
+#include "Game.h"
+
 void Enemy::update(float dt) {
   m_pos += m_vel * dt;
+
+  EnemyPositionEvent event;
+  event.pos = m_pos;
+  m_events.triggerEvent(&event);
 }
 
 void Enemy::render(sf::RenderWindow& window) {
