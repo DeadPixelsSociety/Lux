@@ -38,6 +38,9 @@ void Bullets::render(sf::RenderWindow& window) {
 }
 
 EventStatus Bullets::onPositionEvent(EventType type, Event *event) {
+
+  
+
   return EventStatus::KEEP;
 }
 

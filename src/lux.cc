@@ -46,7 +46,7 @@ int main() {
   Bullets bullets(events);
 
   Sensor sensor(window);
-  Enemy enemy(sf::Vector2f(WINDOW_W * 0.5f, -1.0f), sf::Vector2f(0.0f, WINDOW_H / 3.0f), events);
+  EnemyManager enemies(engine, events);
   Hero hero(sensor, events);
 
   Stars stars1(engine, 200, 1.5f);
@@ -54,7 +54,7 @@ int main() {
   Stars stars3(engine,  20, 1.0f);
 
   Group group;
-  group.addEntity(sensor).addEntity(enemy).addEntity(hero);
+  group.addEntity(sensor).addEntity(enemies).addEntity(hero);
   group.addEntity(stars1);
   group.addEntity(stars2);
   group.addEntity(stars3);

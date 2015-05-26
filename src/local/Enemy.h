@@ -21,13 +21,49 @@
 
 #include "Entity.h"
 #include "Event.h"
+#include "Game.h"
+#include "Group.h"
+#include "Random.h"
 
 class Enemy : public Entity {
 public:
   Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel, EventManager& events)
   : m_pos(pos), m_vel(vel)
   , m_events(events)
+  , m_elapsedTime(0.0f)
   {
+    m_events.registerHandler<HeroPositionEvent>(&Enemy::onPositionEvent, this);
+  }
+
+  virtual void update(float dt) override;
+
+  virtual void render(sf::RenderWindow& window) override;
+
+  static constexpr float RADIUS = 20.0f;
+
+private:
+  EventStatus onPositionEvent(EventType type, Event *event);
+
+
+private:
+
+  sf::Vector2f m_pos;
+  sf::Vector2f m_vel;
+  EventManager& m_events;
+
+  float m_elapsedTime;
+  sf::Vector2f m_hero_pos;
+};
+
+
+class EnemyManager : public Entity {
+public:
+  EnemyManager(Engine& engine, EventManager& events)
+  : m_engine(engine)
+  , m_events(events)
+  , m_elapsedTime(0.0f)
+  {
+
   }
 
   virtual void update(float dt) override;
@@ -35,11 +71,11 @@ public:
   virtual void render(sf::RenderWindow& window) override;
 
 private:
-  static constexpr float RADIUS = 20.0f;
-
-  sf::Vector2f m_pos;
-  sf::Vector2f m_vel;
+  Engine& m_engine;
   EventManager& m_events;
+  Group m_enemies;
+  float m_elapsedTime;
 };
+
 
 #endif // LOCAL_ENEMY_H

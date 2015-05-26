@@ -8,7 +8,7 @@
 
 class Stars : public Entity {
 public:
-  static constexpr std::size_t COUNT = 100;
+  static constexpr std::size_t COUNT = 50;
 
   Stars(Engine& engine, float velocity, float radius);
 

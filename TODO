@@ -1,15 +1,12 @@
-
-- Fond étoilé en parallaxe
-- Hero
-  - tir en continu
 - Collisions entre ennemis et hero / tirs et hero / tirs et ennemis
 - IA
   - apparition des ennemis
   - pattern de déplacement
-  - tirs
 - Particules (lumière)
+- Trainée pour les bullets
 - Bonus (armes, vie)
 - Points
+- IA intelligente : anticipation du mouvement
 - Système éteint/allumé
 
 
