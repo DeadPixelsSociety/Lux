@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(LUX)
 
+include(GNUInstallDirs)
+
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SFML2 REQUIRED sfml-graphics>=2.1)
 
@@ -25,3 +27,14 @@ add_executable(lux
 target_link_libraries(lux
   ${SFML2_LIBRARIES}
 )
+
+install(
+  DIRECTORY "${CMAKE_SOURCE_DIR}/share/lux"
+  DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/games"
+)
+
+install(
+  TARGETS lux
+  RUNTIME DESTINATION games
+)
+
