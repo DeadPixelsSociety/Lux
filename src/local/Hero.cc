@@ -45,9 +45,11 @@ void Hero::update(float dt) {
 }
 
 void Hero::render(sf::RenderWindow& window) {
-  sf::CircleShape circle(RADIUS);
-  circle.setOrigin(RADIUS, RADIUS);
-  circle.setPosition(m_pos);
-  circle.setFillColor(sf::Color::Red);
-  window.draw(circle);
+  sf::Sprite sprite;
+  sprite.setTexture(*m_texture);
+  sprite.setOrigin(128.0f, 128.0f); // Half size of texture
+  sprite.setScale(HERO_SCALE_X, HERO_SCALE_Y);
+  sprite.setPosition(m_pos);
+  sprite.setRotation(90.0f);
+  window.draw(sprite);
 }

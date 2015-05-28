@@ -32,9 +32,10 @@
 #include "local/Group.h"
 #include "local/Hero.h"
 #include "local/Random.h"
+#include "local/Resources.h"
 #include "local/Sensor.h"
 #include "local/Stars.h"
-
+#include "path.h"
 
 int main() {
   Engine engine(std::time(nullptr));
@@ -43,11 +44,14 @@ int main() {
 
   EventManager events;
 
+  ResourceManager resources;
+  resources.addSearchDir(GAME_DATADIR);
+
   Bullets bullets(events);
 
   Sensor sensor(window);
   EnemyManager enemies(engine, events);
-  Hero hero(sensor, events);
+  Hero hero(sensor, events, resources);
 
   Stars stars1(engine, 200, 1.5f);
   Stars stars2(engine, 100, 1.25f);

@@ -19,19 +19,28 @@
 #ifndef LOCAL_HERO_H
 #define LOCAL_HERO_H
 
+#include <cassert>
+
 #include "Entity.h"
 #include "Event.h"
+#include "Resources.h"
 #include "Sensor.h"
 
 class Hero : public Entity {
 public:
-  static constexpr float RADIUS = 10.0f;
+  static constexpr float HERO_WIDTH = 50.0f;
+  static constexpr float HERO_HEIGHT = 50.0f;
+  static constexpr float HERO_SCALE_X = HERO_WIDTH / 256.0f;
+  static constexpr float HERO_SCALE_Y = HERO_HEIGHT / 256.0f;
 
-  Hero(Sensor& sensor, EventManager& events)
+  Hero(Sensor& sensor, EventManager& events, ResourceManager &resources)
   : m_sensor(sensor)
   , m_events(events)
   , m_elapsedTime(0.0f)
+  , m_texture(nullptr)
   {
+    m_texture = resources.getTexture("space_shipe_1.png");
+    assert(m_texture != nullptr);
   }
 
   virtual void update(float dt) override;
@@ -43,6 +52,7 @@ private:
   Sensor& m_sensor;
   EventManager& m_events;
   float m_elapsedTime;
+  sf::Texture *m_texture;
 };
 
 
