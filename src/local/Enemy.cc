@@ -29,6 +29,14 @@ static constexpr float SHOOT_VELOCITY = 400.0f;
 void Enemy::update(float dt) {
   m_pos += m_vel * dt;
 
+  if (m_pos.y > WINDOW_H + RADIUS) {
+    DeadEnemyEvent dead;
+    dead.dead = this;
+
+    m_events.triggerEvent(&dead);
+    return;
+  }
+
   EnemyPositionEvent event;
   event.pos = m_pos;
   m_events.triggerEvent(&event);
@@ -50,10 +58,6 @@ void Enemy::update(float dt) {
     m_events.triggerEvent(&shoot);
     m_elapsedTime = 0.0f;
   }
-
-  if (m_pos.y > WINDOW_H + RADIUS) {
-    // TODO
-  }
 }
 
 void Enemy::render(sf::RenderWindow& window) {
@@ -71,9 +75,16 @@ EventStatus Enemy::onPositionEvent(EventType type, Event *event) {
   return EventStatus::KEEP;
 }
 
-//   Enemy enemy(sf::Vector2f(WINDOW_W * 0.5f, -1.0f), sf::Vector2f(0.0f, WINDOW_H / 3.0f), events);
-
 static constexpr float GENERATION_PERIOD = 1.0f;
+
+EventStatus EnemyManager::onDeadEnemyEvent(EventType type, Event *event) {
+  assert(type == DeadEnemyEvent::type);
+  auto dead = static_cast<DeadEnemyEvent*>(event);
+  
+  m_enemies.removeEntity(dead->dead);
+  delete m_enemies.removeEntity(dead->dead);;
+  return EventStatus::KEEP;
+}
 
 void EnemyManager::update(float dt) {
 

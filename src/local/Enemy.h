@@ -63,8 +63,10 @@ public:
   , m_events(events)
   , m_elapsedTime(0.0f)
   {
-
+    m_events.registerHandler<DeadEnemyEvent>(&EnemyManager::onDeadEnemyEvent, this);
   }
+
+  EventStatus onDeadEnemyEvent(EventType type, Event *event);
 
   virtual void update(float dt) override;
 
