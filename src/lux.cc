@@ -55,7 +55,7 @@ int main() {
 
   Stars stars1(engine, 125, 1.5f);
   Stars stars2(engine, 75, 1.25f);
-  Stars stars3(engine,  20, 1.0f);
+  Stars stars3(engine,  20, 1.0f, true);
 
   Group group;
   group.addEntity(sensor).addEntity(enemies).addEntity(hero);
