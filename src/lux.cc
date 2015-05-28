@@ -53,8 +53,8 @@ int main() {
   EnemyManager enemies(engine, events, resources);
   Hero hero(sensor, events, resources);
 
-  Stars stars1(engine, 200, 1.5f);
-  Stars stars2(engine, 100, 1.25f);
+  Stars stars1(engine, 125, 1.5f);
+  Stars stars2(engine, 75, 1.25f);
   Stars stars3(engine,  20, 1.0f);
 
   Group group;
