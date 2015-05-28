@@ -24,22 +24,29 @@
 #include "Game.h"
 #include "Group.h"
 #include "Random.h"
+#include "Resources.h"
 
 class Enemy : public Entity {
 public:
-  Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel, EventManager& events)
+  static constexpr float ENEMY_WIDTH = 60.0f;
+  static constexpr float ENEMY_HEIGHT = 60.0f;
+  static constexpr float ENEMY_SCALE_X = ENEMY_WIDTH / 256.0f;
+  static constexpr float ENEMY_SCALE_Y = ENEMY_HEIGHT / 256.0f;
+
+  Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel, EventManager& events, ResourceManager &resources)
   : m_pos(pos), m_vel(vel)
   , m_events(events)
   , m_elapsedTime(0.0f)
+  , m_texture(nullptr)
   {
     m_events.registerHandler<HeroPositionEvent>(&Enemy::onPositionEvent, this);
+    m_texture = resources.getTexture("space_shipe_2.png");
+    assert(m_texture != nullptr);
   }
 
   virtual void update(float dt) override;
 
   virtual void render(sf::RenderWindow& window) override;
-
-  static constexpr float RADIUS = 20.0f;
 
 private:
   EventStatus onPositionEvent(EventType type, Event *event);
@@ -53,15 +60,18 @@ private:
 
   float m_elapsedTime;
   sf::Vector2f m_hero_pos;
+
+  sf::Texture *m_texture; // Static ?
 };
 
 
 class EnemyManager : public Entity {
 public:
-  EnemyManager(Engine& engine, EventManager& events)
+  EnemyManager(Engine& engine, EventManager& events, ResourceManager &resources)
   : m_engine(engine)
   , m_events(events)
   , m_elapsedTime(0.0f)
+  , m_resources(resources)
   {
     m_events.registerHandler<DeadEnemyEvent>(&EnemyManager::onDeadEnemyEvent, this);
   }
@@ -77,6 +87,7 @@ private:
   EventManager& m_events;
   Group m_enemies;
   float m_elapsedTime;
+  ResourceManager& m_resources;
 };
 
 

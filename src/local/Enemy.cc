@@ -29,7 +29,7 @@ static constexpr float SHOOT_VELOCITY = 400.0f;
 void Enemy::update(float dt) {
   m_pos += m_vel * dt;
 
-  if (m_pos.y > WINDOW_H + RADIUS) {
+  if (m_pos.y > WINDOW_H + ENEMY_HEIGHT) {
     DeadEnemyEvent dead;
     dead.dead = this;
 
@@ -61,11 +61,13 @@ void Enemy::update(float dt) {
 }
 
 void Enemy::render(sf::RenderWindow& window) {
-  sf::CircleShape shape(RADIUS);
-  shape.setOrigin(RADIUS, RADIUS);
-  shape.setFillColor(sf::Color::Blue);
-  shape.setPosition(m_pos);
-  window.draw(shape);
+  sf::Sprite sprite;
+  sprite.setTexture(*m_texture);
+  sprite.setOrigin(128.0f, 128.0f); // Half size of texture
+  sprite.setScale(ENEMY_SCALE_X, ENEMY_SCALE_Y);
+  sprite.setPosition(m_pos);
+  sprite.setRotation(-90.0f);
+  window.draw(sprite);
 }
 
 EventStatus Enemy::onPositionEvent(EventType type, Event *event) {
@@ -90,13 +92,13 @@ void EnemyManager::update(float dt) {
 
   m_elapsedTime += dt;
 
-  std::uniform_real_distribution<float> dist(Enemy::RADIUS, WINDOW_W - Enemy::RADIUS);
+  std::uniform_real_distribution<float> dist(Enemy::ENEMY_WIDTH, WINDOW_W - Enemy::ENEMY_WIDTH);
 
   if (m_elapsedTime >= GENERATION_PERIOD) {
-    sf::Vector2f pos(dist(m_engine), -Enemy::RADIUS);
+    sf::Vector2f pos(dist(m_engine), -Enemy::ENEMY_HEIGHT);
     sf::Vector2f velocity(0.0f, WINDOW_H / 3.0f);
 
-    auto enemy = new Enemy(pos, velocity, m_events);
+    auto enemy = new Enemy(pos, velocity, m_events, m_resources);
     m_enemies.addEntity(*enemy);
 
     m_elapsedTime = 0.0f;

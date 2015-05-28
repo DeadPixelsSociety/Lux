@@ -50,7 +50,7 @@ int main() {
   Bullets bullets(events);
 
   Sensor sensor(window);
-  EnemyManager enemies(engine, events);
+  EnemyManager enemies(engine, events, resources);
   Hero hero(sensor, events, resources);
 
   Stars stars1(engine, 200, 1.5f);

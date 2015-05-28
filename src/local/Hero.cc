@@ -50,6 +50,6 @@ void Hero::render(sf::RenderWindow& window) {
   sprite.setOrigin(128.0f, 128.0f); // Half size of texture
   sprite.setScale(HERO_SCALE_X, HERO_SCALE_Y);
   sprite.setPosition(m_pos);
-  sprite.setRotation(90.0f);
+  sprite.setRotation(-90.0f);
   window.draw(sprite);
 }

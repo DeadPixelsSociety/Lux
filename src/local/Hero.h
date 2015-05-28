@@ -28,8 +28,8 @@
 
 class Hero : public Entity {
 public:
-  static constexpr float HERO_WIDTH = 50.0f;
-  static constexpr float HERO_HEIGHT = 50.0f;
+  static constexpr float HERO_WIDTH = 60.0f;
+  static constexpr float HERO_HEIGHT = 60.0f;
   static constexpr float HERO_SCALE_X = HERO_WIDTH / 256.0f;
   static constexpr float HERO_SCALE_Y = HERO_HEIGHT / 256.0f;
 
