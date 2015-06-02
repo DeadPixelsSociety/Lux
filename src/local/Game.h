@@ -5,14 +5,20 @@
 
 #include "Event.h"
 
+class Hero;
+
 struct HeroPositionEvent : public Event {
   static const EventType type = "HeroPositionEvent"_type;
   sf::Vector2f pos;
+  Hero *hero;
 };
+
+class Enemy;
 
 struct EnemyPositionEvent : public Event {
   static const EventType type = "EnemyPositionEvent"_type;
   sf::Vector2f pos;
+  Enemy *enemy;
 };
 
 enum class Origin {

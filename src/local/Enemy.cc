@@ -19,26 +19,29 @@
 #include "Enemy.h"
 
 #include <cassert>
+#include <iostream>
 
 #include "Config.h"
 #include "Game.h"
 
-static constexpr float SHOOT_PERIOD = 0.3f;
+static constexpr float SHOOT_PERIOD = 1.0f;
 static constexpr float SHOOT_VELOCITY = 400.0f;
 
 void Enemy::update(float dt) {
   m_pos += m_vel * dt;
 
   if (m_pos.y > WINDOW_H + ENEMY_HEIGHT) {
-    DeadEnemyEvent dead;
-    dead.dead = this;
-
-    m_events.triggerEvent(&dead);
+    kill();
+//     DeadEnemyEvent dead;
+//     dead.dead = this;
+//
+//     m_events.triggerEvent(&dead);
     return;
   }
 
   EnemyPositionEvent event;
   event.pos = m_pos;
+  event.enemy = this;
   m_events.triggerEvent(&event);
 
   m_elapsedTime += dt;
@@ -70,23 +73,33 @@ void Enemy::render(sf::RenderWindow& window) {
   window.draw(sprite);
 }
 
-EventStatus Enemy::onPositionEvent(EventType type, Event *event) {
+
+EnemyManager::~EnemyManager() {
+  for (auto enemy : m_enemies) {
+    delete enemy;
+  }
+}
+
+
+static constexpr float GENERATION_PERIOD = 1.0f;
+
+EventStatus EnemyManager::onDeadEnemyEvent(EventType type, Event *event) {
+//   assert(type == DeadEnemyEvent::type);
+//   auto dead = static_cast<DeadEnemyEvent*>(event);
+//
+//   m_enemies.removeEntity(dead->dead);
+//   delete dead->dead;
+
+  return EventStatus::KEEP;
+}
+
+EventStatus EnemyManager::onPositionEvent(EventType type, Event *event) {
   assert(type == HeroPositionEvent::type);
   auto heroPosition = static_cast<HeroPositionEvent*>(event);
   m_hero_pos = heroPosition->pos;
   return EventStatus::KEEP;
 }
 
-static constexpr float GENERATION_PERIOD = 1.0f;
-
-EventStatus EnemyManager::onDeadEnemyEvent(EventType type, Event *event) {
-  assert(type == DeadEnemyEvent::type);
-  auto dead = static_cast<DeadEnemyEvent*>(event);
-  
-  m_enemies.removeEntity(dead->dead);
-  delete m_enemies.removeEntity(dead->dead);;
-  return EventStatus::KEEP;
-}
 
 void EnemyManager::update(float dt) {
 
@@ -99,16 +112,43 @@ void EnemyManager::update(float dt) {
     sf::Vector2f velocity(0.0f, WINDOW_H / 3.0f);
 
     auto enemy = new Enemy(pos, velocity, m_events, m_resources);
-    m_enemies.addEntity(*enemy);
+    m_enemies.push_back(enemy);
 
     m_elapsedTime = 0.0f;
   }
 
-  m_enemies.update(dt);
+  for (auto enemy : m_enemies) {
+    enemy->setHeroPosition(m_hero_pos);
+    enemy->update(dt);
+  }
+
+  auto trash = std::remove_if(m_enemies.begin(), m_enemies.end(), [](const Enemy *e) {
+    return !e->isAlive();
+  });
+
+  for (auto it = trash; it != m_enemies.end(); ++it) {
+    if ((*it)->isAlive()) {
+      std::cout << "alive!!!!\n";
+    }
+
+    std::cout << "p: " << *it << '\n';
+    delete *it;
+    *it = nullptr;
+  }
+
+  std::cout << "s: " << m_enemies.size() << " -> ";
+
+  m_enemies.erase(trash, m_enemies.end());
+
+  std::cout << m_enemies.size() << '\n';
 }
 
 void EnemyManager::render(sf::RenderWindow& window) {
-  m_enemies.render(window);
+  for (auto enemy : m_enemies) {
+    assert(enemy);
+    std::cout << "r: " << enemy << '\n';
+    enemy->render(window);
+  }
 }
 
 

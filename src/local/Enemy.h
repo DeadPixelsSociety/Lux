@@ -19,10 +19,11 @@
 #ifndef LOCAL_ENEMY_H
 #define LOCAL_ENEMY_H
 
+#include <vector>
+
 #include "Entity.h"
 #include "Event.h"
 #include "Game.h"
-#include "Group.h"
 #include "Random.h"
 #include "Resources.h"
 
@@ -39,7 +40,6 @@ public:
   , m_elapsedTime(0.0f)
   , m_texture(nullptr)
   {
-    m_events.registerHandler<HeroPositionEvent>(&Enemy::onPositionEvent, this);
     m_texture = resources.getTexture("space_shipe_2.png");
     assert(m_texture != nullptr);
   }
@@ -48,9 +48,9 @@ public:
 
   virtual void render(sf::RenderWindow& window) override;
 
-private:
-  EventStatus onPositionEvent(EventType type, Event *event);
-
+  void setHeroPosition(const sf::Vector2f& pos) {
+    m_hero_pos = pos;
+  }
 
 private:
 
@@ -60,8 +60,7 @@ private:
 
   float m_elapsedTime;
   sf::Vector2f m_hero_pos;
-
-  sf::Texture *m_texture; // Static ?
+  sf::Texture *m_texture;
 };
 
 
@@ -74,9 +73,19 @@ public:
   , m_resources(resources)
   {
     m_events.registerHandler<DeadEnemyEvent>(&EnemyManager::onDeadEnemyEvent, this);
+    m_events.registerHandler<HeroPositionEvent>(&EnemyManager::onPositionEvent, this);
   }
 
+  EnemyManager(const EnemyManager&) = delete;
+  EnemyManager& operator=(const EnemyManager&) = delete;
+
+  EnemyManager(EnemyManager&&) = delete;
+  EnemyManager& operator=(EnemyManager&&) = delete;
+
+  ~EnemyManager();
+
   EventStatus onDeadEnemyEvent(EventType type, Event *event);
+  EventStatus onPositionEvent(EventType type, Event *event);
 
   virtual void update(float dt) override;
 
@@ -85,9 +94,10 @@ public:
 private:
   Engine& m_engine;
   EventManager& m_events;
-  Group m_enemies;
+  std::vector<Enemy*> m_enemies;
   float m_elapsedTime;
   ResourceManager& m_resources;
+  sf::Vector2f m_hero_pos;
 };
 
 

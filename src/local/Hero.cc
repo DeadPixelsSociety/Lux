@@ -28,6 +28,7 @@ void Hero::update(float dt) {
 
   HeroPositionEvent event;
   event.pos = m_pos;
+  event.hero = this;
   m_events.triggerEvent(&event);
 
   m_elapsedTime += dt;
