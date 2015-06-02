@@ -22,6 +22,7 @@ void Bullets::addBullet(Origin origin, const sf::Vector2f& pos, const sf::Vector
   bullet.pos = pos;
   bullet.velocity = velocity;
   bullet.color = color;
+  bullet.active = true;
 
   m_bullets.push_back(bullet);
 }
