@@ -72,7 +72,6 @@ public:
   , m_elapsedTime(0.0f)
   , m_resources(resources)
   {
-    m_events.registerHandler<DeadEnemyEvent>(&EnemyManager::onDeadEnemyEvent, this);
     m_events.registerHandler<HeroPositionEvent>(&EnemyManager::onPositionEvent, this);
   }
 
@@ -84,7 +83,6 @@ public:
 
   ~EnemyManager();
 
-  EventStatus onDeadEnemyEvent(EventType type, Event *event);
   EventStatus onPositionEvent(EventType type, Event *event);
 
   virtual void update(float dt) override;

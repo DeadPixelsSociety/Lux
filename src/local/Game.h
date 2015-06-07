@@ -34,11 +34,4 @@ struct ShootEvent : public Event {
   sf::Color color;
 };
 
-class Enemy;
-
-struct DeadEnemyEvent : public Event {
-  static const EventType type = "DeadEnemyEvent"_type;
-  Enemy *dead;
-};
-
 #endif // LOCAL_GAME_H

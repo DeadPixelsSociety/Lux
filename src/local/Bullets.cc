@@ -76,7 +76,6 @@ EventStatus Bullets::onPositionEvent(EventType type, Event *event) {
     }
 
     if (pos.x - 30.0f <= bullet.pos.x && bullet.pos.x <= pos.x + 30.0f && pos.y - 30.0f <= bullet.pos.y && bullet.pos.y <= pos.y + 30.0f) {
-      std::cout << "Collision: " << entity << '\n';
       entity->kill();
       bullet.active = false;
     }

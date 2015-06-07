@@ -28,14 +28,13 @@ static constexpr float SHOOT_PERIOD = 1.0f;
 static constexpr float SHOOT_VELOCITY = 400.0f;
 
 void Enemy::update(float dt) {
+  assert(isAlive());
+
   m_pos += m_vel * dt;
 
   if (m_pos.y > WINDOW_H + ENEMY_HEIGHT) {
     kill();
-//     DeadEnemyEvent dead;
-//     dead.dead = this;
-//
-//     m_events.triggerEvent(&dead);
+    assert(!isAlive());
     return;
   }
 
@@ -83,16 +82,6 @@ EnemyManager::~EnemyManager() {
 
 static constexpr float GENERATION_PERIOD = 1.0f;
 
-EventStatus EnemyManager::onDeadEnemyEvent(EventType type, Event *event) {
-//   assert(type == DeadEnemyEvent::type);
-//   auto dead = static_cast<DeadEnemyEvent*>(event);
-//
-//   m_enemies.removeEntity(dead->dead);
-//   delete dead->dead;
-
-  return EventStatus::KEEP;
-}
-
 EventStatus EnemyManager::onPositionEvent(EventType type, Event *event) {
   assert(type == HeroPositionEvent::type);
   auto heroPosition = static_cast<HeroPositionEvent*>(event);
@@ -102,7 +91,6 @@ EventStatus EnemyManager::onPositionEvent(EventType type, Event *event) {
 
 
 void EnemyManager::update(float dt) {
-
   m_elapsedTime += dt;
 
   std::uniform_real_distribution<float> dist(Enemy::ENEMY_WIDTH, WINDOW_W - Enemy::ENEMY_WIDTH);
@@ -122,31 +110,21 @@ void EnemyManager::update(float dt) {
     enemy->update(dt);
   }
 
-  auto trash = std::remove_if(m_enemies.begin(), m_enemies.end(), [](const Enemy *e) {
-    return !e->isAlive();
+  const auto trash = std::partition(m_enemies.begin(), m_enemies.end(), [](const Enemy *e) {
+    return e->isAlive();
   });
 
   for (auto it = trash; it != m_enemies.end(); ++it) {
-    if ((*it)->isAlive()) {
-      std::cout << "alive!!!!\n";
-    }
-
-    std::cout << "p: " << *it << '\n';
+    assert(!(*it)->isAlive());
     delete *it;
     *it = nullptr;
   }
 
-  std::cout << "s: " << m_enemies.size() << " -> ";
-
   m_enemies.erase(trash, m_enemies.end());
-
-  std::cout << m_enemies.size() << '\n';
 }
 
 void EnemyManager::render(sf::RenderWindow& window) {
   for (auto enemy : m_enemies) {
-    assert(enemy);
-    std::cout << "r: " << enemy << '\n';
     enemy->render(window);
   }
 }
