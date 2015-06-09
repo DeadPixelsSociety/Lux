@@ -27,6 +27,7 @@ add_executable(lux
   local/Event.cc
   local/Group.cc
   local/Hero.cc
+  local/Particles.cc
   local/Resources.cc
   local/Sensor.cc
   local/Stars.cc

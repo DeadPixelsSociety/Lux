@@ -31,6 +31,14 @@ void Hero::update(float dt) {
   event.hero = this;
   m_events.triggerEvent(&event);
 
+  if (!isAlive()) {
+    DeadEvent dead;
+    dead.origin = Origin::HERO;
+    dead.pos = m_pos;
+    m_events.triggerEvent(&dead);
+    return;
+  }
+
   m_elapsedTime += dt;
 
   if (m_elapsedTime >= SHOOT_PERIOD) {

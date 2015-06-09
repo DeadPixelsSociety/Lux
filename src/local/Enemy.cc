@@ -43,6 +43,14 @@ void Enemy::update(float dt) {
   event.enemy = this;
   m_events.triggerEvent(&event);
 
+  if (!isAlive()) {
+    DeadEvent dead;
+    dead.origin = Origin::ENEMY;
+    dead.pos = m_pos;
+    m_events.triggerEvent(&dead);
+    return;
+  }
+
   m_elapsedTime += dt;
 
   if (m_elapsedTime >= SHOOT_PERIOD) {

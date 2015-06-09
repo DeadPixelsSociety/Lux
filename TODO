@@ -1,12 +1,20 @@
-- Collisions entre ennemis et hero / tirs et hero / tirs et ennemis
-- IA
-  - apparition des ennemis
-  - pattern de déplacement
+# Fonctionnalités
+
 - Particules (lumière)
+  - détruire les ParticleSystem morts
+  - mettre des lifetime différents
+  - couleurs aléatoires (?)
+  - accélération (?!)
+- IA
+  - pattern d'apparitions
+  - pattern de déplacement
 - Trainée pour les bullets
 - Bonus (armes, vie)
 - Points
 - IA intelligente : anticipation du mouvement
 - Système éteint/allumé
 
+# Dette technique
 
+- fusionner *PositionEvent
+- harmoniser l'ordre des paramètres dans les constructeurs

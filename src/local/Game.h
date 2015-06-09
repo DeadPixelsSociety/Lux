@@ -34,4 +34,10 @@ struct ShootEvent : public Event {
   sf::Color color;
 };
 
+struct DeadEvent : public Event {
+  static const EventType type = "DeadEvent"_type;
+  Origin origin;
+  sf::Vector2f pos;
+};
+
 #endif // LOCAL_GAME_H

@@ -31,6 +31,7 @@
 #include "local/Event.h"
 #include "local/Group.h"
 #include "local/Hero.h"
+#include "local/Particles.h"
 #include "local/Random.h"
 #include "local/Resources.h"
 #include "local/Sensor.h"
@@ -53,6 +54,8 @@ int main() {
   EnemyManager enemies(engine, events, resources);
   Hero hero(sensor, events, resources);
 
+  Particles particles(events, engine);
+
   Stars stars1(engine, 125, 1.5f);
   Stars stars2(engine, 75, 1.25f);
   Stars stars3(engine,  20, 1.0f, true);
@@ -63,6 +66,7 @@ int main() {
   group.addEntity(stars2);
   group.addEntity(stars3);
   group.addEntity(bullets);
+  group.addEntity(particles);
 
   sf::Clock clock;
   while (window.isOpen()) {
