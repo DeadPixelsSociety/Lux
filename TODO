@@ -2,6 +2,7 @@
 
 - Particules (lumière)
   - accélération (?!)
+- Point de vie
 - IA
   - pattern d'apparitions
   - pattern de déplacement
@@ -13,5 +14,6 @@
 
 # Dette technique
 
+- commenter le code
 - fusionner *PositionEvent
 - harmoniser l'ordre des paramètres dans les constructeurs
