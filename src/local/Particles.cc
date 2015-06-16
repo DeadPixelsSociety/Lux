@@ -32,7 +32,7 @@ void Particles::update(float dt) {
 
       sys.vertices[i].position += p.velocity * dt;
 
-      float ratio = p.lifetime / sys.lifetime;
+      float ratio = (p.lifetime + 2) / (sys.lifetime + 2);
       sys.vertices[i].color.a = static_cast<sf::Uint8>(ratio * 255);
     }
   }
@@ -52,7 +52,9 @@ void Particles::render(sf::RenderWindow& window) {
 }
 
 static constexpr std::size_t PARTICLES_COUNT = 400;
-static constexpr float LIFETIME = 1.5f;
+static constexpr float LIFETIME_MAX = 1.5f;
+static constexpr float LIFETIME_MIN = 0.1f;
+
 
 EventStatus Particles::onDeadEvent(EventType type, Event *event) {
   auto dead = static_cast<DeadEvent*>(event);
@@ -65,10 +67,20 @@ EventStatus Particles::onDeadEvent(EventType type, Event *event) {
 
   std::uniform_real_distribution<float> dist_angle(0, 2 * 3.1415926f);
   std::uniform_real_distribution<float> dist_norm(0.0f, 150.0f);
+  std::uniform_real_distribution<float> dist_lifetime(0.0f, 100.0f);
 
   for (std::size_t i = 0; i < PARTICLES_COUNT; ++i) {
     Particle p;
-    p.lifetime = LIFETIME;
+
+    float aleaNumber = dist_lifetime(m_engine);
+    if (aleaNumber < 50.0f) 
+      p.lifetime = 0.2f * (aleaNumber / 50.0f);
+    else if (aleaNumber < 75.0f) 
+      p.lifetime = 0.8f * (aleaNumber / 75.0f);
+    else 
+      p.lifetime = 1.5f * (aleaNumber / 100.0f);
+
+    //p.lifetime = dist_lifetime(m_engine);
 
     float angle = dist_angle(m_engine);
     float norm = dist_norm(m_engine);
@@ -82,7 +94,7 @@ EventStatus Particles::onDeadEvent(EventType type, Event *event) {
     sys.vertices[i].color = sf::Color(0xFF, 0xA0, 0x00);
   }
 
-  sys.lifetime = LIFETIME;
+  sys.lifetime = LIFETIME_MAX;
 
   m_particles_systems.push_back(sys);
   return EventStatus::KEEP;
