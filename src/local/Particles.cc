@@ -68,6 +68,7 @@ EventStatus Particles::onDeadEvent(EventType type, Event *event) {
   std::uniform_real_distribution<float> dist_angle(0, 2 * 3.1415926f);
   std::uniform_real_distribution<float> dist_norm(0.0f, 150.0f);
   std::uniform_real_distribution<float> dist_lifetime(0.0f, 100.0f);
+  std::uniform_int_distribution<uint8_t> dist_color(50, 200);
 
   for (std::size_t i = 0; i < PARTICLES_COUNT; ++i) {
     Particle p;
@@ -80,8 +81,6 @@ EventStatus Particles::onDeadEvent(EventType type, Event *event) {
     else 
       p.lifetime = 1.5f * (aleaNumber / 100.0f);
 
-    //p.lifetime = dist_lifetime(m_engine);
-
     float angle = dist_angle(m_engine);
     float norm = dist_norm(m_engine);
 
@@ -91,7 +90,8 @@ EventStatus Particles::onDeadEvent(EventType type, Event *event) {
     sys.particles.push_back(p);
 
     sys.vertices[i].position = dead->pos;
-    sys.vertices[i].color = sf::Color(0xFF, 0xA0, 0x00);
+    sf::Uint8 color = dist_color(m_engine);
+    sys.vertices[i].color = sf::Color(0xFF, color, 0x00);
   }
 
   sys.lifetime = LIFETIME_MAX;
