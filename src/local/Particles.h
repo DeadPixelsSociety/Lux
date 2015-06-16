@@ -27,6 +27,7 @@ private:
     std::vector<Particle> particles;
     sf::VertexArray vertices;
     float lifetime;
+    float elapsed;
   };
 
   Engine& m_engine;

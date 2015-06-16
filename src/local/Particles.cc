@@ -14,6 +14,13 @@ int Particles::priority() const {
 
 void Particles::update(float dt) {
   for (ParticleSystem& sys : m_particles_systems) {
+    sys.elapsed += dt;
+
+    // If it's end of animation
+    if (sys.elapsed >= sys.lifetime) {
+      continue;
+    }
+
     for (std::size_t i = 0; i < sys.particles.size(); ++i) {
       Particle& p = sys.particles[i];
       p.lifetime -= dt;
@@ -29,6 +36,13 @@ void Particles::update(float dt) {
       sys.vertices[i].color.a = static_cast<sf::Uint8>(ratio * 255);
     }
   }
+
+  // Delete the old animations
+  const auto trash = std::partition(m_particles_systems.begin(), m_particles_systems.end(), [](const ParticleSystem &sys) {
+    return sys.elapsed < sys.lifetime;
+  });
+
+  m_particles_systems.erase(trash, m_particles_systems.end());
 }
 
 void Particles::render(sf::RenderWindow& window) {
@@ -47,6 +61,7 @@ EventStatus Particles::onDeadEvent(EventType type, Event *event) {
 
   sys.vertices.resize(PARTICLES_COUNT);
   sys.vertices.setPrimitiveType(sf::Points);
+  sys.elapsed = 0.0f;
 
   std::uniform_real_distribution<float> dist_angle(0, 2 * 3.1415926f);
   std::uniform_real_distribution<float> dist_norm(0.0f, 150.0f);

@@ -1,7 +1,6 @@
 # Fonctionnalités
 
 - Particules (lumière)
-  - détruire les ParticleSystem morts
   - mettre des lifetime différents
   - couleurs aléatoires (?)
   - accélération (?!)
