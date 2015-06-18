@@ -38,14 +38,16 @@ void Enemy::update(float dt) {
     return;
   }
 
-  EnemyPositionEvent event;
-  event.pos = m_pos;
-  event.enemy = this;
-  m_events.triggerEvent(&event);
+  LocationEvent loc;
+  loc.origin = Origin::ENEMY;
+  loc.pos = m_pos;
+  loc.entity = this;
+  m_events.triggerEvent(&loc);
 
   if (!isAlive()) {
     DeadEvent dead;
     dead.origin = Origin::ENEMY;
+    dead.ship = ShipClass::BOOTES;
     dead.pos = m_pos;
     m_events.triggerEvent(&dead);
     return;
@@ -90,10 +92,14 @@ EnemyManager::~EnemyManager() {
 
 static constexpr float GENERATION_PERIOD = 1.0f;
 
-EventStatus EnemyManager::onPositionEvent(EventType type, Event *event) {
-  assert(type == HeroPositionEvent::type);
-  auto heroPosition = static_cast<HeroPositionEvent*>(event);
-  m_hero_pos = heroPosition->pos;
+EventStatus EnemyManager::onLocationEvent(EventType type, Event *event) {
+  assert(type == LocationEvent::type);
+  auto loc = static_cast<LocationEvent*>(event);
+
+  if (loc->origin == Origin::HERO) {
+    m_hero_pos = loc->pos;
+  }
+
   return EventStatus::KEEP;
 }
 

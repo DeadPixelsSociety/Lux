@@ -10,8 +10,7 @@
 static constexpr float RADIUS = 3.0f;
 
 Bullets::Bullets(EventManager& events) {
-  events.registerHandler<HeroPositionEvent>(&Bullets::onPositionEvent, this);
-  events.registerHandler<EnemyPositionEvent>(&Bullets::onPositionEvent, this);
+  events.registerHandler<LocationEvent>(&Bullets::onLocationEvent, this);
   events.registerHandler<ShootEvent>(&Bullets::onShootEvent, this);
 }
 
@@ -53,30 +52,23 @@ void Bullets::render(sf::RenderWindow& window) {
   }
 }
 
-EventStatus Bullets::onPositionEvent(EventType type, Event *event) {
-  assert(type == EnemyPositionEvent::type || type == HeroPositionEvent::type);
+static bool isTargetReached(const sf::Vector2f& shipPos, const sf::Vector2f& bulletPos) {
+  return shipPos.x - 30.0f <= bulletPos.x && bulletPos.x <= shipPos.x + 30.0f
+      && shipPos.y - 30.0f <= bulletPos.y && bulletPos.y <= shipPos.y + 30.0f;
+}
 
-  sf::Vector2f pos;
-  Origin origin;
-  Entity *entity;
+EventStatus Bullets::onLocationEvent(EventType type, Event *event) {
+  assert(type == LocationEvent::type);
 
-  if (type == EnemyPositionEvent::type) {
-    pos = static_cast<EnemyPositionEvent*>(event)->pos;
-    origin = Origin::ENEMY;
-    entity = static_cast<EnemyPositionEvent*>(event)->enemy;
-  } else {
-    pos = static_cast<HeroPositionEvent*>(event)->pos;
-    origin = Origin::HERO;
-    entity = static_cast<HeroPositionEvent*>(event)->hero;
-  }
+  auto loc = static_cast<LocationEvent*>(event);
 
   for (Bullet& bullet : m_bullets) {
-    if (origin == bullet.origin) {
+    if (loc->origin == bullet.origin) {
       continue;
     }
 
-    if (pos.x - 30.0f <= bullet.pos.x && bullet.pos.x <= pos.x + 30.0f && pos.y - 30.0f <= bullet.pos.y && bullet.pos.y <= pos.y + 30.0f) {
-      entity->kill();
+    if (isTargetReached(loc->pos, bullet.pos)) {
+      loc->entity->kill();
       bullet.active = false;
     }
   }
