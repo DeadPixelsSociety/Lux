@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Event.h"
+#include "Entity.h"
 
 enum class Origin {
   HERO,

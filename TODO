@@ -15,5 +15,4 @@
 # Dette technique
 
 - commenter le code
-- fusionner *PositionEvent
 - harmoniser l'ordre des paramètres dans les constructeurs

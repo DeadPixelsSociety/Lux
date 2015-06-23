@@ -30,6 +30,7 @@ add_executable(lux
   local/Particles.cc
   local/Resources.cc
   local/Sensor.cc
+  local/Shoot.cc
   local/Stars.cc
 )
 

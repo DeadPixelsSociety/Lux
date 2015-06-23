@@ -26,6 +26,7 @@
 #include "Game.h"
 #include "Random.h"
 #include "Resources.h"
+#include "Shoot.h"
 
 class Enemy : public Entity {
 public:
@@ -61,6 +62,8 @@ private:
   float m_elapsedTime;
   sf::Vector2f m_hero_pos;
   sf::Texture *m_texture;
+
+  std::unique_ptr<Shoot> m_shoot;
 };
 
 
