@@ -39,7 +39,7 @@ public:
   , m_elapsedTime(0.0f)
   , m_texture(nullptr)
   {
-    m_texture = resources.getTexture("space_shipe_1.png");
+    m_texture = resources.getTexture("ship_antlia.png");
     assert(m_texture != nullptr);
   }
 

@@ -5,25 +5,22 @@
 
 #include "Event.h"
 
-class Hero;
-
-struct HeroPositionEvent : public Event {
-  static const EventType type = "HeroPositionEvent"_type;
-  sf::Vector2f pos;
-  Hero *hero;
-};
-
-class Enemy;
-
-struct EnemyPositionEvent : public Event {
-  static const EventType type = "EnemyPositionEvent"_type;
-  sf::Vector2f pos;
-  Enemy *enemy;
-};
-
 enum class Origin {
   HERO,
   ENEMY,
+};
+
+// Named after: https://en.wikipedia.org/wiki/88_modern_constellations
+enum class ShipClass {
+  ANTLIA,
+  BOOTES,
+};
+
+struct LocationEvent : public Event {
+  static const EventType type = "LocationEvent"_type;
+  Origin origin;
+  sf::Vector2f pos;
+  Entity *entity;
 };
 
 struct ShootEvent : public Event {
@@ -37,6 +34,7 @@ struct ShootEvent : public Event {
 struct DeadEvent : public Event {
   static const EventType type = "DeadEvent"_type;
   Origin origin;
+  ShipClass ship;
   sf::Vector2f pos;
 };
 

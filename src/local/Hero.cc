@@ -26,14 +26,16 @@ static constexpr float SHOOT_VELOCITY = 400.0f;
 void Hero::update(float dt) {
   m_pos = m_sensor.getCenter();
 
-  HeroPositionEvent event;
-  event.pos = m_pos;
-  event.hero = this;
-  m_events.triggerEvent(&event);
+  LocationEvent loc;
+  loc.origin = Origin::HERO;
+  loc.pos = m_pos;
+  loc.entity = this;
+  m_events.triggerEvent(&loc);
 
   if (!isAlive()) {
     DeadEvent dead;
     dead.origin = Origin::HERO;
+    dead.ship = ShipClass::ANTLIA;
     dead.pos = m_pos;
     m_events.triggerEvent(&dead);
     return;

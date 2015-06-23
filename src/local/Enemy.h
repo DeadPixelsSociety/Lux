@@ -40,7 +40,7 @@ public:
   , m_elapsedTime(0.0f)
   , m_texture(nullptr)
   {
-    m_texture = resources.getTexture("space_shipe_2.png");
+    m_texture = resources.getTexture("ship_bootes.png");
     assert(m_texture != nullptr);
   }
 
@@ -72,7 +72,7 @@ public:
   , m_elapsedTime(0.0f)
   , m_resources(resources)
   {
-    m_events.registerHandler<HeroPositionEvent>(&EnemyManager::onPositionEvent, this);
+    m_events.registerHandler<LocationEvent>(&EnemyManager::onLocationEvent, this);
   }
 
   EnemyManager(const EnemyManager&) = delete;
@@ -83,7 +83,7 @@ public:
 
   ~EnemyManager();
 
-  EventStatus onPositionEvent(EventType type, Event *event);
+  EventStatus onLocationEvent(EventType type, Event *event);
 
   virtual void update(float dt) override;
 

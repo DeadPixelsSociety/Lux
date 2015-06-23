@@ -14,7 +14,7 @@ public:
   virtual void render(sf::RenderWindow& window) override;
 
 private:
-  EventStatus onPositionEvent(EventType type, Event *event);
+  EventStatus onLocationEvent(EventType type, Event *event);
   EventStatus onShootEvent(EventType type, Event *event);
 
 private:
