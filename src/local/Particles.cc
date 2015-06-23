@@ -32,7 +32,7 @@ void Particles::update(float dt) {
 
       sys.vertices[i].position += p.velocity * dt;
 
-      float ratio = (p.lifetime + 2) / (sys.lifetime + 2);
+      float ratio = 0.75f + 0.25f * p.lifetime / sys.lifetime;
       sys.vertices[i].color.a = static_cast<sf::Uint8>(ratio * 255);
     }
   }
@@ -62,7 +62,7 @@ std::tuple<sf::Color, sf::Color> colorFromShipClass(ShipClass ship) {
   return std::make_tuple(sf::Color::White, sf::Color::White);
 }
 
-static constexpr std::size_t PARTICLES_COUNT = 400;
+static constexpr std::size_t PARTICLES_COUNT = 800;
 static constexpr float LIFETIME_MAX = 1.5f;
 static constexpr float LIFETIME_MIN = 0.1f;
 
@@ -77,7 +77,7 @@ EventStatus Particles::onDeadEvent(EventType type, Event *event) {
 
   std::uniform_real_distribution<float> dist_angle(0, 2 * 3.1415926f);
   std::uniform_real_distribution<float> dist_norm(0.0f, 150.0f);
-  std::uniform_real_distribution<float> dist_lifetime(0.0f, 100.0f);
+  std::normal_distribution<float> dist_lifetime(1.0f, 0.166f);
   std::bernoulli_distribution dist_color(0.6);
 
   sf::Color major;
@@ -88,13 +88,7 @@ EventStatus Particles::onDeadEvent(EventType type, Event *event) {
   for (std::size_t i = 0; i < PARTICLES_COUNT; ++i) {
     Particle p;
 
-    float aleaNumber = dist_lifetime(m_engine);
-    if (aleaNumber < 50.0f)
-      p.lifetime = 0.2f * (aleaNumber / 50.0f);
-    else if (aleaNumber < 75.0f)
-      p.lifetime = 0.8f * (aleaNumber / 75.0f);
-    else
-      p.lifetime = 1.5f * (aleaNumber / 100.0f);
+    p.lifetime = dist_lifetime(m_engine);
 
     float angle = dist_angle(m_engine);
     float norm = dist_norm(m_engine);
