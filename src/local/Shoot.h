@@ -28,13 +28,13 @@ enum class ShootType {
   PERIODIC,
 };
 
-
-
 class Shoot {
 public:
   virtual ~Shoot();
   virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) = 0;
 };
+
+std::unique_ptr<Shoot> makeBurstShoot(Origin origin, sf::Color color, float delay, float period, int count);
 
 class ConcreteShoot : public Shoot {
 public:

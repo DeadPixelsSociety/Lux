@@ -34,14 +34,7 @@ Enemy::Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel, EventManager& eve
 , m_elapsedTime(0.0f)
 , m_texture(nullptr)
 // , m_shoot(new ConeShoot(Origin::ENEMY, sf::Color::Yellow))
-, m_shoot(makeUnique<DelayedShoot>(
-    makeUnique<PeriodicShoot>(
-      makeUnique<CountedShoot>(
-        makeUnique<SingleShoot>(Origin::ENEMY, sf::Color::Green)
-        , 3)
-      , 0.1f)
-    , 1.0f)
-  )
+, m_shoot(makeBurstShoot(Origin::ENEMY, sf::Color::Green, 0.5f, 0.1f, 3))
 {
   m_texture = resources.getTexture("ship_bootes.png");
   assert(m_texture != nullptr);

@@ -19,10 +19,22 @@
 #include "Shoot.h"
 
 #include "Game.h"
+#include "Memory.h"
 
 Shoot::~Shoot() {
 
 }
+
+std::unique_ptr<Shoot> makeBurstShoot(Origin origin, sf::Color color, float delay, float period, int count) {
+  return makeUnique<DelayedShoot>(
+    makeUnique<PeriodicShoot>(
+      makeUnique<CountedShoot>(
+        makeUnique<SingleShoot>(origin, color)
+        , count)
+      , period)
+    , delay);
+}
+
 
 void SingleShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
   ShootEvent shoot;
