@@ -35,16 +35,8 @@ public:
   static constexpr float ENEMY_SCALE_X = ENEMY_WIDTH / 256.0f;
   static constexpr float ENEMY_SCALE_Y = ENEMY_HEIGHT / 256.0f;
 
-  Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel, EventManager& events, ResourceManager &resources)
-  : m_pos(pos), m_vel(vel)
-  , m_events(events)
-  , m_elapsedTime(0.0f)
-  , m_texture(nullptr)
-  {
-    m_texture = resources.getTexture("ship_bootes.png");
-    assert(m_texture != nullptr);
-  }
-
+  Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel, EventManager& events, ResourceManager &resources);
+  
   virtual void update(float dt) override;
 
   virtual void render(sf::RenderWindow& window) override;

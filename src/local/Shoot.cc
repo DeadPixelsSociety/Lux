@@ -18,6 +18,69 @@
  */
 #include "Shoot.h"
 
-void PeriodicShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir) {
+#include "Game.h"
+
+Shoot::~Shoot() {
 
 }
+
+void SingleShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
+  ShootEvent shoot;
+  shoot.origin = getOrigin();
+  shoot.pos = pos;
+  shoot.velocity = dir;
+  shoot.color = getColor();
+
+  events.triggerEvent(&shoot);
+}
+
+
+static constexpr float CONE_ANGLE = 15; // in degrees
+
+void ConeShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
+  ShootEvent shoot;
+  shoot.origin = getOrigin();
+  shoot.pos = pos;
+  shoot.color = getColor();
+
+  shoot.velocity = dir;
+  events.triggerEvent(&shoot);
+
+  sf::Transform tr1;
+  tr1.rotate(CONE_ANGLE);
+  shoot.velocity = tr1.transformPoint(dir);
+  events.triggerEvent(&shoot);
+
+  sf::Transform tr2;
+  tr2.rotate(-CONE_ANGLE);
+  shoot.velocity = tr2.transformPoint(dir);
+  events.triggerEvent(&shoot);
+}
+
+
+void PeriodicShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
+  m_elapsedTime += dt;
+
+  if (m_elapsedTime >= m_period) {
+    getDecorated().shoot(dt, pos, dir, events);
+    m_elapsedTime -= m_period;
+  }
+}
+
+
+void DelayedShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
+  m_elapsedTime += dt;
+
+  if (m_elapsedTime >= m_delay) {
+    getDecorated().shoot(dt, pos, dir, events);
+  }
+}
+
+
+void CountedShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
+  if (m_count > 0) {
+    getDecorated().shoot(dt, pos, dir, events);
+    m_count--;
+  }
+}
+

@@ -23,9 +23,30 @@
 
 #include "Config.h"
 #include "Game.h"
+#include "Memory.h"
 
 static constexpr float SHOOT_PERIOD = 1.0f;
 static constexpr float SHOOT_VELOCITY = 400.0f;
+
+Enemy::Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel, EventManager& events, ResourceManager &resources)
+: m_pos(pos), m_vel(vel)
+, m_events(events)
+, m_elapsedTime(0.0f)
+, m_texture(nullptr)
+// , m_shoot(new ConeShoot(Origin::ENEMY, sf::Color::Yellow))
+, m_shoot(makeUnique<DelayedShoot>(
+    makeUnique<PeriodicShoot>(
+      makeUnique<CountedShoot>(
+        makeUnique<SingleShoot>(Origin::ENEMY, sf::Color::Green)
+        , 3)
+      , 0.1f)
+    , 1.0f)
+  )
+{
+  m_texture = resources.getTexture("ship_bootes.png");
+  assert(m_texture != nullptr);
+}
+
 
 void Enemy::update(float dt) {
   assert(isAlive());
@@ -53,23 +74,11 @@ void Enemy::update(float dt) {
     return;
   }
 
-  m_elapsedTime += dt;
+  sf::Vector2f dir = m_hero_pos - m_pos;
+  float norm = std::hypot(dir.x, dir.y);
+  dir = (dir / norm) * SHOOT_VELOCITY;
 
-  if (m_elapsedTime >= SHOOT_PERIOD) {
-    ShootEvent shoot;
-    shoot.origin = Origin::ENEMY;
-    shoot.pos = m_pos;
-
-    sf::Vector2f d = m_hero_pos - m_pos;
-    float norm = std::hypot(d.x, d.y);
-    d = (d / norm) * SHOOT_VELOCITY;
-
-    shoot.velocity = d;
-    shoot.color = sf::Color::Green;
-
-    m_events.triggerEvent(&shoot);
-    m_elapsedTime = 0.0f;
-  }
+  m_shoot->shoot(dt, m_pos, dir, m_events);
 }
 
 void Enemy::render(sf::RenderWindow& window) {

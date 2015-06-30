@@ -19,22 +19,31 @@
 #ifndef LOCAL_SHOOT_H
 #define LOCAL_SHOOT_H
 
+#include <memory>
+
 #include "Game.h"
 
 enum class ShootType {
+  CONE,
   PERIODIC,
 };
 
+
+
 class Shoot {
 public:
-  Shoot(Origin origin, sf::Color color)
+  virtual ~Shoot();
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) = 0;
+};
+
+class ConcreteShoot : public Shoot {
+public:
+  ConcreteShoot(Origin origin, sf::Color color)
   : m_origin(origin)
   , m_color(color)
   {
 
   }
-
-  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir) = 0;
 
   Origin getOrigin() const {
     return m_origin;
@@ -49,20 +58,100 @@ private:
   sf::Color m_color;
 };
 
-class PeriodicShoot : public Shoot {
+class SingleShoot : public ConcreteShoot {
 public:
-  PeriodicShoot(Origin origin, sf::Color color)
-  : Shoot(origin, color)
+  SingleShoot(Origin origin, sf::Color color)
+  : ConcreteShoot(origin, color)
   {
 
   }
 
-  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir) override;
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) override;
 
+};
+
+
+class ConeShoot : public ConcreteShoot {
+public:
+  ConeShoot(Origin origin, sf::Color color)
+  : ConcreteShoot(origin, color)
+  {
+
+  }
+
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) override;
+
+};
+
+
+
+
+class ShootDecorator : public Shoot {
+public:
+  ShootDecorator(std::unique_ptr<Shoot> decorated)
+  : m_decorated(std::move(decorated))
+  {
+  }
+
+protected:
+  Shoot& getDecorated() {
+    return *m_decorated;
+  }
+
+private:
+  std::unique_ptr<Shoot> m_decorated;
+};
+
+
+class PeriodicShoot : public ShootDecorator {
+public:
+  PeriodicShoot(std::unique_ptr<Shoot> decorated, float period)
+  : ShootDecorator(std::move(decorated))
+  , m_elapsedTime(0.0f)
+  , m_period(period)
+  {
+
+  }
+
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) override;
 
 private:
   float m_elapsedTime;
   float m_period;
 };
 
+class DelayedShoot : public ShootDecorator {
+public:
+  DelayedShoot(std::unique_ptr<Shoot> decorated, float delay)
+  : ShootDecorator(std::move(decorated))
+  , m_elapsedTime(0.0f)
+  , m_delay(delay)
+  {
+
+  }
+
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) override;
+
+private:
+  float m_elapsedTime;
+  float m_delay;
+};
+
+class CountedShoot : public ShootDecorator {
+public:
+  CountedShoot(std::unique_ptr<Shoot> decorated, int count)
+  : ShootDecorator(std::move(decorated))
+  , m_count(count)
+  {
+
+  }
+
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) override;
+
+private:
+  int m_count;
+};
+
+
 #endif // LOCAL_SHOOT_H
+
