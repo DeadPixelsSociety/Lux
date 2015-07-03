@@ -28,8 +28,9 @@
 static constexpr float SHOOT_PERIOD = 1.0f;
 static constexpr float SHOOT_VELOCITY = 400.0f;
 
-Enemy::Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel, EventManager& events, ResourceManager &resources)
-: m_pos(pos), m_vel(vel)
+Enemy::Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel, float health, EventManager& events, ResourceManager &resources)
+: Ship(health)
+, m_pos(pos), m_vel(vel)
 , m_events(events)
 , m_elapsedTime(0.0f)
 , m_texture(nullptr)
@@ -55,7 +56,7 @@ void Enemy::update(float dt) {
   LocationEvent loc;
   loc.origin = Origin::ENEMY;
   loc.pos = m_pos;
-  loc.entity = this;
+  loc.ship = this;
   m_events.triggerEvent(&loc);
 
   if (!isAlive()) {
@@ -115,7 +116,7 @@ void EnemyManager::update(float dt) {
     sf::Vector2f pos(dist(m_engine), -Enemy::ENEMY_HEIGHT);
     sf::Vector2f velocity(0.0f, WINDOW_H / 3.0f);
 
-    auto enemy = new Enemy(pos, velocity, m_events, m_resources);
+    auto enemy = new Enemy(pos, velocity, 100.0f, m_events, m_resources);
     m_enemies.push_back(enemy);
 
     m_elapsedTime = 0.0f;

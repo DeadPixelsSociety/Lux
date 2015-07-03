@@ -29,7 +29,7 @@ void Hero::update(float dt) {
   LocationEvent loc;
   loc.origin = Origin::HERO;
   loc.pos = m_pos;
-  loc.entity = this;
+  loc.ship = this;
   m_events.triggerEvent(&loc);
 
   if (!isAlive()) {

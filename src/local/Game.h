@@ -5,6 +5,7 @@
 
 #include "Event.h"
 #include "Entity.h"
+#include "Ship.h"
 
 enum class Origin {
   HERO,
@@ -21,7 +22,7 @@ struct LocationEvent : public Event {
   static const EventType type = "LocationEvent"_type;
   Origin origin;
   sf::Vector2f pos;
-  Entity *entity;
+  Ship *ship;
 };
 
 struct ShootEvent : public Event {

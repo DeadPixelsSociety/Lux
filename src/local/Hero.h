@@ -25,16 +25,20 @@
 #include "Event.h"
 #include "Resources.h"
 #include "Sensor.h"
+#include "Ship.h"
 
-class Hero : public Entity {
+class Hero : public Ship {
 public:
   static constexpr float HERO_WIDTH = 60.0f;
   static constexpr float HERO_HEIGHT = 60.0f;
   static constexpr float HERO_SCALE_X = HERO_WIDTH / 256.0f;
   static constexpr float HERO_SCALE_Y = HERO_HEIGHT / 256.0f;
 
+  static constexpr float HERO_HEALTH = 100.0f;
+
   Hero(Sensor& sensor, EventManager& events, ResourceManager &resources)
-  : m_sensor(sensor)
+  : Ship(HERO_HEALTH)
+  , m_sensor(sensor)
   , m_events(events)
   , m_elapsedTime(0.0f)
   , m_texture(nullptr)
