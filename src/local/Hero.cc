@@ -57,7 +57,7 @@ void Hero::update(float dt) {
 }
 
 static constexpr float HEALTH_WIDTH = 200.0f;
-static constexpr float HEALTH_HEIGHT = 10.0f;
+static constexpr float HEALTH_HEIGHT = 5.0f;
 static constexpr float HEALTH_THICKNESS = 1.0f;
 static constexpr float HEALTH_PADDING = 40.0f;
 

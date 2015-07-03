@@ -2,7 +2,6 @@
 
 - Particules (lumière)
   - accélération (?!)
-- Point de vie
 - IA
   - pattern d'apparitions
   - pattern de déplacement
@@ -19,3 +18,14 @@
 
 - commenter le code
 - harmoniser l'ordre des paramètres dans les constructeurs
+
+# Scénario
+
+Pour chaque vague d'attaque:
+- durée
+- intervalle
+- vaisseaux:
+  - type de vaisseau
+  - type de shoot
+  - vitesse / position
+  - (point de vie)
