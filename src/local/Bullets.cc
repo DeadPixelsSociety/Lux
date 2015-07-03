@@ -68,7 +68,7 @@ EventStatus Bullets::onLocationEvent(EventType type, Event *event) {
     }
 
     if (isTargetReached(loc->pos, bullet.pos)) {
-      loc->ship->impact(200.0f);
+      loc->ship->impact(60.0f);
       bullet.active = false;
     }
   }

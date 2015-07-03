@@ -18,9 +18,10 @@
  */
 #include "Hero.h"
 
+#include "Config.h"
 #include "Game.h"
 
-static constexpr float SHOOT_PERIOD = 0.5f;
+static constexpr float SHOOT_PERIOD = 0.4f;
 static constexpr float SHOOT_VELOCITY = 400.0f;
 
 void Hero::update(float dt) {
@@ -55,6 +56,11 @@ void Hero::update(float dt) {
   }
 }
 
+static constexpr float HEALTH_WIDTH = 200.0f;
+static constexpr float HEALTH_HEIGHT = 10.0f;
+static constexpr float HEALTH_THICKNESS = 1.0f;
+static constexpr float HEALTH_PADDING = 40.0f;
+
 void Hero::render(sf::RenderWindow& window) {
   sf::Sprite sprite;
   sprite.setTexture(*m_texture);
@@ -63,4 +69,18 @@ void Hero::render(sf::RenderWindow& window) {
   sprite.setPosition(m_pos);
   sprite.setRotation(-90.0f);
   window.draw(sprite);
+
+  sf::RectangleShape rectangleShape({ HEALTH_WIDTH, HEALTH_HEIGHT });
+  rectangleShape.setOrigin(HEALTH_WIDTH / 2, HEALTH_HEIGHT / 2);
+  rectangleShape.setPosition(WINDOW_W / 2, WINDOW_H - HEALTH_PADDING);
+  rectangleShape.setOutlineColor(sf::Color::White);
+  rectangleShape.setOutlineThickness(HEALTH_THICKNESS);
+  rectangleShape.setFillColor(sf::Color::Transparent);
+  window.draw(rectangleShape);
+
+  sf::RectangleShape healthRectangle({ HEALTH_WIDTH * getStructureHealthPercentage(), HEALTH_HEIGHT });
+  healthRectangle.setOrigin(0.0f, HEALTH_HEIGHT / 2);
+  healthRectangle.setPosition(WINDOW_W / 2 - HEALTH_WIDTH / 2, WINDOW_H - HEALTH_PADDING);
+  healthRectangle.setFillColor(sf::Color::Red);
+  window.draw(healthRectangle);
 }
