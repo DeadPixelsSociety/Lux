@@ -28,7 +28,7 @@
 static constexpr float SHOOT_PERIOD = 1.0f;
 static constexpr float SHOOT_VELOCITY = 400.0f;
 
-Enemy::Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel, float health, EventManager& events, ResourceManager &resources)
+Enemy::Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, EventManager& events, ResourceManager &resources)
 : Ship(health)
 , m_pos(pos), m_vel(vel)
 , m_events(events)
@@ -92,6 +92,10 @@ EnemyManager::~EnemyManager() {
   }
 }
 
+void EnemyManager::addEnemy(ShipClass ship, const sf::Vector2f& position, const sf::Vector2f& velocity) {
+  auto enemy = new Enemy(ship, position, velocity, 100.0f, m_events, m_resources);
+  m_enemies.push_back(enemy);
+}
 
 static constexpr float GENERATION_PERIOD = 1.0f;
 
@@ -108,19 +112,19 @@ EventStatus EnemyManager::onLocationEvent(EventType type, Event *event) {
 
 
 void EnemyManager::update(float dt) {
-  m_elapsedTime += dt;
+//   m_elapsedTime += dt;
 
-  std::uniform_real_distribution<float> dist(Enemy::ENEMY_WIDTH, WINDOW_W - Enemy::ENEMY_WIDTH);
+//   std::uniform_real_distribution<float> dist(Enemy::ENEMY_WIDTH, WINDOW_W - Enemy::ENEMY_WIDTH);
 
-  if (m_elapsedTime >= GENERATION_PERIOD) {
-    sf::Vector2f pos(dist(m_engine), -Enemy::ENEMY_HEIGHT);
-    sf::Vector2f velocity(0.0f, WINDOW_H / 3.0f);
-
-    auto enemy = new Enemy(pos, velocity, 100.0f, m_events, m_resources);
-    m_enemies.push_back(enemy);
-
-    m_elapsedTime = 0.0f;
-  }
+//   if (m_elapsedTime >= GENERATION_PERIOD) {
+//     sf::Vector2f pos(dist(m_engine), -Enemy::ENEMY_HEIGHT);
+//     sf::Vector2f velocity(0.0f, WINDOW_H / 3.0f);
+//
+//     auto enemy = new Enemy(pos, velocity, 100.0f, m_events, m_resources);
+//     m_enemies.push_back(enemy);
+//
+//     m_elapsedTime = 0.0f;
+//   }
 
   for (auto enemy : m_enemies) {
     enemy->setHeroPosition(m_hero_pos);

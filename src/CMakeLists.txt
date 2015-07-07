@@ -29,6 +29,7 @@ add_executable(lux
   local/Hero.cc
   local/Particles.cc
   local/Resources.cc
+  local/Scenario.cc
   local/Sensor.cc
   local/Ship.cc
   local/Shoot.cc

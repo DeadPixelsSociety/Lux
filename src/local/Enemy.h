@@ -36,7 +36,7 @@ public:
   static constexpr float ENEMY_SCALE_X = ENEMY_WIDTH / 256.0f;
   static constexpr float ENEMY_SCALE_Y = ENEMY_HEIGHT / 256.0f;
 
-  Enemy(const sf::Vector2f& pos, const sf::Vector2f& vel, float health, EventManager& events, ResourceManager &resources);
+  Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, EventManager& events, ResourceManager &resources);
 
   virtual void update(float dt) override;
 
@@ -77,6 +77,9 @@ public:
   EnemyManager& operator=(EnemyManager&&) = delete;
 
   ~EnemyManager();
+
+
+  void addEnemy(ShipClass ship, const sf::Vector2f& position, const sf::Vector2f& velocity);
 
   EventStatus onLocationEvent(EventType type, Event *event);
 

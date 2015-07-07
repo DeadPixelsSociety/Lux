@@ -34,6 +34,7 @@
 #include "local/Particles.h"
 #include "local/Random.h"
 #include "local/Resources.h"
+#include "local/Scenario.h"
 #include "local/Sensor.h"
 #include "local/Stars.h"
 #include "path.h"
@@ -68,6 +69,8 @@ int main() {
   group.addEntity(bullets);
   group.addEntity(particles);
 
+  Scenario scenario(enemies);
+
   sf::Clock clock;
   while (window.isOpen()) {
     sf::Event event;
@@ -83,6 +86,7 @@ int main() {
     sf::Time elapsed = clock.restart();
     float dt = elapsed.asSeconds();
     group.update(dt);
+    scenario.update(dt);
 
     // render
 
