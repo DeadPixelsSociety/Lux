@@ -35,12 +35,29 @@ Enemy::Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, f
 , m_elapsedTime(0.0f)
 , m_texture(nullptr)
 // , m_shoot(new ConeShoot(Origin::ENEMY, sf::Color::Yellow))
-, m_shoot(makeBurstShoot(Origin::ENEMY, sf::Color::Green, 0.5f, 0.1f, 3))
+, m_shoot(nullptr)
 {
   m_texture = resources.getTexture("ship_bootes.png");
   assert(m_texture != nullptr);
-}
 
+  switch (ship) {
+    case ShipClass::ANTLIA:
+      assert(false);
+      break;
+    case ShipClass::BOOTES:
+      m_shoot = makeSimpleShoot(Origin::ENEMY, sf::Color::Green, 0.5f);
+      break;
+    case ShipClass::CYGNUS:
+      m_shoot = makeBurstShoot(Origin::ENEMY, sf::Color::Green, 0.75f, 0.1f, 3);
+      break;
+    case ShipClass::DRACO:
+      m_shoot = makeConeShoot(Origin::ENEMY, sf::Color::Green, 0.75f);
+      break;
+    case ShipClass::ERIDANUS:
+      m_shoot = makeContinuousSimpleShoot(Origin::ENEMY, sf::Color::Green, 0.5f);
+      break;
+  }
+}
 
 void Enemy::update(float dt) {
   assert(isAlive());
@@ -93,7 +110,7 @@ EnemyManager::~EnemyManager() {
 }
 
 void EnemyManager::addEnemy(ShipClass ship, const sf::Vector2f& position, const sf::Vector2f& velocity) {
-  auto enemy = new Enemy(ship, position, velocity, 100.0f, m_events, m_resources);
+  auto enemy = new Enemy(ship, position, velocity, 15.0f, m_events, m_resources);
   m_enemies.push_back(enemy);
 }
 
@@ -112,20 +129,6 @@ EventStatus EnemyManager::onLocationEvent(EventType type, Event *event) {
 
 
 void EnemyManager::update(float dt) {
-//   m_elapsedTime += dt;
-
-//   std::uniform_real_distribution<float> dist(Enemy::ENEMY_WIDTH, WINDOW_W - Enemy::ENEMY_WIDTH);
-
-//   if (m_elapsedTime >= GENERATION_PERIOD) {
-//     sf::Vector2f pos(dist(m_engine), -Enemy::ENEMY_HEIGHT);
-//     sf::Vector2f velocity(0.0f, WINDOW_H / 3.0f);
-//
-//     auto enemy = new Enemy(pos, velocity, 100.0f, m_events, m_resources);
-//     m_enemies.push_back(enemy);
-//
-//     m_elapsedTime = 0.0f;
-//   }
-
   for (auto enemy : m_enemies) {
     enemy->setHeroPosition(m_hero_pos);
     enemy->update(dt);

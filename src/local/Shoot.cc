@@ -25,6 +25,14 @@ Shoot::~Shoot() {
 
 }
 
+std::unique_ptr<Shoot> makeSimpleShoot(Origin origin, sf::Color color, float delay) {
+  return makeUnique<DelayedShoot>(
+    makeUnique<CountedShoot>(
+      makeUnique<SingleShoot>(origin, color)
+      , 1)
+    , delay);
+}
+
 std::unique_ptr<Shoot> makeBurstShoot(Origin origin, sf::Color color, float delay, float period, int count) {
   return makeUnique<DelayedShoot>(
     makeUnique<PeriodicShoot>(
@@ -33,6 +41,20 @@ std::unique_ptr<Shoot> makeBurstShoot(Origin origin, sf::Color color, float dela
         , count)
       , period)
     , delay);
+}
+
+std::unique_ptr<Shoot> makeConeShoot(Origin origin, sf::Color color, float delay) {
+  return makeUnique<DelayedShoot>(
+    makeUnique<CountedShoot>(
+      makeUnique<ConeShoot>(origin, color)
+      , 1)
+    , delay);
+}
+
+std::unique_ptr<Shoot> makeContinuousSimpleShoot(Origin origin, sf::Color color, float period) {
+  return makeUnique<PeriodicShoot>(
+    makeUnique<SingleShoot>(origin, color)
+    , period);
 }
 
 
@@ -71,11 +93,11 @@ void ConeShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, Even
 
 
 void PeriodicShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
-  m_elapsedTime += dt;
+  m_elapsedTime -= dt;
 
-  if (m_elapsedTime >= m_period) {
+  if (m_elapsedTime <= 0) {
     getDecorated().shoot(dt, pos, dir, events);
-    m_elapsedTime -= m_period;
+    m_elapsedTime += m_period;
   }
 }
 

@@ -16,6 +16,9 @@ enum class Origin {
 enum class ShipClass {
   ANTLIA,
   BOOTES,
+  CYGNUS,
+  DRACO,
+  ERIDANUS,
 };
 
 struct LocationEvent : public Event {

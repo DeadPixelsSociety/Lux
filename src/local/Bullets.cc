@@ -26,7 +26,7 @@ void Bullets::addBullet(Origin origin, const sf::Vector2f& pos, const sf::Vector
   m_bullets.push_back(bullet);
 }
 
-static constexpr float EXTRA = 10.0f;
+static constexpr float EXTRA = 100.0f;
 
 void Bullets::update(float dt) {
   sf::FloatRect screen(-EXTRA, -EXTRA, WINDOW_W + 2 * EXTRA, WINDOW_H + 2 * EXTRA);
@@ -68,7 +68,7 @@ EventStatus Bullets::onLocationEvent(EventType type, Event *event) {
     }
 
     if (isTargetReached(loc->pos, bullet.pos)) {
-      loc->ship->impact(60.0f);
+      loc->ship->impact(10.0f);
       bullet.active = false;
     }
   }

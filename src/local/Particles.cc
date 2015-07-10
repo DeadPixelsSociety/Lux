@@ -56,6 +56,9 @@ std::tuple<sf::Color, sf::Color> colorFromShipClass(ShipClass ship) {
     case ShipClass::ANTLIA:
       return std::make_tuple(sf::Color(0x8C, 0xED, 0xDC), sf::Color(0x5D, 0x7F, 0x83));
     case ShipClass::BOOTES:
+    case ShipClass::CYGNUS:
+    case ShipClass::DRACO:
+    case ShipClass::ERIDANUS:
       return std::make_tuple(sf::Color(0x7C, 0xBE, 0x41), sf::Color(0xB6, 0x0B, 0x0B));
   }
 

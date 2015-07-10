@@ -31,9 +31,6 @@ public:
 
   void update(float dt);
 
-private:
-  EnemyManager& m_manager;
-
   struct WaveShip {
     ShipClass ship;
     sf::Vector2f position;
@@ -45,6 +42,10 @@ private:
     float duration;
     std::vector<WaveShip> ships;
   };
+
+
+private:
+  EnemyManager& m_manager;
 
   std::vector<Wave> m_waves;
 

@@ -34,7 +34,11 @@ public:
   virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) = 0;
 };
 
+std::unique_ptr<Shoot> makeSimpleShoot(Origin origin, sf::Color color, float delay);
 std::unique_ptr<Shoot> makeBurstShoot(Origin origin, sf::Color color, float delay, float period, int count);
+std::unique_ptr<Shoot> makeConeShoot(Origin origin, sf::Color color, float delay);
+std::unique_ptr<Shoot> makeContinuousSimpleShoot(Origin origin, sf::Color color, float period);
+
 
 class ConcreteShoot : public Shoot {
 public:
