@@ -19,7 +19,6 @@
 #include "Hero.h"
 
 #include "Config.h"
-#include "Game.h"
 
 static constexpr float SHOOT_PERIOD = 0.4f;
 static constexpr float SHOOT_VELOCITY = 400.0f;
@@ -61,6 +60,8 @@ static constexpr float HEALTH_HEIGHT = 5.0f;
 static constexpr float HEALTH_THICKNESS = 1.0f;
 static constexpr float HEALTH_PADDING = 40.0f;
 
+static constexpr float SCORE_PADDING_WIDTH = WINDOW_W - 150.0f;
+
 void Hero::render(sf::RenderWindow& window) {
   sf::Sprite sprite;
   sprite.setTexture(*m_texture);
@@ -83,4 +84,50 @@ void Hero::render(sf::RenderWindow& window) {
   healthRectangle.setPosition(WINDOW_W / 2 - HEALTH_WIDTH / 2, WINDOW_H - HEALTH_PADDING);
   healthRectangle.setFillColor(sf::Color::Red);
   window.draw(healthRectangle);
+
+  sf::Text text;
+  text.setFont(*m_font);
+  text.setString("Score : " + std::to_string(m_score));
+  text.setCharacterSize(24);
+  text.setColor(sf::Color::White);
+
+  // FixMe: fix the vertical align
+  text.setOrigin(text.getLocalBounds().width / 2.0f, text.getLocalBounds().height / 2.0f);
+  text.setPosition(SCORE_PADDING_WIDTH, WINDOW_H - HEALTH_PADDING - text.getLocalBounds().height - 5.0f);
+
+  window.draw(text);
+}
+
+EventStatus Hero::onDeadEvent(EventType type, Event *event) {
+  auto dead = static_cast<DeadEvent *>(event);
+
+  if (dead->origin != Origin::ENEMY) {
+    return EventStatus::KEEP;
+  }
+
+  switch (dead->ship) {
+    case ShipClass::ANTLIA:
+    break;
+
+    case ShipClass::BOOTES:
+      m_score += 10;
+    break;
+
+    case ShipClass::CYGNUS:
+      m_score += 50;
+    break;
+
+    case ShipClass::DRACO:
+      m_score += 200;
+    break;
+
+    case ShipClass::ERIDANUS:
+      m_score += 500;
+    break;
+
+    default:
+      assert(false);
+  }
+
+  return EventStatus::KEEP;
 }

@@ -23,6 +23,7 @@
 
 #include "Entity.h"
 #include "Event.h"
+#include "Game.h"
 #include "Resources.h"
 #include "Sensor.h"
 #include "Ship.h"
@@ -42,14 +43,23 @@ public:
   , m_events(events)
   , m_elapsedTime(0.0f)
   , m_texture(nullptr)
+  , m_score(0)
+  , m_font(nullptr)
   {
     m_texture = resources.getTexture("ship_antlia.png");
     assert(m_texture != nullptr);
+
+    m_font = resources.getFont("jupiter.ttf");
+    assert(m_font != nullptr);
+    
+    m_events.registerHandler<DeadEvent>(&Hero::onDeadEvent, this);
   }
 
   virtual void update(float dt) override;
 
   virtual void render(sf::RenderWindow& window) override;
+
+  EventStatus onDeadEvent(EventType type, Event *event);
 
 private:
   sf::Vector2f m_pos;
@@ -57,6 +67,8 @@ private:
   EventManager& m_events;
   float m_elapsedTime;
   sf::Texture *m_texture;
+  unsigned long long int m_score;
+  sf::Font *m_font;
 };
 
 
