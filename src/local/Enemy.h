@@ -33,8 +33,8 @@ class Enemy : public Ship {
 public:
   static constexpr float ENEMY_WIDTH = 60.0f;
   static constexpr float ENEMY_HEIGHT = 60.0f;
-  static constexpr float ENEMY_SCALE_X = ENEMY_WIDTH / 256.0f;
-  static constexpr float ENEMY_SCALE_Y = ENEMY_HEIGHT / 256.0f;
+  static constexpr float ENEMY_SCALE_X = ENEMY_WIDTH / 64.0f;
+  static constexpr float ENEMY_SCALE_Y = ENEMY_HEIGHT / 64.0f;
 
   Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, EventManager& events, ResourceManager &resources);
 

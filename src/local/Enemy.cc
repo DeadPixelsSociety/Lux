@@ -37,26 +37,29 @@ Enemy::Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, f
 // , m_shoot(new ConeShoot(Origin::ENEMY, sf::Color::Yellow))
 , m_shoot(nullptr)
 {
-  m_texture = resources.getTexture("ship_bootes.png");
-  assert(m_texture != nullptr);
-
   switch (ship) {
     case ShipClass::ANTLIA:
       assert(false);
       break;
     case ShipClass::BOOTES:
+      m_texture = resources.getTexture("ship_bootes.png");
       m_shoot = makeSimpleShoot(Origin::ENEMY, sf::Color::Green, 0.5f);
       break;
     case ShipClass::CYGNUS:
+      m_texture = resources.getTexture("ship_cygnus.png");
       m_shoot = makeBurstShoot(Origin::ENEMY, sf::Color::Green, 0.75f, 0.1f, 3);
       break;
     case ShipClass::DRACO:
+      m_texture = resources.getTexture("ship_draco.png");
       m_shoot = makeConeShoot(Origin::ENEMY, sf::Color::Green, 0.75f);
       break;
     case ShipClass::ERIDANUS:
+      m_texture = resources.getTexture("ship_eridanus.png");
       m_shoot = makeContinuousSimpleShoot(Origin::ENEMY, sf::Color::Green, 0.5f);
       break;
   }
+
+  assert(m_texture != nullptr);
 }
 
 void Enemy::update(float dt) {
@@ -96,7 +99,7 @@ void Enemy::update(float dt) {
 void Enemy::render(sf::RenderWindow& window) {
   sf::Sprite sprite;
   sprite.setTexture(*m_texture);
-  sprite.setOrigin(128.0f, 128.0f); // Half size of texture
+  sprite.setOrigin(32.0f, 32.0f); // Half size of texture
   sprite.setScale(ENEMY_SCALE_X, ENEMY_SCALE_Y);
   sprite.setPosition(m_pos);
   sprite.setRotation(-90.0f);
