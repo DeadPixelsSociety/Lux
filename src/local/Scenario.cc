@@ -103,6 +103,15 @@ static Scenario::Wave wave15 {
   }
 };
 
+// cross
+static Scenario::Wave wave20 {
+  4.0f,
+  {
+    { ShipClass::DRACO, { 0.1f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
+    { ShipClass::DRACO, { 0.9f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { -WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
+  }
+};
+
 // double stairs of death
 static Scenario::Wave wave32 {
   4.0f,
@@ -168,6 +177,8 @@ Scenario::Scenario(EnemyManager& manager, EventManager& events, ResourceManager 
   m_waves.push_back(wave13);
   m_waves.push_back(wave14);
   m_waves.push_back(wave15);
+
+  m_waves.push_back(wave20);
 
   m_waves.push_back(wave32);
   m_waves.push_back(wave33);
