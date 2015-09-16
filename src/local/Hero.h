@@ -53,6 +53,7 @@ public:
     assert(m_font != nullptr);
     
     m_events.registerHandler<DeadEvent>(&Hero::onDeadEvent, this);
+    m_events.registerHandler<RestartGameEvent>(&Hero::onRestartGameEvent, this);
   }
 
   virtual void update(float dt) override;
@@ -60,6 +61,7 @@ public:
   virtual void render(sf::RenderWindow& window) override;
 
   EventStatus onDeadEvent(EventType type, Event *event);
+  EventStatus onRestartGameEvent(EventType type, Event *event);
 
 private:
   sf::Vector2f m_pos;

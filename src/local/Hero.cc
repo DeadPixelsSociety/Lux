@@ -32,6 +32,10 @@ void Hero::update(float dt) {
   loc.ship = this;
   m_events.triggerEvent(&loc);
 
+  ScoreEvent scoreEvent;
+  scoreEvent.score = m_score;
+  m_events.triggerEvent(&scoreEvent);
+
   if (!isAlive()) {
     DeadEvent dead;
     dead.origin = Origin::HERO;
@@ -129,5 +133,11 @@ EventStatus Hero::onDeadEvent(EventType type, Event *event) {
       assert(false);
   }
 
+  return EventStatus::KEEP;
+}
+
+EventStatus Hero::onRestartGameEvent(EventType type, Event *event) {
+  m_score = 0;
+  restore();
   return EventStatus::KEEP;
 }

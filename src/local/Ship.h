@@ -41,6 +41,10 @@ public:
     return m_structurePoint <= 0.0f;
   }
 
+  void restore() {
+    m_structurePoint = m_maxStructurePoint;
+  }
+
   void impact(float damage);
 
 private:

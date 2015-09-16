@@ -143,13 +143,18 @@ static Scenario::Wave wave33 {
 // };
 
 
-Scenario::Scenario(EnemyManager& manager)
+Scenario::Scenario(EnemyManager& manager, EventManager& events, ResourceManager &resources)
 : m_manager(manager)
+, m_events(events)
 , m_elapsedTime(0)
 , m_currentWave(0)
 , m_currentShip(0)
+, m_font(nullptr)
 {
+  m_events.registerHandler<ScoreEvent>(&Scenario::onScoreEvent, this);
+
   m_waves.push_back(wave0);
+
   m_waves.push_back(wave01);
   m_waves.push_back(wave01);
   m_waves.push_back(wave02);
@@ -166,12 +171,28 @@ Scenario::Scenario(EnemyManager& manager)
 
   m_waves.push_back(wave32);
   m_waves.push_back(wave33);
+
+  m_waves.push_back(wave0);
+
+  m_font = resources.getFont("jupiter.ttf");
+  assert(m_font != nullptr);
 }
+
+static constexpr const float MENU_TIME = 15.0f;
 
 void Scenario::update(float dt) {
   m_elapsedTime += dt;
 
+  // End of game
   if (m_currentWave == m_waves.size()) {
+    if (m_elapsedTime > MENU_TIME)
+    {
+      m_elapsedTime = 0.0f;
+      m_currentWave = 0;
+      m_currentShip = 0;
+      RestartGameEvent event;
+      m_events.triggerEvent(&event);
+    }
     return;
   }
 
@@ -193,5 +214,22 @@ void Scenario::update(float dt) {
       break;
     }
   }
+}
 
+void Scenario::render(sf::RenderWindow& window) {
+  if (m_currentWave != m_waves.size()) {
+    return;
+  }
+
+  sf::Text text;
+  text.setFont(*m_font);
+  text.setString("Bravo ! Vous avez fini le jeu.\nVotre score est de : " + std::to_string(m_currentScore) + "\nLa nouvelle partie commence dans : " + std::to_string(std::lround(MENU_TIME - m_elapsedTime)));
+  text.setCharacterSize(30);
+  text.setColor(sf::Color::White);
+
+  sf::FloatRect textRect = text.getLocalBounds();
+  text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+  text.setPosition(WINDOW_W / 2.0f, WINDOW_H / 2.0f);
+
+  window.draw(text);
 }

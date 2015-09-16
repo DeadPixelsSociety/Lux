@@ -61,6 +61,8 @@ int main() {
   Stars stars2(engine, 75, 1.25f);
   Stars stars3(engine,  20, 1.0f, true);
 
+  Scenario scenario(enemies, events, resources);
+
   Group group;
   group.addEntity(sensor).addEntity(enemies).addEntity(hero);
   group.addEntity(stars1);
@@ -68,8 +70,7 @@ int main() {
   group.addEntity(stars3);
   group.addEntity(bullets);
   group.addEntity(particles);
-
-  Scenario scenario(enemies);
+  group.addEntity(scenario);
 
   sf::Clock clock;
   while (window.isOpen()) {

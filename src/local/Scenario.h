@@ -22,14 +22,24 @@
 #include <vector>
 
 #include "Enemy.h"
+#include "Entity.h"
 #include "Game.h"
 #include "Shoot.h"
 
-class Scenario {
+class Scenario : public Entity {
 public:
-  Scenario(EnemyManager& manager);
+  Scenario(EnemyManager& manager, EventManager& events, ResourceManager &resources);
 
-  void update(float dt);
+  virtual void update(float dt) override;
+  virtual void render(sf::RenderWindow& window) override;
+
+  EventStatus onScoreEvent(EventType type, Event *event) {
+    auto scoreEvent = static_cast<ScoreEvent *>(event);
+
+    m_currentScore = scoreEvent->score;
+
+    return EventStatus::KEEP;
+  }
 
   struct WaveShip {
     ShipClass ship;
@@ -46,12 +56,16 @@ public:
 
 private:
   EnemyManager& m_manager;
+  EventManager& m_events;
 
   std::vector<Wave> m_waves;
 
   float m_elapsedTime;
   std::size_t m_currentWave;
   std::size_t m_currentShip;
+  sf::Font *m_font;
+
+  unsigned int m_currentScore;
 
 };
 

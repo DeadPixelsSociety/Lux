@@ -43,4 +43,13 @@ struct DeadEvent : public Event {
   sf::Vector2f pos;
 };
 
+struct ScoreEvent : public Event {
+  static const EventType type = "ScoreEvent"_type;
+  unsigned int score;
+};
+
+struct RestartGameEvent : public Event {
+  static const EventType type = "RestartGameEvent"_type;
+};
+
 #endif // LOCAL_GAME_H
