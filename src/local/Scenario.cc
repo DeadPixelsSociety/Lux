@@ -1,7 +1,5 @@
 #include "Scenario.h"
 
-#include <cstdio>
-
 #include "Config.h"
 
 static Scenario::Wave wave0 {
@@ -150,8 +148,10 @@ Scenario::Scenario(EnemyManager& manager, EventManager& events, ResourceManager 
 , m_currentWave(0)
 , m_currentShip(0)
 , m_font(nullptr)
+, m_win(true)
 {
   m_events.registerHandler<ScoreEvent>(&Scenario::onScoreEvent, this);
+  m_events.registerHandler<DeadEvent>(&Scenario::onDeadEvent, this);
 
   m_waves.push_back(wave0);
 
@@ -190,6 +190,7 @@ void Scenario::update(float dt) {
       m_elapsedTime = 0.0f;
       m_currentWave = 0;
       m_currentShip = 0;
+      m_win = true;
       RestartGameEvent event;
       m_events.triggerEvent(&event);
     }
@@ -223,7 +224,14 @@ void Scenario::render(sf::RenderWindow& window) {
 
   sf::Text text;
   text.setFont(*m_font);
-  text.setString("Bravo ! Vous avez fini le jeu.\nVotre score est de : " + std::to_string(m_currentScore) + "\nLa nouvelle partie commence dans : " + std::to_string(std::lround(MENU_TIME - m_elapsedTime)));
+  std::string message;
+  if (m_win) {
+    message = "Bravo ! Vous avez fini le jeu.\n";
+  }
+  else {
+    message = "Dommage ! Vous avez perdu le jeu.\n";
+  }
+  text.setString(message + "Votre score est de : " + std::to_string(m_currentScore) + "\nLa nouvelle partie commence dans : " + std::to_string(std::lround(MENU_TIME - m_elapsedTime)));
   text.setCharacterSize(30);
   text.setColor(sf::Color::White);
 
@@ -232,4 +240,18 @@ void Scenario::render(sf::RenderWindow& window) {
   text.setPosition(WINDOW_W / 2.0f, WINDOW_H / 2.0f);
 
   window.draw(text);
+}
+
+EventStatus Scenario::onDeadEvent(EventType type, Event *event) {
+  auto dead = static_cast<DeadEvent *>(event);
+
+  if (dead->origin != Origin::HERO) {
+    return EventStatus::KEEP;
+  }
+
+  m_currentWave = m_waves.size() - 1;
+  m_elapsedTime = 0.0f;
+  m_win = false;
+
+  return EventStatus::KEEP;
 }

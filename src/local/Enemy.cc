@@ -76,12 +76,13 @@ void Enemy::update(float dt) {
   loc.ship = this;
   m_events.triggerEvent(&loc);
 
-  if (!isAlive()) {
+  if (isDamaged()) {
     DeadEvent dead;
     dead.origin = Origin::ENEMY;
     dead.ship = ShipClass::BOOTES;
     dead.pos = m_pos;
     m_events.triggerEvent(&dead);
+    kill();
     return;
   }
 

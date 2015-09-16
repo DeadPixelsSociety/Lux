@@ -24,6 +24,10 @@ static constexpr float SHOOT_PERIOD = 0.4f;
 static constexpr float SHOOT_VELOCITY = 400.0f;
 
 void Hero::update(float dt) {
+  if (!m_inGame) {
+    return;
+  }
+
   m_pos = m_sensor.getCenter();
 
   LocationEvent loc;
@@ -36,12 +40,13 @@ void Hero::update(float dt) {
   scoreEvent.score = m_score;
   m_events.triggerEvent(&scoreEvent);
 
-  if (!isAlive()) {
+  if (isDamaged()) {
     DeadEvent dead;
     dead.origin = Origin::HERO;
     dead.ship = ShipClass::ANTLIA;
     dead.pos = m_pos;
     m_events.triggerEvent(&dead);
+    m_inGame = false;
     return;
   }
 
@@ -67,6 +72,10 @@ static constexpr float HEALTH_PADDING = 40.0f;
 static constexpr float SCORE_PADDING_WIDTH = WINDOW_W - 150.0f;
 
 void Hero::render(sf::RenderWindow& window) {
+  if (isDamaged()) {
+    return;
+  }
+
   sf::Sprite sprite;
   sprite.setTexture(*m_texture);
   sprite.setOrigin(128.0f, 128.0f); // Half size of texture
@@ -137,6 +146,7 @@ EventStatus Hero::onDeadEvent(EventType type, Event *event) {
 }
 
 EventStatus Hero::onRestartGameEvent(EventType type, Event *event) {
+  m_inGame = true;
   m_score = 0;
   restore();
   return EventStatus::KEEP;

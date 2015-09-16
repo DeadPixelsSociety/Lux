@@ -41,6 +41,8 @@ public:
     return EventStatus::KEEP;
   }
 
+  EventStatus onDeadEvent(EventType type, Event *event);
+
   struct WaveShip {
     ShipClass ship;
     sf::Vector2f position;
@@ -66,7 +68,7 @@ private:
   sf::Font *m_font;
 
   unsigned int m_currentScore;
-
+  bool m_win;
 };
 
 

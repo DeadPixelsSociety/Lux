@@ -27,8 +27,4 @@ Ship::Ship(float maxStructurePoint)
 
 void Ship::impact(float damage) {
   m_structurePoint -= damage;
-
-  if (isDamaged()) {
-    kill();
-  }
 }

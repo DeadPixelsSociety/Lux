@@ -45,6 +45,7 @@ public:
   , m_texture(nullptr)
   , m_score(0)
   , m_font(nullptr)
+  , m_inGame(true)
   {
     m_texture = resources.getTexture("ship_antlia.png");
     assert(m_texture != nullptr);
@@ -71,6 +72,7 @@ private:
   sf::Texture *m_texture;
   unsigned long long int m_score;
   sf::Font *m_font;
+  bool m_inGame;
 };
 
 
