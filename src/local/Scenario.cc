@@ -158,6 +158,7 @@ Scenario::Scenario(EnemyManager& manager, EventManager& events, ResourceManager 
 , m_currentShip(0)
 , m_font(nullptr)
 , m_win(true)
+, m_highScore({0, 0, 0, 0, 0})
 {
   m_events.registerHandler<ScoreEvent>(&Scenario::onScoreEvent, this);
   m_events.registerHandler<DeadEvent>(&Scenario::onDeadEvent, this);
@@ -246,6 +247,12 @@ void Scenario::render(sf::RenderWindow& window) {
   text.setCharacterSize(30);
   text.setColor(sf::Color::White);
 
+  // Display the high score
+  text.setString(text.getString() + "\n\nMeilleur score :");
+  for (unsigned int i = 0; i < m_highScore.size(); ++i) {
+    text.setString(text.getString() + "\n" + std::to_string(i + 1) + " - " + std::to_string(m_highScore[i]));
+  }
+
   sf::FloatRect textRect = text.getLocalBounds();
   text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
   text.setPosition(WINDOW_W / 2.0f, WINDOW_H / 2.0f);
@@ -260,9 +267,17 @@ EventStatus Scenario::onDeadEvent(EventType type, Event *event) {
     return EventStatus::KEEP;
   }
 
+  // Jump to end
   m_currentWave = m_waves.size() - 1;
   m_elapsedTime = 0.0f;
   m_win = false;
+
+  // Add the new high score
+  m_highScore.push_back(m_currentScore);
+
+  // Remove the lower score
+  std::sort(m_highScore.begin(), m_highScore.end(), std::greater<unsigned int>());
+  m_highScore.erase(m_highScore.end() - 1);
 
   return EventStatus::KEEP;
 }
