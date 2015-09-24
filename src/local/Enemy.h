@@ -36,7 +36,7 @@ public:
   static constexpr float ENEMY_SCALE_X = ENEMY_WIDTH / 64.0f;
   static constexpr float ENEMY_SCALE_Y = ENEMY_HEIGHT / 64.0f;
 
-  Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, EventManager& events, ResourceManager &resources);
+  Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, Engine& engine, EventManager& events, ResourceManager &resources);
 
   virtual void update(float dt) override;
 
@@ -49,6 +49,7 @@ public:
 private:
   sf::Vector2f m_pos;
   sf::Vector2f m_vel;
+  Engine& m_engine;
   EventManager& m_events;
 
   float m_elapsedTime;

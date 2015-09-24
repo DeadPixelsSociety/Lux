@@ -21,6 +21,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/config)
 add_executable(lux
   lux.cc
   local/Assets.cc
+  local/Bonus.cc
   local/Bullets.cc
   local/Enemy.cc
   local/Entity.cc

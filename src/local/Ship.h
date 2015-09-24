@@ -45,6 +45,14 @@ public:
     m_structurePoint = m_maxStructurePoint;
   }
 
+  void restore(const float health) {
+    if (health + m_structurePoint > m_maxStructurePoint) {
+      restore();
+      return;
+    }
+    m_structurePoint += health;
+  }
+
   void impact(float damage);
 
 private:

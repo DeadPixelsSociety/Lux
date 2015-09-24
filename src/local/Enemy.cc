@@ -27,10 +27,13 @@
 
 static constexpr float SHOOT_PERIOD = 1.0f;
 static constexpr float SHOOT_VELOCITY = 400.0f;
+static constexpr float BONUS_FREQUENCY = 0.25f;
 
-Enemy::Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, EventManager& events, ResourceManager &resources)
+Enemy::Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, Engine& engine, EventManager& events, ResourceManager &resources)
 : Ship(health)
-, m_pos(pos), m_vel(vel)
+, m_pos(pos)
+, m_vel(vel)
+, m_engine(engine)
 , m_events(events)
 , m_elapsedTime(0.0f)
 , m_texture(nullptr)
@@ -86,6 +89,15 @@ void Enemy::update(float dt) {
     dead.pos = m_pos;
     m_events.triggerEvent(&dead);
     kill();
+
+    // Generate the bonus
+    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+    if (dist(m_engine) < BONUS_FREQUENCY) {
+      DropBonusEvent event;
+      event.pos = m_pos;
+      m_events.triggerEvent(&event);
+    }
+
     return;
   }
 
@@ -114,7 +126,7 @@ EnemyManager::~EnemyManager() {
 }
 
 void EnemyManager::addEnemy(ShipClass ship, const sf::Vector2f& position, const sf::Vector2f& velocity) {
-  auto enemy = new Enemy(ship, position, velocity, 15.0f, m_events, m_resources);
+  auto enemy = new Enemy(ship, position, velocity, 15.0f, m_engine, m_events, m_resources);
   m_enemies.push_back(enemy);
 }
 

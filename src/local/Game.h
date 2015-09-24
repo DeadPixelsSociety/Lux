@@ -52,4 +52,9 @@ struct RestartGameEvent : public Event {
   static const EventType type = "RestartGameEvent"_type;
 };
 
+struct DropBonusEvent : public Event {
+  static const EventType type = "DropBonusEvent"_type;
+  sf::Vector2f pos;
+};
+
 #endif // LOCAL_GAME_H

@@ -25,6 +25,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "local/Bonus.h"
 #include "local/Bullets.h"
 #include "local/Config.h"
 #include "local/Enemy.h"
@@ -50,6 +51,7 @@ int main() {
   resources.addSearchDir(GAME_DATADIR);
 
   Bullets bullets(events);
+  BonusManager bonus(events, resources);
 
   Sensor sensor(window);
   EnemyManager enemies(engine, events, resources);
@@ -71,6 +73,7 @@ int main() {
   group.addEntity(bullets);
   group.addEntity(particles);
   group.addEntity(scenario);
+  group.addEntity(bonus);
 
   sf::Clock clock;
   while (window.isOpen()) {
