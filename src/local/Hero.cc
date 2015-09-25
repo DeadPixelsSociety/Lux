@@ -150,5 +150,8 @@ EventStatus Hero::onRestartGameEvent(EventType type, Event *event) {
   m_inGame = true;
   m_score = 0;
   restore();
+  m_weaponLevel = 1;
+  m_shoot = makeSimplePlayerShoot(Origin::HERO, sf::Color::Blue, m_weaponLevel, 0.1f, 0.5f);
+
   return EventStatus::KEEP;
 }
