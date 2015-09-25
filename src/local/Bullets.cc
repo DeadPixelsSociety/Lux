@@ -11,7 +11,9 @@ static constexpr float RADIUS = 5.0f;
 
 Bullets::Bullets(EventManager& events, ResourceManager &manager) 
 : m_bulletBlueTexture(nullptr)
-, m_bulletGreenTexture(nullptr) {
+, m_bulletGreenTexture(nullptr)
+, m_bulletYellowTexture(nullptr)
+, m_bulletPurpleTexture(nullptr) {
   events.registerHandler<LocationEvent>(&Bullets::onLocationEvent, this);
   events.registerHandler<ShootEvent>(&Bullets::onShootEvent, this);
 
@@ -21,19 +23,38 @@ Bullets::Bullets(EventManager& events, ResourceManager &manager)
 
   m_bulletGreenTexture = manager.getTexture("bullet_green.png");
   assert(m_bulletGreenTexture != nullptr);
+
+  m_bulletYellowTexture = manager.getTexture("bullet_yellow.png");
+  assert(m_bulletYellowTexture != nullptr);
+
+  m_bulletPurpleTexture = manager.getTexture("bullet_purple.png");
+  assert(m_bulletPurpleTexture != nullptr);
 }
 
 
-void Bullets::addBullet(Origin origin, const sf::Vector2f& pos, const sf::Vector2f& velocity) {
+void Bullets::addBullet(Origin origin, ShipClass shipClass, const sf::Vector2f& pos, const sf::Vector2f& velocity) {
   Bullet bullet;
   bullet.origin = origin;
   bullet.pos = pos;
   bullet.velocity = velocity;
-  if (origin == Origin::HERO) {
-    bullet.texture = m_bulletBlueTexture;
-  }
-  else {
-    bullet.texture = m_bulletGreenTexture;
+
+  switch (shipClass) {
+    case ShipClass::ANTLIA:
+      bullet.texture = m_bulletBlueTexture;
+      break;
+
+    case ShipClass::BOOTES:
+      bullet.texture = m_bulletGreenTexture;
+      break;
+
+    case ShipClass::CYGNUS:
+    case ShipClass::DRACO:
+      bullet.texture = m_bulletPurpleTexture;
+      break;
+
+    case ShipClass::ERIDANUS:
+      bullet.texture = m_bulletYellowTexture;
+      break;
   }
   bullet.active = true;
 
@@ -93,7 +114,7 @@ EventStatus Bullets::onLocationEvent(EventType type, Event *event) {
 EventStatus Bullets::onShootEvent(EventType type, Event *event) {
   auto shoot = static_cast<ShootEvent *>(event);
 
-  addBullet(shoot->origin, shoot->pos, shoot->velocity);
+  addBullet(shoot->origin, shoot->shipClass, shoot->pos, shoot->velocity);
 
   return EventStatus::KEEP;
 }

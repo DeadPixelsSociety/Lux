@@ -9,7 +9,7 @@ class Bullets : public Entity {
 public:
   Bullets(EventManager& events, ResourceManager &manager);
 
-  void addBullet(Origin origin, const sf::Vector2f& pos, const sf::Vector2f& velocity);
+  void addBullet(Origin origin, ShipClass shipClass, const sf::Vector2f& pos, const sf::Vector2f& velocity);
 
   virtual void update(float dt) override;
   virtual void render(sf::RenderWindow& window) override;
@@ -30,6 +30,8 @@ private:
   std::vector<Bullet> m_bullets;
   sf::Texture *m_bulletBlueTexture;
   sf::Texture *m_bulletGreenTexture;
+  sf::Texture *m_bulletYellowTexture;
+  sf::Texture *m_bulletPurpleTexture;
 };
 
 
