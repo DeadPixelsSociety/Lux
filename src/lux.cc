@@ -53,7 +53,7 @@ int main() {
   Bullets bullets(events, resources);
   BonusManager bonus(events, resources, engine);
 
-  Sensor sensor(window);
+  Sensor sensor;
   EnemyManager enemies(engine, events, resources);
   Hero hero(sensor, events, resources);
 
@@ -90,7 +90,6 @@ int main() {
     sf::Time elapsed = clock.restart();
     float dt = elapsed.asSeconds();
     group.update(dt);
-    scenario.update(dt);
 
     // render
 

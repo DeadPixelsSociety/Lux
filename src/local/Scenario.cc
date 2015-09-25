@@ -254,7 +254,7 @@ void Scenario::render(sf::RenderWindow& window) {
   else {
     message = "Dommage ! Vous avez perdu le jeu.\n";
   }
-  text.setString(message + "Votre score est de : " + std::to_string(m_currentScore) + "\nLa nouvelle partie commence dans : " + std::to_string(std::lround(MENU_TIME - m_elapsedTime)));
+  text.setString(message + "Votre score est de : " + std::to_string(m_currentScore) + "\nLa nouvelle partie commence dans : " + std::to_string(static_cast<int>(MENU_TIME - m_elapsedTime)));
   text.setCharacterSize(30);
   text.setColor(sf::Color::White);
 
