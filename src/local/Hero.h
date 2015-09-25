@@ -27,6 +27,7 @@
 #include "Resources.h"
 #include "Sensor.h"
 #include "Ship.h"
+#include "Shoot.h"
 
 class Hero : public Ship {
 public:
@@ -46,6 +47,7 @@ public:
   , m_score(0)
   , m_font(nullptr)
   , m_inGame(true)
+  , m_shoot(makeSimplePlayerShoot(Origin::HERO, sf::Color::Blue, 1, 0.1f, 0.5f))
   {
     m_texture = resources.getTexture("ship_antlia.png");
     assert(m_texture != nullptr);
@@ -58,7 +60,6 @@ public:
   }
 
   virtual void update(float dt) override;
-
   virtual void render(sf::RenderWindow& window) override;
 
   EventStatus onDeadEvent(EventType type, Event *event);
@@ -73,6 +74,7 @@ private:
   unsigned long long int m_score;
   sf::Font *m_font;
   bool m_inGame;
+  std::unique_ptr<Shoot> m_shoot;
 };
 
 

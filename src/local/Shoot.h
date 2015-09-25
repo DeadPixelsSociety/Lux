@@ -38,6 +38,7 @@ std::unique_ptr<Shoot> makeSimpleShoot(Origin origin, sf::Color color, float del
 std::unique_ptr<Shoot> makeBurstShoot(Origin origin, sf::Color color, float delay, float period, int count);
 std::unique_ptr<Shoot> makeConeShoot(Origin origin, sf::Color color, float delay);
 std::unique_ptr<Shoot> makeContinuousSimpleShoot(Origin origin, sf::Color color, float period);
+std::unique_ptr<Shoot> makeSimplePlayerShoot(Origin origin, sf::Color color, int nbshoot, float shootInterval, float inactivePeriod);
 
 
 class ConcreteShoot : public Shoot {
@@ -154,6 +155,33 @@ public:
 
 private:
   int m_count;
+};
+
+class RegularShoot : public ShootDecorator {
+public:
+  RegularShoot(std::unique_ptr<Shoot> decorated, int nbShoot, float shootInterval, float inactivePeriod)
+  : ShootDecorator(std::move(decorated))
+  , m_nbShoot(0)
+  , m_nbShootMax(nbShoot)
+  , m_shootPeriod(nbShoot * shootInterval)
+  , m_shootInterval(shootInterval)
+  , m_inactivePeriod(inactivePeriod)
+  , m_elapsedTime(0.0f)
+  , m_topFront(false)
+  {
+
+  }
+
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) override;
+
+private:
+  int m_nbShoot;
+  int m_nbShootMax;
+  float m_shootPeriod;
+  float m_shootInterval;
+  float m_inactivePeriod;
+  float m_elapsedTime;
+  bool m_topFront;
 };
 
 

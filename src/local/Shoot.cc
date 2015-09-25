@@ -57,6 +57,12 @@ std::unique_ptr<Shoot> makeContinuousSimpleShoot(Origin origin, sf::Color color,
     , period);
 }
 
+std::unique_ptr<Shoot> makeSimplePlayerShoot(Origin origin, sf::Color color, int nbshoot, float shootInterval, float inactivePeriod) {
+  return makeUnique<RegularShoot>(
+    makeUnique<SingleShoot>(origin, color)
+    , nbshoot, shootInterval, inactivePeriod);
+}
+
 
 void SingleShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
   ShootEvent shoot;
@@ -115,6 +121,28 @@ void CountedShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, E
   if (m_count > 0) {
     getDecorated().shoot(dt, pos, dir, events);
     m_count--;
+  }
+}
+
+
+void RegularShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
+  m_elapsedTime += dt;
+
+  // Update state of shoot
+  if (m_topFront && m_elapsedTime >= m_shootPeriod) {
+    m_elapsedTime -= m_shootPeriod;
+    m_topFront = false;
+  }
+  else if (!m_topFront && m_elapsedTime >= m_inactivePeriod) {
+    m_elapsedTime -= m_inactivePeriod;
+    m_topFront = true;
+    m_nbShoot = 0;
+  }
+  
+  // Launch the shoot if neede
+  if (m_topFront && m_elapsedTime >= (m_shootInterval * m_nbShoot)) {
+    m_nbShoot++;
+    getDecorated().shoot(dt, pos, dir, events);
   }
 }
 
