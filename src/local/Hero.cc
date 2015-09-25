@@ -137,6 +137,15 @@ EventStatus Hero::onDeadEvent(EventType type, Event *event) {
   return EventStatus::KEEP;
 }
 
+void Hero::upgradeWeapon() {
+  if (m_weaponLevel > 5) {
+    m_score += 100;
+  }
+  else {
+    m_shoot = makeSimplePlayerShoot(Origin::HERO, sf::Color::Blue, ++m_weaponLevel, 0.1f, 0.5f);
+  }
+}
+
 EventStatus Hero::onRestartGameEvent(EventType type, Event *event) {
   m_inGame = true;
   m_score = 0;

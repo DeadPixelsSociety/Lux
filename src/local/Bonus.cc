@@ -23,6 +23,7 @@
 #include "Bonus.h"
 #include "Config.h"
 #include "Game.h"
+#include "Hero.h"
 
 BonusManager::BonusManager(EventManager& events, ResourceManager &resources, Engine &engine)
 : m_engine(engine)
@@ -66,7 +67,7 @@ void BonusManager::update(float dt) {
 
 static constexpr float BONUS_SIZE = 32.0f;
 static constexpr float RATIO_LIFE_BONUS = BONUS_SIZE / 148.0f;
-static constexpr float RATIO_WEAPON_BONUS = BONUS_SIZE / 25.0f;
+static constexpr float RATIO_WEAPON_BONUS = BONUS_SIZE / 26.0f;
 
 void BonusManager::render(sf::RenderWindow& window) {
   sf::Sprite sprite;
@@ -135,6 +136,8 @@ EventStatus BonusManager::onLocationEvent(EventType type, Event *event) {
           break;
 
         case BonusType::UPGRADE_WEAPON:
+          Hero *hero = static_cast<Hero*>(loc->ship);
+          hero->upgradeWeapon();
           break;
       }
     }
