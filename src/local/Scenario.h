@@ -70,6 +70,7 @@ private:
   unsigned int m_currentScore;
   bool m_win;
   std::vector<unsigned int> m_highScore;
+  bool m_updateScore;
 };
 
 

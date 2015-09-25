@@ -159,6 +159,7 @@ Scenario::Scenario(EnemyManager& manager, EventManager& events, ResourceManager 
 , m_font(nullptr)
 , m_win(true)
 , m_highScore({0, 0, 0, 0, 0})
+, m_updateScore(true)
 {
   m_events.registerHandler<ScoreEvent>(&Scenario::onScoreEvent, this);
   m_events.registerHandler<DeadEvent>(&Scenario::onDeadEvent, this);
@@ -197,6 +198,15 @@ void Scenario::update(float dt) {
 
   // End of game
   if (m_currentWave == m_waves.size()) {
+    if (m_updateScore && m_win) {
+      // Add the new high score
+      m_highScore.push_back(m_currentScore);
+
+      // Remove the lower score
+      std::sort(m_highScore.begin(), m_highScore.end(), std::greater<unsigned int>());
+      m_highScore.erase(m_highScore.end() - 1);
+      m_updateScore = false;
+    }
     if (m_elapsedTime > MENU_TIME)
     {
       m_elapsedTime = 0.0f;
@@ -205,6 +215,7 @@ void Scenario::update(float dt) {
       m_win = true;
       RestartGameEvent event;
       m_events.triggerEvent(&event);
+      m_updateScore = true;
     }
     return;
   }
@@ -271,13 +282,6 @@ EventStatus Scenario::onDeadEvent(EventType type, Event *event) {
   m_currentWave = m_waves.size() - 1;
   m_elapsedTime = 0.0f;
   m_win = false;
-
-  // Add the new high score
-  m_highScore.push_back(m_currentScore);
-
-  // Remove the lower score
-  std::sort(m_highScore.begin(), m_highScore.end(), std::greater<unsigned int>());
-  m_highScore.erase(m_highScore.end() - 1);
 
   return EventStatus::KEEP;
 }
