@@ -31,9 +31,9 @@ struct LocationEvent : public Event {
 struct ShootEvent : public Event {
   static const EventType type = "ShootEvent"_type;
   Origin origin;
+  ShipClass shipClass;
   sf::Vector2f pos;
   sf::Vector2f velocity;
-  sf::Color color;
 };
 
 struct DeadEvent : public Event {

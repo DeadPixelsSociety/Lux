@@ -46,19 +46,19 @@ Enemy::Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, f
       break;
     case ShipClass::BOOTES:
       m_texture = resources.getTexture("ship_bootes.png");
-      m_shoot = makeSimpleShoot(Origin::ENEMY, sf::Color::Green, 0.5f);
+      m_shoot = makeSimpleShoot(Origin::ENEMY, ShipClass::BOOTES, 0.5f);
       break;
     case ShipClass::CYGNUS:
       m_texture = resources.getTexture("ship_cygnus.png");
-      m_shoot = makeBurstShoot(Origin::ENEMY, sf::Color::Green, 0.75f, 0.1f, 3);
+      m_shoot = makeBurstShoot(Origin::ENEMY, ShipClass::CYGNUS, 0.75f, 0.1f, 3);
       break;
     case ShipClass::DRACO:
       m_texture = resources.getTexture("ship_draco.png");
-      m_shoot = makeConeShoot(Origin::ENEMY, sf::Color::Green, 0.75f);
+      m_shoot = makeConeShoot(Origin::ENEMY, ShipClass::DRACO, 0.75f);
       break;
     case ShipClass::ERIDANUS:
       m_texture = resources.getTexture("ship_eridanus.png");
-      m_shoot = makeContinuousSimpleShoot(Origin::ENEMY, sf::Color::Green, 0.5f);
+      m_shoot = makeContinuousSimpleShoot(Origin::ENEMY, ShipClass::ERIDANUS, 0.5f);
       break;
   }
 

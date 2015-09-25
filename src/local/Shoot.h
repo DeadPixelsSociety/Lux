@@ -34,18 +34,18 @@ public:
   virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) = 0;
 };
 
-std::unique_ptr<Shoot> makeSimpleShoot(Origin origin, sf::Color color, float delay);
-std::unique_ptr<Shoot> makeBurstShoot(Origin origin, sf::Color color, float delay, float period, int count);
-std::unique_ptr<Shoot> makeConeShoot(Origin origin, sf::Color color, float delay);
-std::unique_ptr<Shoot> makeContinuousSimpleShoot(Origin origin, sf::Color color, float period);
-std::unique_ptr<Shoot> makeSimplePlayerShoot(Origin origin, sf::Color color, int nbshoot, float shootInterval, float inactivePeriod);
+std::unique_ptr<Shoot> makeSimpleShoot(Origin origin, ShipClass shipClass, float delay);
+std::unique_ptr<Shoot> makeBurstShoot(Origin origin, ShipClass shipClass, float delay, float period, int count);
+std::unique_ptr<Shoot> makeConeShoot(Origin origin, ShipClass shipClass, float delay);
+std::unique_ptr<Shoot> makeContinuousSimpleShoot(Origin origin, ShipClass shipClass, float period);
+std::unique_ptr<Shoot> makeSimplePlayerShoot(Origin origin, ShipClass shipClass, int nbshoot, float shootInterval, float inactivePeriod);
 
 
 class ConcreteShoot : public Shoot {
 public:
-  ConcreteShoot(Origin origin, sf::Color color)
+  ConcreteShoot(Origin origin, ShipClass shipClass)
   : m_origin(origin)
-  , m_color(color)
+  , m_shipClass(shipClass)
   {
 
   }
@@ -54,19 +54,19 @@ public:
     return m_origin;
   }
 
-  const sf::Color& getColor() const {
-    return m_color;
+  const ShipClass& getShipClass() const {
+    return m_shipClass;
   }
 
 private:
   Origin m_origin;
-  sf::Color m_color;
+  ShipClass m_shipClass;
 };
 
 class SingleShoot : public ConcreteShoot {
 public:
-  SingleShoot(Origin origin, sf::Color color)
-  : ConcreteShoot(origin, color)
+  SingleShoot(Origin origin, ShipClass shipClass)
+  : ConcreteShoot(origin, shipClass)
   {
 
   }
@@ -78,8 +78,8 @@ public:
 
 class ConeShoot : public ConcreteShoot {
 public:
-  ConeShoot(Origin origin, sf::Color color)
-  : ConcreteShoot(origin, color)
+  ConeShoot(Origin origin, ShipClass shipClass)
+  : ConcreteShoot(origin, shipClass)
   {
 
   }

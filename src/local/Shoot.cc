@@ -25,41 +25,41 @@ Shoot::~Shoot() {
 
 }
 
-std::unique_ptr<Shoot> makeSimpleShoot(Origin origin, sf::Color color, float delay) {
+std::unique_ptr<Shoot> makeSimpleShoot(Origin origin, ShipClass shipClass, float delay) {
   return makeUnique<DelayedShoot>(
     makeUnique<CountedShoot>(
-      makeUnique<SingleShoot>(origin, color)
+      makeUnique<SingleShoot>(origin, shipClass)
       , 1)
     , delay);
 }
 
-std::unique_ptr<Shoot> makeBurstShoot(Origin origin, sf::Color color, float delay, float period, int count) {
+std::unique_ptr<Shoot> makeBurstShoot(Origin origin, ShipClass shipClass, float delay, float period, int count) {
   return makeUnique<DelayedShoot>(
     makeUnique<PeriodicShoot>(
       makeUnique<CountedShoot>(
-        makeUnique<SingleShoot>(origin, color)
+        makeUnique<SingleShoot>(origin, shipClass)
         , count)
       , period)
     , delay);
 }
 
-std::unique_ptr<Shoot> makeConeShoot(Origin origin, sf::Color color, float delay) {
+std::unique_ptr<Shoot> makeConeShoot(Origin origin, ShipClass shipClass, float delay) {
   return makeUnique<DelayedShoot>(
     makeUnique<CountedShoot>(
-      makeUnique<ConeShoot>(origin, color)
+      makeUnique<ConeShoot>(origin, shipClass)
       , 1)
     , delay);
 }
 
-std::unique_ptr<Shoot> makeContinuousSimpleShoot(Origin origin, sf::Color color, float period) {
+std::unique_ptr<Shoot> makeContinuousSimpleShoot(Origin origin, ShipClass shipClass, float period) {
   return makeUnique<PeriodicShoot>(
-    makeUnique<SingleShoot>(origin, color)
+    makeUnique<SingleShoot>(origin, shipClass)
     , period);
 }
 
-std::unique_ptr<Shoot> makeSimplePlayerShoot(Origin origin, sf::Color color, int nbshoot, float shootInterval, float inactivePeriod) {
+std::unique_ptr<Shoot> makeSimplePlayerShoot(Origin origin, ShipClass shipClass, int nbshoot, float shootInterval, float inactivePeriod) {
   return makeUnique<RegularShoot>(
-    makeUnique<SingleShoot>(origin, color)
+    makeUnique<SingleShoot>(origin, shipClass)
     , nbshoot, shootInterval, inactivePeriod);
 }
 
@@ -69,7 +69,7 @@ void SingleShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, Ev
   shoot.origin = getOrigin();
   shoot.pos = pos;
   shoot.velocity = dir;
-  shoot.color = getColor();
+  shoot.shipClass = getShipClass();
 
   events.triggerEvent(&shoot);
 }
@@ -81,7 +81,7 @@ void ConeShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, Even
   ShootEvent shoot;
   shoot.origin = getOrigin();
   shoot.pos = pos;
-  shoot.color = getColor();
+  shoot.shipClass = getShipClass();
 
   shoot.velocity = dir;
   events.triggerEvent(&shoot);

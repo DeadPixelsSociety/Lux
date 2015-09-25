@@ -48,7 +48,7 @@ public:
   , m_font(nullptr)
   , m_inGame(true)
   , m_weaponLevel(1)
-  , m_shoot(makeSimplePlayerShoot(Origin::HERO, sf::Color::Blue, m_weaponLevel, 0.1f, 0.5f))
+  , m_shoot(makeSimplePlayerShoot(Origin::HERO, ShipClass::ANTLIA, m_weaponLevel, 0.1f, 0.5f))
   {
     m_texture = resources.getTexture("ship_antlia.png");
     assert(m_texture != nullptr);

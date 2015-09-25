@@ -142,7 +142,7 @@ void Hero::upgradeWeapon() {
     m_score += 100;
   }
   else {
-    m_shoot = makeSimplePlayerShoot(Origin::HERO, sf::Color::Blue, ++m_weaponLevel, 0.1f, 0.5f);
+    m_shoot = makeSimplePlayerShoot(Origin::HERO, ShipClass::ANTLIA, ++m_weaponLevel, 0.1f, 0.5f);
   }
 }
 
@@ -151,7 +151,7 @@ EventStatus Hero::onRestartGameEvent(EventType type, Event *event) {
   m_score = 0;
   restore();
   m_weaponLevel = 1;
-  m_shoot = makeSimplePlayerShoot(Origin::HERO, sf::Color::Blue, m_weaponLevel, 0.1f, 0.5f);
+  m_shoot = makeSimplePlayerShoot(Origin::HERO, ShipClass::ANTLIA, m_weaponLevel, 0.1f, 0.5f);
 
   return EventStatus::KEEP;
 }
