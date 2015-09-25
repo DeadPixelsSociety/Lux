@@ -50,7 +50,7 @@ int main() {
   ResourceManager resources;
   resources.addSearchDir(GAME_DATADIR);
 
-  Bullets bullets(events);
+  Bullets bullets(events, resources);
   BonusManager bonus(events, resources, engine);
 
   Sensor sensor(window);

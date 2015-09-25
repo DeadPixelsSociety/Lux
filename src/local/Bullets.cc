@@ -7,20 +7,34 @@
 #include "Enemy.h"
 #include "Hero.h"
 
-static constexpr float RADIUS = 3.0f;
+static constexpr float RADIUS = 5.0f;
 
-Bullets::Bullets(EventManager& events) {
+Bullets::Bullets(EventManager& events, ResourceManager &manager) 
+: m_bulletBlueTexture(nullptr)
+, m_bulletGreenTexture(nullptr) {
   events.registerHandler<LocationEvent>(&Bullets::onLocationEvent, this);
   events.registerHandler<ShootEvent>(&Bullets::onShootEvent, this);
+
+  // Load the texture
+  m_bulletBlueTexture = manager.getTexture("bullet_blue.png");
+  assert(m_bulletBlueTexture != nullptr);
+
+  m_bulletGreenTexture = manager.getTexture("bullet_green.png");
+  assert(m_bulletGreenTexture != nullptr);
 }
 
 
-void Bullets::addBullet(Origin origin, const sf::Vector2f& pos, const sf::Vector2f& velocity, const sf::Color& color) {
+void Bullets::addBullet(Origin origin, const sf::Vector2f& pos, const sf::Vector2f& velocity) {
   Bullet bullet;
   bullet.origin = origin;
   bullet.pos = pos;
   bullet.velocity = velocity;
-  bullet.color = color;
+  if (origin == Origin::HERO) {
+    bullet.texture = m_bulletBlueTexture;
+  }
+  else {
+    bullet.texture = m_bulletGreenTexture;
+  }
   bullet.active = true;
 
   m_bullets.push_back(bullet);
@@ -46,7 +60,7 @@ void Bullets::render(sf::RenderWindow& window) {
   for (Bullet& bullet : m_bullets) {
     sf::CircleShape shape(RADIUS);
     shape.setOrigin(RADIUS, RADIUS);
-    shape.setFillColor(bullet.color);
+    shape.setTexture(bullet.texture);
     shape.setPosition(bullet.pos);
     window.draw(shape);
   }
@@ -79,7 +93,7 @@ EventStatus Bullets::onLocationEvent(EventType type, Event *event) {
 EventStatus Bullets::onShootEvent(EventType type, Event *event) {
   auto shoot = static_cast<ShootEvent *>(event);
 
-  addBullet(shoot->origin, shoot->pos, shoot->velocity, shoot->color);
+  addBullet(shoot->origin, shoot->pos, shoot->velocity);
 
   return EventStatus::KEEP;
 }

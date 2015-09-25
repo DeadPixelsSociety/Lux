@@ -3,12 +3,13 @@
 
 #include "Entity.h"
 #include "Game.h"
+#include "Resources.h"
 
 class Bullets : public Entity {
 public:
-  Bullets(EventManager& events);
+  Bullets(EventManager& events, ResourceManager &manager);
 
-  void addBullet(Origin origin, const sf::Vector2f& pos, const sf::Vector2f& velocity, const sf::Color& color);
+  void addBullet(Origin origin, const sf::Vector2f& pos, const sf::Vector2f& velocity);
 
   virtual void update(float dt) override;
   virtual void render(sf::RenderWindow& window) override;
@@ -22,11 +23,13 @@ private:
     Origin origin;
     sf::Vector2f pos;
     sf::Vector2f velocity;
-    sf::Color color;
+    sf::Texture *texture;
     bool active;
   };
 
   std::vector<Bullet> m_bullets;
+  sf::Texture *m_bulletBlueTexture;
+  sf::Texture *m_bulletGreenTexture;
 };
 
 
