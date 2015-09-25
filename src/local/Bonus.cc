@@ -24,13 +24,18 @@
 #include "Config.h"
 #include "Game.h"
 
-BonusManager::BonusManager(EventManager& events, ResourceManager &resources) 
-: m_lifeTexture(nullptr) {
+BonusManager::BonusManager(EventManager& events, ResourceManager &resources, Engine &engine)
+: m_engine(engine)
+, m_lifeTexture(nullptr)
+, m_weaponTexture(nullptr) {
   events.registerHandler<DropBonusEvent>(&BonusManager::onDropBonusEvent, this);
   events.registerHandler<LocationEvent>(&BonusManager::onLocationEvent, this);
 
   m_lifeTexture = resources.getTexture("red_cross.png");
   assert(m_lifeTexture != nullptr);
+
+  m_weaponTexture = resources.getTexture("weapon_upgrade.png");
+  assert(m_weaponTexture != nullptr);
 }
 
 void BonusManager::addBonus(const sf::Vector2f& pos, const sf::Vector2f& velocity, const BonusType &type) {
@@ -61,6 +66,7 @@ void BonusManager::update(float dt) {
 
 static constexpr float BONUS_SIZE = 32.0f;
 static constexpr float RATIO_LIFE_BONUS = BONUS_SIZE / 148.0f;
+static constexpr float RATIO_WEAPON_BONUS = BONUS_SIZE / 25.0f;
 
 void BonusManager::render(sf::RenderWindow& window) {
   sf::Sprite sprite;
@@ -72,6 +78,13 @@ void BonusManager::render(sf::RenderWindow& window) {
         sprite.setTexture(*m_lifeTexture);
         sprite.setOrigin(BONUS_SIZE / 2.0f, BONUS_SIZE / 2.0f); // Half size of texture
         sprite.setScale(RATIO_LIFE_BONUS, RATIO_LIFE_BONUS);
+        sprite.setPosition(bonus.pos);
+        break;
+
+      case BonusType::UPGRADE_WEAPON:
+        sprite.setTexture(*m_weaponTexture);
+        sprite.setOrigin(BONUS_SIZE / 2.0f, BONUS_SIZE / 2.0f); // Half size of texture
+        sprite.setScale(RATIO_WEAPON_BONUS, RATIO_WEAPON_BONUS);
         sprite.setPosition(bonus.pos);
         break;
     }
@@ -90,7 +103,11 @@ static constexpr float BONUS_LINEAR_VELOCTY = WINDOW_H / 5.0f;
 EventStatus BonusManager::onDropBonusEvent(EventType type, Event *event) {
   auto shoot = static_cast<DropBonusEvent *>(event);
 
-  addBonus(shoot->pos, {0.0f, BONUS_LINEAR_VELOCTY}, BonusType::LIFE);
+  // Select the random type
+  std::uniform_int_distribution<int> dist(0, 1);
+  BonusType bonusType = static_cast<BonusType>(dist(m_engine));
+
+  addBonus(shoot->pos, {0.0f, BONUS_LINEAR_VELOCTY}, bonusType);
 
   return EventStatus::KEEP;
 }
@@ -115,6 +132,9 @@ EventStatus BonusManager::onLocationEvent(EventType type, Event *event) {
       switch(bonus.type) {
         case BonusType::LIFE:
           loc->ship->restore(10.0f);
+          break;
+
+        case BonusType::UPGRADE_WEAPON:
           break;
       }
     }

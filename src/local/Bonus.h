@@ -23,16 +23,18 @@
 
 #include "Entity.h"
 #include "Event.h"
+#include "Random.h"
 #include "Resources.h"
 
-enum BonusType {
-  LIFE,  
+enum BonusType : int {
+  LIFE = 0,
+  UPGRADE_WEAPON = 1,
 };
 
 class BonusManager : public Entity
 {
 public:
-  BonusManager(EventManager& events, ResourceManager &resources);
+  BonusManager(EventManager& events, ResourceManager &resources, Engine &engine);
 
   void addBonus(const sf::Vector2f& pos, const sf::Vector2f& velocity, const BonusType &type);
   
@@ -50,8 +52,10 @@ private:
     bool active;
   };
 
+  Engine &m_engine;
   std::vector<Bonus> m_bonus;
   sf::Texture *m_lifeTexture;
+  sf::Texture *m_weaponTexture;
 };
 
 #endif // _LOCAL_BONUS_H
