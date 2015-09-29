@@ -21,20 +21,26 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <mutex>
+#include <thread>
 
 #include <SFML/Graphics.hpp>
 
 #include "Entity.h"
 
+struct sp_port;
+
 class Sensor : public Entity {
 public:
-  static constexpr std::size_t SENSOR_W = 8;
-  static constexpr std::size_t SENSOR_H = 6;
+  static constexpr std::size_t SENSOR_W = 4;
+  static constexpr std::size_t SENSOR_H = 4;
 
-  Sensor(sf::Window& window)
-  : m_window(window)
-  {
-  }
+  Sensor();
+  ~Sensor();
+
+  Sensor(const Sensor&) = delete;
+  Sensor& operator=(const Sensor&) = delete;
+
 
   virtual void update(float dt) override;
 
@@ -43,8 +49,17 @@ public:
   sf::Vector2f getCenter() const;
 
 private:
-  uint8_t values[SENSOR_H][SENSOR_W];
-  sf::Window& m_window;
+  sp_port *m_port;
+
+  std::thread m_thread;
+  std::mutex m_mutex;
+
+  typedef std::array<uint8_t, 2 * 16 + 3> Buffer;
+
+  std::array<Buffer, 2> m_bufs; // SPACE + \n + \r
+  std::size_t m_index;
+
+  uint16_t values[SENSOR_H][SENSOR_W];
 };
 
 #endif // LOCAL_SENSOR_H
