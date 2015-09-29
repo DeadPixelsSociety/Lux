@@ -32,10 +32,10 @@ BonusManager::BonusManager(EventManager& events, ResourceManager &resources, Eng
   events.registerHandler<DropBonusEvent>(&BonusManager::onDropBonusEvent, this);
   events.registerHandler<LocationEvent>(&BonusManager::onLocationEvent, this);
 
-  m_lifeTexture = resources.getTexture("red_cross.png");
+  m_lifeTexture = resources.getTexture("bonus_life.png");
   assert(m_lifeTexture != nullptr);
 
-  m_weaponTexture = resources.getTexture("weapon_upgrade.png");
+  m_weaponTexture = resources.getTexture("bonus_weapon.png");
   assert(m_weaponTexture != nullptr);
 }
 
@@ -65,9 +65,9 @@ void BonusManager::update(float dt) {
   m_bonus.erase(std::remove_if(m_bonus.begin(), m_bonus.end(), [](const Bonus& b) { return !b.active; }), m_bonus.end());
 }
 
-static constexpr float BONUS_SIZE = 32.0f;
-static constexpr float RATIO_LIFE_BONUS = BONUS_SIZE / 148.0f;
-static constexpr float RATIO_WEAPON_BONUS = BONUS_SIZE / 26.0f;
+static constexpr float BONUS_SIZE = 60.0f;
+static constexpr float RATIO_LIFE_BONUS = BONUS_SIZE / 256.0f;
+static constexpr float RATIO_WEAPON_BONUS = BONUS_SIZE / 256.0f;
 
 void BonusManager::render(sf::RenderWindow& window) {
   sf::Sprite sprite;
@@ -77,14 +77,14 @@ void BonusManager::render(sf::RenderWindow& window) {
     switch(bonus.type) {
       case BonusType::LIFE:
         sprite.setTexture(*m_lifeTexture);
-        sprite.setOrigin(BONUS_SIZE / 2.0f, BONUS_SIZE / 2.0f); // Half size of texture
+        sprite.setOrigin(128.0f, 128.0f); // Half size of texture
         sprite.setScale(RATIO_LIFE_BONUS, RATIO_LIFE_BONUS);
         sprite.setPosition(bonus.pos);
         break;
 
       case BonusType::UPGRADE_WEAPON:
         sprite.setTexture(*m_weaponTexture);
-        sprite.setOrigin(BONUS_SIZE / 2.0f, BONUS_SIZE / 2.0f); // Half size of texture
+        sprite.setOrigin(128.0f, 128.0f); // Half size of texture
         sprite.setScale(RATIO_WEAPON_BONUS, RATIO_WEAPON_BONUS);
         sprite.setPosition(bonus.pos);
         break;
@@ -95,8 +95,11 @@ void BonusManager::render(sf::RenderWindow& window) {
 }
 
 static bool isTargetReached(const sf::Vector2f& shipPos, const sf::Vector2f& bonusPos) {
-  return shipPos.x - 30.0f <= bonusPos.x && bonusPos.x <= shipPos.x + 30.0f
-      && shipPos.y - 30.0f <= bonusPos.y && bonusPos.y <= shipPos.y + 30.0f;
+  sf::Rect<float> rectShip(shipPos, {Hero::HERO_WIDTH, Hero::HERO_HEIGHT});
+  sf::Rect<float> rectBonus(bonusPos, {BONUS_SIZE, BONUS_SIZE});
+  return rectShip.intersects(rectBonus);
+  /*return shipPos.x - 30.0f <= bonusPos.x && bonusPos.x <= shipPos.x + 30.0f
+      && shipPos.y - 30.0f <= bonusPos.y && bonusPos.y <= shipPos.y + 30.0f;*/
 }
 
 static constexpr float BONUS_LINEAR_VELOCTY = WINDOW_H / 5.0f;
