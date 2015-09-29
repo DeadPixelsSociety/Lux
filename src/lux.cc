@@ -90,7 +90,7 @@ int main() {
     sf::Time elapsed = clock.restart();
     float dt = elapsed.asSeconds();
     group.update(dt);
-    scenario.update(dt);
+    //scenario.update(dt);
 
     // render
 

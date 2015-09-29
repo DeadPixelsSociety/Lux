@@ -198,7 +198,12 @@ void Scenario::update(float dt) {
 
   // End of game
   if (m_currentWave == m_waves.size()) {
-    if (m_updateScore && m_win) {
+    if (m_updateScore) {
+      // If the player win, add the bonus score
+      if (m_win) {
+        m_currentScore += 5000;
+      }
+
       // Add the new high score
       m_highScore.push_back(m_currentScore);
 
@@ -254,6 +259,11 @@ void Scenario::render(sf::RenderWindow& window) {
   else {
     message = "Dommage ! Vous avez perdu le jeu.\n";
   }
+
+  if (m_win) {
+    m_currentScore += 5000;
+  }
+
   text.setString(message + "Votre score est de : " + std::to_string(m_currentScore) + "\nLa nouvelle partie commence dans : " + std::to_string(std::lround(MENU_TIME - m_elapsedTime)));
   text.setCharacterSize(30);
   text.setColor(sf::Color::White);

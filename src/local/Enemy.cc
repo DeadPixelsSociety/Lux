@@ -27,7 +27,7 @@
 
 static constexpr float SHOOT_PERIOD = 1.0f;
 static constexpr float SHOOT_VELOCITY = 400.0f;
-static constexpr float BONUS_FREQUENCY = 1.0f; //0.33f
+static constexpr float BONUS_FREQUENCY = 0.50f;
 
 Enemy::Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, Engine& engine, EventManager& events, ResourceManager &resources)
 : Ship(health)

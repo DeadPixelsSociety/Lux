@@ -98,8 +98,6 @@ static bool isTargetReached(const sf::Vector2f& shipPos, const sf::Vector2f& bon
   sf::Rect<float> rectShip(shipPos, {Hero::HERO_WIDTH, Hero::HERO_HEIGHT});
   sf::Rect<float> rectBonus(bonusPos, {BONUS_SIZE, BONUS_SIZE});
   return rectShip.intersects(rectBonus);
-  /*return shipPos.x - 30.0f <= bonusPos.x && bonusPos.x <= shipPos.x + 30.0f
-      && shipPos.y - 30.0f <= bonusPos.y && bonusPos.y <= shipPos.y + 30.0f;*/
 }
 
 static constexpr float BONUS_LINEAR_VELOCTY = WINDOW_H / 5.0f;
