@@ -2,6 +2,8 @@
 
 #include "Config.h"
 
+unsigned int Scenario::m_currentPlayer = 1;
+
 static Scenario::Wave wave0 {
   5.0f,
   {
@@ -158,7 +160,7 @@ Scenario::Scenario(EnemyManager& manager, EventManager& events, ResourceManager 
 , m_currentShip(0)
 , m_font(nullptr)
 , m_win(true)
-, m_highScore({0, 0, 0, 0, 0})
+, m_highScore({{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}})
 , m_updateScore(true)
 {
   m_events.registerHandler<ScoreEvent>(&Scenario::onScoreEvent, this);
@@ -208,11 +210,15 @@ void Scenario::update(float dt) {
         m_currentScore += WIN_BONUS_SCORE;
       }
 
+      Score heightScore(m_currentPlayer, m_currentScore);
+
       // Add the new high score
-      m_highScore.push_back(m_currentScore);
+      m_highScore.push_back(heightScore);
 
       // Remove the lower score
-      std::sort(m_highScore.begin(), m_highScore.end(), std::greater<unsigned int>());
+      std::sort(m_highScore.begin(), m_highScore.end(), [](Score a, Score b) {
+        return a.score > b.score;
+      });
       m_highScore.erase(m_highScore.end() - 1);
       m_updateScore = false;
     }
@@ -222,6 +228,7 @@ void Scenario::update(float dt) {
       m_currentWave = 0;
       m_currentShip = 0;
       m_win = true;
+      m_currentPlayer++;
       RestartGameEvent event;
       m_events.triggerEvent(&event);
       m_updateScore = true;
@@ -258,11 +265,11 @@ void Scenario::render(sf::RenderWindow& window) {
   text.setFont(*m_font);
   std::string message;
   if (m_win) {
-    message = "Bravo ! Vous avez fini le jeu.\n";
+    message = "Bravo joueur#" + std::to_string(m_currentPlayer) + " ! Vous avez fini le jeu.\n";
     message += "Vous gagnez un bonus de " + std::to_string(WIN_BONUS_SCORE) + "\n";
   }
   else {
-    message = "Dommage ! Vous avez perdu le jeu.\n";
+    message = "Dommage joueur#" + std::to_string(m_currentPlayer) + " ! Vous avez perdu le jeu.\n";
   }
 
   text.setString(message + "Votre score est de : " + std::to_string(m_currentScore) + "\nLa nouvelle partie commence dans : " + std::to_string(std::lround(MENU_TIME - m_elapsedTime)));
@@ -272,7 +279,7 @@ void Scenario::render(sf::RenderWindow& window) {
   // Display the high score
   text.setString(text.getString() + "\n\nMeilleur score :");
   for (unsigned int i = 0; i < m_highScore.size(); ++i) {
-    text.setString(text.getString() + "\n" + std::to_string(i + 1) + " - " + std::to_string(m_highScore[i]));
+    text.setString(text.getString() + "\n" + std::to_string(i + 1) + " - Joueur #" +std::to_string(m_highScore[i].idPlayer) + " : " + std::to_string(m_highScore[i].score));
   }
 
   sf::FloatRect textRect = text.getLocalBounds();

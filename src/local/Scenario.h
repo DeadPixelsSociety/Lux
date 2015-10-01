@@ -56,7 +56,21 @@ public:
   };
 
 
+private: 
+  struct Score {
+    Score(int idPlayer, int score) 
+    : idPlayer(idPlayer)
+    , score(score) {
+      
+    }
+
+    unsigned int idPlayer;
+    unsigned int score;
+  };
+
 private:
+  static unsigned int m_currentPlayer;
+
   EnemyManager& m_manager;
   EventManager& m_events;
 
@@ -69,7 +83,7 @@ private:
 
   unsigned int m_currentScore;
   bool m_win;
-  std::vector<unsigned int> m_highScore;
+  std::vector<Score> m_highScore;
   bool m_updateScore;
 };
 
