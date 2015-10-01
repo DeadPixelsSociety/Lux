@@ -57,4 +57,9 @@ struct DropBonusEvent : public Event {
   sf::Vector2f pos;
 };
 
+struct WinGameEvent : public Event {
+  static const EventType type = "WinGameEvent"_type;
+  unsigned int bonusScore;
+};
+
 #endif // LOCAL_GAME_H

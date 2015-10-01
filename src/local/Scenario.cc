@@ -192,6 +192,7 @@ Scenario::Scenario(EnemyManager& manager, EventManager& events, ResourceManager 
 }
 
 static constexpr const float MENU_TIME = 15.0f;
+static constexpr const unsigned int WIN_BONUS_SCORE = 5000;
 
 void Scenario::update(float dt) {
   m_elapsedTime += dt;
@@ -201,7 +202,10 @@ void Scenario::update(float dt) {
     if (m_updateScore) {
       // If the player win, add the bonus score
       if (m_win) {
-        m_currentScore += 5000;
+        WinGameEvent event;
+        event.bonusScore = WIN_BONUS_SCORE;
+        m_events.triggerEvent(&event);
+        m_currentScore += WIN_BONUS_SCORE;
       }
 
       // Add the new high score
@@ -255,13 +259,10 @@ void Scenario::render(sf::RenderWindow& window) {
   std::string message;
   if (m_win) {
     message = "Bravo ! Vous avez fini le jeu.\n";
+    message += "Vous gagnez un bonus de " + std::to_string(WIN_BONUS_SCORE) + "\n";
   }
   else {
     message = "Dommage ! Vous avez perdu le jeu.\n";
-  }
-
-  if (m_win) {
-    m_currentScore += 5000;
   }
 
   text.setString(message + "Votre score est de : " + std::to_string(m_currentScore) + "\nLa nouvelle partie commence dans : " + std::to_string(std::lround(MENU_TIME - m_elapsedTime)));
