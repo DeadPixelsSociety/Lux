@@ -23,6 +23,7 @@ add_executable(lux
   local/Assets.cc
   local/Bonus.cc
   local/Bullets.cc
+  local/Camera.cc
   local/Enemy.cc
   local/Entity.cc
   local/Event.cc
@@ -35,6 +36,8 @@ add_executable(lux
   local/Ship.cc
   local/Shoot.cc
   local/Stars.cc
+  local/WindowGeometry.cc
+  local/WindowSettings.cc
 )
 
 target_link_libraries(lux

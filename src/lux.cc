@@ -27,6 +27,7 @@
 
 #include "local/Bonus.h"
 #include "local/Bullets.h"
+#include "local/Camera.h"
 #include "local/Config.h"
 #include "local/Enemy.h"
 #include "local/Event.h"
@@ -38,12 +39,21 @@
 #include "local/Scenario.h"
 #include "local/Sensor.h"
 #include "local/Stars.h"
+#include "local/WindowGeometry.h"
+#include "local/WindowSettings.h"
 #include "path.h"
 
 int main() {
   Engine engine(std::time(nullptr));
 
-  sf::RenderWindow window(sf::VideoMode(WINDOW_W, WINDOW_H), "Lux");
+  static constexpr unsigned INITIAL_WIDTH = 800;
+  static constexpr unsigned INITIAL_HEIGHT = 600;
+
+  WindowSettings settings(INITIAL_WIDTH, INITIAL_HEIGHT, "Lux - Year of Light");
+  WindowGeometry geometry(INITIAL_WIDTH, INITIAL_HEIGHT);
+
+  sf::RenderWindow window;
+  settings.applyTo(window);
 
   EventManager events;
 
@@ -75,11 +85,20 @@ int main() {
   group.addEntity(scenario);
   group.addEntity(bonus);
 
+  // add cameras
+  CameraManager cameras;
+
+  FixedRatioCamera mainCamera(WINDOW_W, WINDOW_H, {WINDOW_W / 2.0f, WINDOW_H / 2.0f});
+  cameras.addCamera(mainCamera);
+
   sf::Clock clock;
   while (window.isOpen()) {
     sf::Event event;
 
     while (window.pollEvent(event)) {
+      cameras.update(event);
+      geometry.update(event);
+
       if (event.type == sf::Event::Closed) {
         window.close();
       }
@@ -95,6 +114,7 @@ int main() {
     // render
 
     window.clear(sf::Color::Black);
+    mainCamera.configure(window);
     group.render(window);
 
 
