@@ -155,3 +155,11 @@ EventStatus Hero::onRestartGameEvent(EventType type, Event *event) {
 
   return EventStatus::KEEP;
 }
+
+EventStatus Hero::onWinGameEvent(EventType type, Event *event) {
+  auto winEvent = static_cast<WinGameEvent *>(event);
+
+  m_score += winEvent->bonusScore;
+
+  return EventStatus::KEEP;
+}

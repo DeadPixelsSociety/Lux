@@ -32,9 +32,12 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/config)
 
 add_executable(lux
   lux.cc
+  local/Action.cc
   local/Assets.cc
   local/Bonus.cc
   local/Bullets.cc
+  local/Camera.cc
+  local/Control.cc
   local/Enemy.cc
   local/Entity.cc
   local/Event.cc
@@ -47,6 +50,8 @@ add_executable(lux
   local/Ship.cc
   local/Shoot.cc
   local/Stars.cc
+  local/WindowGeometry.cc
+  local/WindowSettings.cc
 )
 
 target_link_libraries(lux
