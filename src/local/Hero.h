@@ -21,10 +21,11 @@
 
 #include <cassert>
 
-#include "Entity.h"
-#include "Event.h"
+#include <game/Entity.h>
+#include <game/EventManager.h>
+#include <game/ResourceManager.h>
+
 #include "Game.h"
-#include "Resources.h"
 #include "Sensor.h"
 #include "Ship.h"
 #include "Shoot.h"
@@ -38,7 +39,7 @@ public:
 
   static constexpr float HERO_HEALTH = 100.0f;
 
-  Hero(Sensor& sensor, EventManager& events, ResourceManager &resources)
+  Hero(Sensor& sensor, game::EventManager& events, game::ResourceManager &resources)
   : Ship(HERO_HEALTH)
   , m_sensor(sensor)
   , m_events(events)
@@ -66,14 +67,14 @@ public:
 
   void upgradeWeapon();
 
-  EventStatus onDeadEvent(EventType type, Event *event);
-  EventStatus onRestartGameEvent(EventType type, Event *event);
-  EventStatus onWinGameEvent(EventType type, Event *event);
+  game::EventStatus onDeadEvent(game::EventType type, game::Event *event);
+  game::EventStatus onRestartGameEvent(game::EventType type, game::Event *event);
+  game::EventStatus onWinGameEvent(game::EventType type, game::Event *event);
 
 private:
   sf::Vector2f m_pos;
   Sensor& m_sensor;
-  EventManager& m_events;
+  game::EventManager& m_events;
   float m_elapsedTime;
   sf::Texture *m_texture;
   unsigned long long int m_score;

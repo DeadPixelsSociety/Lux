@@ -1,15 +1,32 @@
+/*
+ * Lux
+ *
+ * Copyright (c) 2015, Julien Bernard
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "Bullets.h"
 
 #include <cassert>
 #include <iostream>
 
-#include "Config.h"
 #include "Enemy.h"
 #include "Hero.h"
 
 static constexpr float RADIUS = 5.0f;
 
-Bullets::Bullets(EventManager& events, ResourceManager &manager) 
+Bullets::Bullets(game::EventManager& events, game::ResourceManager &manager)
 : m_bulletBlueTexture(nullptr)
 , m_bulletGreenTexture(nullptr)
 , m_bulletYellowTexture(nullptr)
@@ -61,10 +78,12 @@ void Bullets::addBullet(Origin origin, ShipClass shipClass, const sf::Vector2f& 
   m_bullets.push_back(bullet);
 }
 
+static constexpr float AREA_WIDTH = 800;
+static constexpr float AREA_HEIGHT = 600;
 static constexpr float EXTRA = 100.0f;
 
 void Bullets::update(float dt) {
-  sf::FloatRect screen(-EXTRA, -EXTRA, WINDOW_W + 2 * EXTRA, WINDOW_H + 2 * EXTRA);
+  sf::FloatRect screen(-EXTRA, -EXTRA, AREA_WIDTH + 2 * EXTRA, AREA_HEIGHT + 2 * EXTRA);
 
   for (Bullet& bullet : m_bullets) {
     bullet.pos += bullet.velocity * dt;
@@ -92,7 +111,7 @@ static bool isTargetReached(const sf::Vector2f& shipPos, const sf::Vector2f& bul
       && shipPos.y - 30.0f <= bulletPos.y && bulletPos.y <= shipPos.y + 30.0f;
 }
 
-EventStatus Bullets::onLocationEvent(EventType type, Event *event) {
+game::EventStatus Bullets::onLocationEvent(game::EventType type, game::Event *event) {
   assert(type == LocationEvent::type);
 
   auto loc = static_cast<LocationEvent*>(event);
@@ -108,13 +127,13 @@ EventStatus Bullets::onLocationEvent(EventType type, Event *event) {
     }
   }
 
-  return EventStatus::KEEP;
+  return game::EventStatus::KEEP;
 }
 
-EventStatus Bullets::onShootEvent(EventType type, Event *event) {
+game::EventStatus Bullets::onShootEvent(game::EventType type, game::Event *event) {
   auto shoot = static_cast<ShootEvent *>(event);
 
   addBullet(shoot->origin, shoot->shipClass, shoot->pos, shoot->velocity);
 
-  return EventStatus::KEEP;
+  return game::EventStatus::KEEP;
 }

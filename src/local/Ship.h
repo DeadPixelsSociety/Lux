@@ -19,9 +19,9 @@
 #ifndef LOCAL_SHIP_H
 #define LOCAL_SHIP_H
 
-#include "Entity.h"
+#include <game/Entity.h>
 
-class Ship : public Entity {
+class Ship : public game::Entity {
 public:
   Ship(float maxStructurePoint);
 

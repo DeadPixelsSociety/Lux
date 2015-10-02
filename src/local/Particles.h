@@ -1,13 +1,15 @@
 #ifndef LOCAL_PARTICLES_H
 #define LOCAL_PARTICLES_H
 
-#include "Entity.h"
+#include <game/Entity.h>
+#include <game/EventManager.h>
+
 #include "Game.h"
 #include "Random.h"
 
-class Particles : public Entity {
+class Particles : public game::Entity {
 public:
-  Particles(EventManager& events, Engine& engine);
+  Particles(game::EventManager& events, Engine& engine);
 
   virtual int priority() const;
 
@@ -15,7 +17,7 @@ public:
   virtual void render(sf::RenderWindow& window) override;
 
 private:
-  EventStatus onDeadEvent(EventType type, Event *event);
+  game::EventStatus onDeadEvent(game::EventType type, game::Event *event);
 
 private:
   struct Particle {

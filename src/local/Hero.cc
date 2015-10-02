@@ -18,7 +18,6 @@
  */
 #include "Hero.h"
 
-#include "Config.h"
 
 static constexpr float SHOOT_PERIOD = 0.4f;
 static constexpr float SHOOT_VELOCITY = -400.0f;
@@ -61,7 +60,11 @@ static constexpr float HEALTH_HEIGHT = 5.0f;
 static constexpr float HEALTH_THICKNESS = 1.0f;
 static constexpr float HEALTH_PADDING = 40.0f;
 
-static constexpr float SCORE_PADDING_WIDTH = WINDOW_W - 150.0f;
+static constexpr float AREA_WIDTH = 800;
+static constexpr float AREA_HEIGHT = 600;
+
+static constexpr float SCORE_PADDING_WIDTH = AREA_WIDTH - 150.0f;
+
 
 void Hero::render(sf::RenderWindow& window) {
   if (isDamaged()) {
@@ -78,7 +81,7 @@ void Hero::render(sf::RenderWindow& window) {
 
   sf::RectangleShape rectangleShape({ HEALTH_WIDTH, HEALTH_HEIGHT });
   rectangleShape.setOrigin(HEALTH_WIDTH / 2, HEALTH_HEIGHT / 2);
-  rectangleShape.setPosition(WINDOW_W / 2, WINDOW_H - HEALTH_PADDING);
+  rectangleShape.setPosition(AREA_WIDTH / 2, AREA_HEIGHT - HEALTH_PADDING);
   rectangleShape.setOutlineColor(sf::Color::White);
   rectangleShape.setOutlineThickness(HEALTH_THICKNESS);
   rectangleShape.setFillColor(sf::Color::Transparent);
@@ -86,7 +89,7 @@ void Hero::render(sf::RenderWindow& window) {
 
   sf::RectangleShape healthRectangle({ HEALTH_WIDTH * getStructureHealthPercentage(), HEALTH_HEIGHT });
   healthRectangle.setOrigin(0.0f, HEALTH_HEIGHT / 2);
-  healthRectangle.setPosition(WINDOW_W / 2 - HEALTH_WIDTH / 2, WINDOW_H - HEALTH_PADDING);
+  healthRectangle.setPosition(AREA_WIDTH / 2 - HEALTH_WIDTH / 2, AREA_HEIGHT - HEALTH_PADDING);
   healthRectangle.setFillColor(sf::Color::Red);
   window.draw(healthRectangle);
 
@@ -98,16 +101,16 @@ void Hero::render(sf::RenderWindow& window) {
 
   // FixMe: fix the vertical align
   text.setOrigin(text.getLocalBounds().width / 2.0f, text.getLocalBounds().height / 2.0f);
-  text.setPosition(SCORE_PADDING_WIDTH, WINDOW_H - HEALTH_PADDING - text.getLocalBounds().height - 5.0f);
+  text.setPosition(SCORE_PADDING_WIDTH, AREA_HEIGHT - HEALTH_PADDING - text.getLocalBounds().height - 5.0f);
 
   window.draw(text);
 }
 
-EventStatus Hero::onDeadEvent(EventType type, Event *event) {
+game::EventStatus Hero::onDeadEvent(game::EventType type, game::Event *event) {
   auto dead = static_cast<DeadEvent *>(event);
 
   if (dead->origin != Origin::ENEMY) {
-    return EventStatus::KEEP;
+    return game::EventStatus::KEEP;
   }
 
   switch (dead->ship) {
@@ -134,7 +137,7 @@ EventStatus Hero::onDeadEvent(EventType type, Event *event) {
       assert(false);
   }
 
-  return EventStatus::KEEP;
+  return game::EventStatus::KEEP;
 }
 
 void Hero::upgradeWeapon() {
@@ -146,20 +149,20 @@ void Hero::upgradeWeapon() {
   }
 }
 
-EventStatus Hero::onRestartGameEvent(EventType type, Event *event) {
+game::EventStatus Hero::onRestartGameEvent(game::EventType type, game::Event *event) {
   m_inGame = true;
   m_score = 0;
   restore();
   m_weaponLevel = 1;
   m_shoot = makeSimplePlayerShoot(Origin::HERO, ShipClass::ANTLIA, m_weaponLevel, 0.1f, 0.5f);
 
-  return EventStatus::KEEP;
+  return game::EventStatus::KEEP;
 }
 
-EventStatus Hero::onWinGameEvent(EventType type, Event *event) {
+game::EventStatus Hero::onWinGameEvent(game::EventType type, game::Event *event) {
   auto winEvent = static_cast<WinGameEvent *>(event);
 
   m_score += winEvent->bonusScore;
 
-  return EventStatus::KEEP;
+  return game::EventStatus::KEEP;
 }

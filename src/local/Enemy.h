@@ -21,11 +21,12 @@
 
 #include <vector>
 
-#include "Entity.h"
-#include "Event.h"
+#include <game/Entity.h>
+#include <game/EventManager.h>
+#include <game/ResourceManager.h>
+
 #include "Game.h"
 #include "Random.h"
-#include "Resources.h"
 #include "Ship.h"
 #include "Shoot.h"
 
@@ -36,7 +37,7 @@ public:
   static constexpr float ENEMY_SCALE_X = ENEMY_WIDTH / 64.0f;
   static constexpr float ENEMY_SCALE_Y = ENEMY_HEIGHT / 64.0f;
 
-  Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, Engine& engine, EventManager& events, ResourceManager &resources);
+  Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, Engine& engine, game::EventManager& events, game::ResourceManager &resources);
 
   virtual void update(float dt) override;
 
@@ -50,7 +51,7 @@ private:
   sf::Vector2f m_pos;
   sf::Vector2f m_vel;
   Engine& m_engine;
-  EventManager& m_events;
+  game::EventManager& m_events;
 
   float m_elapsedTime;
   sf::Vector2f m_hero_pos;
@@ -60,9 +61,9 @@ private:
 };
 
 
-class EnemyManager : public Entity {
+class EnemyManager : public game::Entity {
 public:
-  EnemyManager(Engine& engine, EventManager& events, ResourceManager &resources)
+  EnemyManager(Engine& engine, game::EventManager& events, game::ResourceManager &resources)
   : m_engine(engine)
   , m_events(events)
   , m_elapsedTime(0.0f)
@@ -82,7 +83,7 @@ public:
 
   void addEnemy(ShipClass ship, const sf::Vector2f& position, const sf::Vector2f& velocity);
 
-  EventStatus onLocationEvent(EventType type, Event *event);
+  game::EventStatus onLocationEvent(game::EventType type, game::Event *event);
 
   virtual void update(float dt) override;
 
@@ -90,10 +91,10 @@ public:
 
 private:
   Engine& m_engine;
-  EventManager& m_events;
+  game::EventManager& m_events;
   std::vector<Enemy*> m_enemies;
   float m_elapsedTime;
-  ResourceManager& m_resources;
+  game::ResourceManager& m_resources;
   sf::Vector2f m_hero_pos;
 };
 

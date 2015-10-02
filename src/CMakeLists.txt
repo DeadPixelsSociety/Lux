@@ -27,31 +27,35 @@ add_definitions(-std=c++11)
 include_directories(${SFML2_INCLUDE_DIRS})
 include_directories(${LIBSERIALPORT_INCLUDE_DIR})
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/local/path.h.in ${CMAKE_CURRENT_BINARY_DIR}/config/path.h @ONLY)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/config)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(lux
   lux.cc
-  local/Action.cc
-  local/Assets.cc
   local/Bonus.cc
   local/Bullets.cc
-  local/Camera.cc
-  local/Control.cc
   local/Enemy.cc
-  local/Entity.cc
-  local/Event.cc
-  local/Group.cc
   local/Hero.cc
   local/Particles.cc
-  local/Resources.cc
   local/Scenario.cc
   local/Sensor.cc
   local/Ship.cc
   local/Shoot.cc
   local/Stars.cc
-  local/WindowGeometry.cc
-  local/WindowSettings.cc
+  # game skel
+  game/Action.cc
+  game/AssetManager.cc
+  game/Camera.cc
+  game/Control.cc
+  game/Entity.cc
+  game/EntityManager.cc
+  game/EventManager.cc
+  game/Log.cc
+  game/ResourceManager.cc
+  game/WindowGeometry.cc
+  game/WindowSettings.cc
 )
 
 target_link_libraries(lux

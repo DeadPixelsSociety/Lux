@@ -16,16 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "Bonus.h"
 
 #include <cassert>
 #include <iostream>
 
-#include "Bonus.h"
-#include "Config.h"
 #include "Game.h"
 #include "Hero.h"
 
-BonusManager::BonusManager(EventManager& events, ResourceManager &resources, Engine &engine)
+BonusManager::BonusManager(game::EventManager& events, game::ResourceManager &resources, Engine &engine)
 : m_engine(engine)
 , m_lifeTexture(nullptr)
 , m_weaponTexture(nullptr) {
@@ -51,8 +50,11 @@ void BonusManager::addBonus(const sf::Vector2f& pos, const sf::Vector2f& velocit
 
 static constexpr float EXTRA = 20.0f;
 
+static constexpr float AREA_WIDTH = 800;
+static constexpr float AREA_HEIGHT = 600;
+
 void BonusManager::update(float dt) {
-  sf::FloatRect screen(-EXTRA, -EXTRA, WINDOW_W + 2 * EXTRA, WINDOW_H + 2 * EXTRA);
+  sf::FloatRect screen(-EXTRA, -EXTRA, AREA_WIDTH + 2 * EXTRA, AREA_HEIGHT + 2 * EXTRA);
 
   for (Bonus& bonus : m_bonus) {
     bonus.pos += bonus.velocity * dt;
@@ -100,9 +102,9 @@ static bool isTargetReached(const sf::Vector2f& shipPos, const sf::Vector2f& bon
   return rectShip.intersects(rectBonus);
 }
 
-static constexpr float BONUS_LINEAR_VELOCTY = WINDOW_H / 5.0f;
+static constexpr float BONUS_LINEAR_VELOCTY = 120.0f;
 
-EventStatus BonusManager::onDropBonusEvent(EventType type, Event *event) {
+game::EventStatus BonusManager::onDropBonusEvent(game::EventType type, game::Event *event) {
   auto shoot = static_cast<DropBonusEvent *>(event);
 
   // Select the random type
@@ -111,17 +113,17 @@ EventStatus BonusManager::onDropBonusEvent(EventType type, Event *event) {
 
   addBonus(shoot->pos, {0.0f, BONUS_LINEAR_VELOCTY}, bonusType);
 
-  return EventStatus::KEEP;
+  return game::EventStatus::KEEP;
 }
 
-EventStatus BonusManager::onLocationEvent(EventType type, Event *event) {
+game::EventStatus BonusManager::onLocationEvent(game::EventType type, game::Event *event) {
   assert(type == LocationEvent::type);
 
   auto loc = static_cast<LocationEvent*>(event);
 
   // Check if is player location
   if (loc->origin != Origin::HERO) {
-    return EventStatus::KEEP;
+    return game::EventStatus::KEEP;
   }
 
   // Check if one bonus is hit
@@ -144,5 +146,5 @@ EventStatus BonusManager::onLocationEvent(EventType type, Event *event) {
     }
   }
 
-  return EventStatus::KEEP;
+  return game::EventStatus::KEEP;
 }

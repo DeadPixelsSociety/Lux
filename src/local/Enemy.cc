@@ -21,7 +21,6 @@
 #include <cassert>
 #include <iostream>
 
-#include "Config.h"
 #include "Game.h"
 #include "Memory.h"
 
@@ -29,7 +28,7 @@ static constexpr float SHOOT_PERIOD = 1.0f;
 static constexpr float SHOOT_VELOCITY = 400.0f;
 static constexpr float BONUS_FREQUENCY = 0.50f;
 
-Enemy::Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, Engine& engine, EventManager& events, ResourceManager &resources)
+Enemy::Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, Engine& engine, game::EventManager& events, game::ResourceManager &resources)
 : Ship(health)
 , m_pos(pos)
 , m_vel(vel)
@@ -65,12 +64,14 @@ Enemy::Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, f
   assert(m_texture != nullptr);
 }
 
+static constexpr float AREA_HEIGHT = 600;
+
 void Enemy::update(float dt) {
   assert(isAlive());
 
   m_pos += m_vel * dt;
 
-  if (m_pos.y > WINDOW_H + ENEMY_HEIGHT) {
+  if (m_pos.y > AREA_HEIGHT + ENEMY_HEIGHT) {
     kill();
     assert(!isAlive());
     return;
@@ -132,7 +133,7 @@ void EnemyManager::addEnemy(ShipClass ship, const sf::Vector2f& position, const 
 
 static constexpr float GENERATION_PERIOD = 1.0f;
 
-EventStatus EnemyManager::onLocationEvent(EventType type, Event *event) {
+game::EventStatus EnemyManager::onLocationEvent(game::EventType type, game::Event *event) {
   assert(type == LocationEvent::type);
   auto loc = static_cast<LocationEvent*>(event);
 
@@ -140,7 +141,7 @@ EventStatus EnemyManager::onLocationEvent(EventType type, Event *event) {
     m_hero_pos = loc->pos;
   }
 
-  return EventStatus::KEEP;
+  return game::EventStatus::KEEP;
 }
 
 

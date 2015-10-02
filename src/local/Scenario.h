@@ -21,27 +21,28 @@
 
 #include <vector>
 
+#include <game/Entity.h>
+
 #include "Enemy.h"
-#include "Entity.h"
 #include "Game.h"
 #include "Shoot.h"
 
-class Scenario : public Entity {
+class Scenario : public game::Entity {
 public:
-  Scenario(EnemyManager& manager, EventManager& events, ResourceManager &resources);
+  Scenario(EnemyManager& manager, game::EventManager& events, game::ResourceManager &resources);
 
   virtual void update(float dt) override;
   virtual void render(sf::RenderWindow& window) override;
 
-  EventStatus onScoreEvent(EventType type, Event *event) {
+  game::EventStatus onScoreEvent(game::EventType type, game::Event *event) {
     auto scoreEvent = static_cast<ScoreEvent *>(event);
 
     m_currentScore = scoreEvent->score;
 
-    return EventStatus::KEEP;
+    return game::EventStatus::KEEP;
   }
 
-  EventStatus onDeadEvent(EventType type, Event *event);
+  game::EventStatus onDeadEvent(game::EventType type, game::Event *event);
 
   struct WaveShip {
     ShipClass ship;
@@ -72,7 +73,7 @@ private:
   static unsigned int m_currentPlayer;
 
   EnemyManager& m_manager;
-  EventManager& m_events;
+  game::EventManager& m_events;
 
   std::vector<Wave> m_waves;
 

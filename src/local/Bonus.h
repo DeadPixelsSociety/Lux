@@ -21,28 +21,28 @@
 
 #include <vector>
 
-#include "Entity.h"
-#include "Event.h"
+#include <game/Entity.h>
+#include <game/EventManager.h>
+#include <game/ResourceManager.h>
+
 #include "Random.h"
-#include "Resources.h"
 
 enum BonusType : int {
   LIFE = 0,
   UPGRADE_WEAPON = 1,
 };
 
-class BonusManager : public Entity
-{
+class BonusManager : public game::Entity {
 public:
-  BonusManager(EventManager& events, ResourceManager &resources, Engine &engine);
+  BonusManager(game::EventManager& events, game::ResourceManager &resources, Engine &engine);
 
   void addBonus(const sf::Vector2f& pos, const sf::Vector2f& velocity, const BonusType &type);
   
   virtual void update(float dt) override;
   virtual void render(sf::RenderWindow& window) override;
 
-  EventStatus onDropBonusEvent(EventType type, Event *event);
-  EventStatus onLocationEvent(EventType type, Event *event);
+  game::EventStatus onDropBonusEvent(game::EventType type, game::Event *event);
+  game::EventStatus onLocationEvent(game::EventType type, game::Event *event);
 
 private:
   struct Bonus {

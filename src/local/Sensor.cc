@@ -24,8 +24,6 @@
 
 #include <libserialport.h>
 
-#include "Config.h"
-
 static void printError(sp_return ret) {
   if (ret > 0) {
     return;
@@ -154,6 +152,8 @@ Sensor::~Sensor() {
   sp_free_port(m_port);
 }
 
+static constexpr float AREA_WIDTH = 800;
+static constexpr float AREA_HEIGHT = 600;
 
 void Sensor::update(float dt) {
   Buffer buf;
@@ -203,9 +203,10 @@ void Sensor::update(float dt) {
 
 }
 
+
 void Sensor::render(sf::RenderWindow& window) {
-  float w = (WINDOW_W / SENSOR_W);
-  float h = (WINDOW_H / SENSOR_H);
+  float w = (AREA_WIDTH / SENSOR_W);
+  float h = (AREA_HEIGHT / SENSOR_H);
 
   for (std::size_t j = 0; j < SENSOR_H; ++j) {
     for (std::size_t i = 0; i < SENSOR_W; ++i) {
@@ -213,7 +214,7 @@ void Sensor::render(sf::RenderWindow& window) {
       float y = j * h;
 
       sf::RectangleShape shape({ w, h });
-      shape.setFillColor(sf::Color(0xFF, 0xFF, 0xFF, values[j][i] * 2));
+      shape.setFillColor(sf::Color(0xFF, 0xFF, 0xFF, values[j][i] / 4));
       shape.setPosition(x, y);
       window.draw(shape);
     }
@@ -223,8 +224,8 @@ void Sensor::render(sf::RenderWindow& window) {
 }
 
 sf::Vector2f Sensor::getCenter() const {
-  float w = (WINDOW_W / SENSOR_W);
-  float h = (WINDOW_H / SENSOR_H);
+  float w = (AREA_WIDTH / SENSOR_W);
+  float h = (AREA_HEIGHT / SENSOR_H);
 
   sf::Vector2f pos(0.0f, 0.0f);
   float total = 0;

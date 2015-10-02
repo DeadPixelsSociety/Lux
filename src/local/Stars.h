@@ -3,17 +3,16 @@
 
 #include <array>
 
-#include "Entity.h"
+#include <game/Entity.h>
+
 #include "Random.h"
 
-class Stars : public Entity {
+class Stars : public game::Entity {
 public:
   static constexpr std::size_t COUNT = 50;
   static constexpr float FREQUENCY_WHITE_STAR = 0.25f;
 
   Stars(Engine& engine, float velocity, float radius, bool lastPlan = false);
-
-  virtual int priority() const override;
 
   virtual void update(float dt) override;
   virtual void render(sf::RenderWindow& window) override;

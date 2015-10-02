@@ -21,6 +21,8 @@
 
 #include <memory>
 
+#include <game/EventManager.h>
+
 #include "Game.h"
 
 enum class ShootType {
@@ -31,7 +33,7 @@ enum class ShootType {
 class Shoot {
 public:
   virtual ~Shoot();
-  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) = 0;
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) = 0;
 };
 
 std::unique_ptr<Shoot> makeSimpleShoot(Origin origin, ShipClass shipClass, float delay);
@@ -71,7 +73,7 @@ public:
 
   }
 
-  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) override;
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) override;
 
 };
 
@@ -84,7 +86,7 @@ public:
 
   }
 
-  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) override;
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) override;
 
 };
 
@@ -118,7 +120,7 @@ public:
 
   }
 
-  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) override;
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) override;
 
 private:
   float m_elapsedTime;
@@ -135,7 +137,7 @@ public:
 
   }
 
-  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) override;
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) override;
 
 private:
   float m_elapsedTime;
@@ -151,7 +153,7 @@ public:
 
   }
 
-  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) override;
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) override;
 
 private:
   int m_count;
@@ -172,7 +174,7 @@ public:
 
   }
 
-  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) override;
+  virtual void shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) override;
 
 private:
   int m_nbShoot;

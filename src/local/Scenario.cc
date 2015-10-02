@@ -1,8 +1,9 @@
 #include "Scenario.h"
 
-#include "Config.h"
-
 unsigned int Scenario::m_currentPlayer = 1;
+
+static constexpr float AREA_WIDTH = 800;
+static constexpr float AREA_HEIGHT = 600;
 
 static Scenario::Wave wave0 {
   5.0f,
@@ -14,8 +15,8 @@ static Scenario::Wave wave0 {
 static Scenario::Wave wave01 {
   5.0f,
   {
-    { ShipClass::BOOTES, { 0.3f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::BOOTES, { 0.7f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
+    { ShipClass::BOOTES, { 0.3f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::BOOTES, { 0.7f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
   }
 };
 
@@ -23,10 +24,10 @@ static Scenario::Wave wave01 {
 static Scenario::Wave wave02 {
   6.0f,
   {
-    { ShipClass::BOOTES, { 0.3f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::BOOTES, { 0.7f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 1.0f },
-    { ShipClass::BOOTES, { 0.3f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 2.0f },
-    { ShipClass::BOOTES, { 0.7f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 3.0f },
+    { ShipClass::BOOTES, { 0.3f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::BOOTES, { 0.7f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 1.0f },
+    { ShipClass::BOOTES, { 0.3f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 2.0f },
+    { ShipClass::BOOTES, { 0.7f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 3.0f },
   }
 };
 
@@ -34,10 +35,10 @@ static Scenario::Wave wave02 {
 static Scenario::Wave wave03 {
   6.0f,
   {
-    { ShipClass::BOOTES, { 0.2f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::BOOTES, { 0.4f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 1.0f },
-    { ShipClass::BOOTES, { 0.6f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 2.0f },
-    { ShipClass::BOOTES, { 0.8f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 3.0f },
+    { ShipClass::BOOTES, { 0.2f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::BOOTES, { 0.4f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 1.0f },
+    { ShipClass::BOOTES, { 0.6f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 2.0f },
+    { ShipClass::BOOTES, { 0.8f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 3.0f },
   }
 };
 
@@ -45,33 +46,33 @@ static Scenario::Wave wave03 {
 static Scenario::Wave wave04 {
   4.0f,
   {
-    { ShipClass::BOOTES, { 0.1f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::BOOTES, { 0.9f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { -WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
+    { ShipClass::BOOTES, { 0.1f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::BOOTES, { 0.9f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
   }
 };
 
 static Scenario::Wave wave10 {
   4.0f,
   {
-    { ShipClass::CYGNUS, { 0.3f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
+    { ShipClass::CYGNUS, { 0.3f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
   }
 };
 
 static Scenario::Wave wave11 {
   4.0f,
   {
-    { ShipClass::CYGNUS, { 0.5f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::CYGNUS, { 0.2f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.5f },
-    { ShipClass::CYGNUS, { 0.8f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.5f },
+    { ShipClass::CYGNUS, { 0.5f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::CYGNUS, { 0.2f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.5f },
+    { ShipClass::CYGNUS, { 0.8f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.5f },
   }
 };
 
 static Scenario::Wave wave12 {
   5.0f,
   {
-    { ShipClass::CYGNUS, { 0.05f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::CYGNUS, { 0.95f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { -WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.5f },
-    { ShipClass::CYGNUS, { 0.5f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 1.0f },
+    { ShipClass::CYGNUS, { 0.05f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::CYGNUS, { 0.95f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.5f },
+    { ShipClass::CYGNUS, { 0.5f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 1.0f },
   }
 
 };
@@ -80,8 +81,8 @@ static Scenario::Wave wave12 {
 static Scenario::Wave wave13 {
   4.0f,
   {
-    { ShipClass::CYGNUS, { 0.05f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::CYGNUS, { 0.15f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
+    { ShipClass::CYGNUS, { 0.05f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::CYGNUS, { 0.15f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
   }
 };
 
@@ -89,8 +90,8 @@ static Scenario::Wave wave13 {
 static Scenario::Wave wave14 {
   4.0f,
   {
-    { ShipClass::CYGNUS, { 0.85f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { -WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::CYGNUS, { 0.95f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { -WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
+    { ShipClass::CYGNUS, { 0.85f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::CYGNUS, { 0.95f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
   }
 };
 
@@ -98,10 +99,10 @@ static Scenario::Wave wave14 {
 static Scenario::Wave wave15 {
   5.0f,
   {
-    { ShipClass::CYGNUS, { 0.05f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::CYGNUS, { 0.15f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::CYGNUS, { 0.85f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { -WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.5f },
-    { ShipClass::CYGNUS, { 0.95f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { -WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.5f },
+    { ShipClass::CYGNUS, { 0.05f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::CYGNUS, { 0.15f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::CYGNUS, { 0.85f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.5f },
+    { ShipClass::CYGNUS, { 0.95f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.5f },
   }
 };
 
@@ -109,8 +110,8 @@ static Scenario::Wave wave15 {
 static Scenario::Wave wave20 {
   4.0f,
   {
-    { ShipClass::DRACO, { 0.1f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::DRACO, { 0.9f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { -WINDOW_H / 3.0f, WINDOW_H / 3.0f }, 0.0f },
+    { ShipClass::DRACO, { 0.1f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::DRACO, { 0.9f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
   }
 };
 
@@ -118,12 +119,12 @@ static Scenario::Wave wave20 {
 static Scenario::Wave wave32 {
   4.0f,
   {
-    { ShipClass::ERIDANUS, { 0.2f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::ERIDANUS, { 0.5f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::ERIDANUS, { 0.4f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.5f },
-    { ShipClass::ERIDANUS, { 0.7f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.5f },
-    { ShipClass::ERIDANUS, { 0.6f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 1.0f },
-    { ShipClass::ERIDANUS, { 0.9f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 1.0f },
+    { ShipClass::ERIDANUS, { 0.2f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.5f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.4f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.5f },
+    { ShipClass::ERIDANUS, { 0.7f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.5f },
+    { ShipClass::ERIDANUS, { 0.6f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 1.0f },
+    { ShipClass::ERIDANUS, { 0.9f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 1.0f },
   }
 };
 
@@ -131,28 +132,28 @@ static Scenario::Wave wave32 {
 static Scenario::Wave wave33 {
   4.0f,
   {
-    { ShipClass::ERIDANUS, { 0.2f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::ERIDANUS, { 0.3f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::ERIDANUS, { 0.4f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::ERIDANUS, { 0.5f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::ERIDANUS, { 0.6f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::ERIDANUS, { 0.7f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-    { ShipClass::ERIDANUS, { 0.8f * WINDOW_W, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.2f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.3f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.4f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.5f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.6f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.7f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.8f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
   }
 };
 
 // static Scenario::Wave waveN {
 //   10.0f,
 //   {
-//     { ShipClass::BOOTES, { WINDOW_W / 2.0f, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 0.0f },
-//     { ShipClass::CYGNUS, { WINDOW_W / 2.0f, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 1.5f },
-//     { ShipClass::DRACO, { WINDOW_W / 2.0f, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 3.0f },
-//     { ShipClass::ERIDANUS, { WINDOW_W / 2.0f, -Enemy::ENEMY_HEIGHT }, { 0.0f, WINDOW_H / 3.0f }, 4.5f },
+//     { ShipClass::BOOTES, { AREA_WIDTH / 2.0f, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+//     { ShipClass::CYGNUS, { AREA_WIDTH / 2.0f, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 1.5f },
+//     { ShipClass::DRACO, { AREA_WIDTH / 2.0f, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 3.0f },
+//     { ShipClass::ERIDANUS, { AREA_WIDTH / 2.0f, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 4.5f },
 //   }
 // };
 
 
-Scenario::Scenario(EnemyManager& manager, EventManager& events, ResourceManager &resources)
+Scenario::Scenario(EnemyManager& manager, game::EventManager& events, game::ResourceManager &resources)
 : m_manager(manager)
 , m_events(events)
 , m_elapsedTime(0)
@@ -265,11 +266,11 @@ void Scenario::render(sf::RenderWindow& window) {
   text.setFont(*m_font);
   std::string message;
   if (m_win) {
-    message = "Bravo joueur#" + std::to_string(m_currentPlayer) + " ! Vous avez fini le jeu.\n";
+    message = "Bravo joueur #" + std::to_string(m_currentPlayer) + " ! Vous avez fini le jeu.\n";
     message += "Vous gagnez un bonus de " + std::to_string(WIN_BONUS_SCORE) + "\n";
   }
   else {
-    message = "Dommage joueur#" + std::to_string(m_currentPlayer) + " ! Vous avez perdu le jeu.\n";
+    message = "Dommage joueur #" + std::to_string(m_currentPlayer) + " ! Vous avez perdu le jeu.\n";
   }
 
   text.setString(message + "Votre score est de : " + std::to_string(m_currentScore) + "\nLa nouvelle partie commence dans : " + std::to_string(static_cast<int>(MENU_TIME - m_elapsedTime)));
@@ -280,21 +281,21 @@ void Scenario::render(sf::RenderWindow& window) {
   // Display the high score
   text.setString(text.getString() + "\n\nMeilleur score :");
   for (unsigned int i = 0; i < m_highScore.size(); ++i) {
-    text.setString(text.getString() + "\n" + std::to_string(i + 1) + " - Joueur #" +std::to_string(m_highScore[i].idPlayer) + " : " + std::to_string(m_highScore[i].score));
+    text.setString(text.getString() + "\n" + std::to_string(i + 1) + " - Joueur #" + std::to_string(m_highScore[i].idPlayer) + " : " + std::to_string(m_highScore[i].score));
   }
 
   sf::FloatRect textRect = text.getLocalBounds();
   text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-  text.setPosition(WINDOW_W / 2.0f, WINDOW_H / 2.0f);
+  text.setPosition(AREA_WIDTH / 2.0f, AREA_HEIGHT / 2.0f);
 
   window.draw(text);
 }
 
-EventStatus Scenario::onDeadEvent(EventType type, Event *event) {
+game::EventStatus Scenario::onDeadEvent(game::EventType type, game::Event *event) {
   auto dead = static_cast<DeadEvent *>(event);
 
   if (dead->origin != Origin::HERO) {
-    return EventStatus::KEEP;
+    return game::EventStatus::KEEP;
   }
 
   // Jump to end
@@ -302,5 +303,5 @@ EventStatus Scenario::onDeadEvent(EventType type, Event *event) {
   m_elapsedTime = 0.0f;
   m_win = false;
 
-  return EventStatus::KEEP;
+  return game::EventStatus::KEEP;
 }

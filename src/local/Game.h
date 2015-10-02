@@ -22,8 +22,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Event.h"
-#include "Entity.h"
+#include <game/Event.h>
+
 #include "Ship.h"
 
 enum class Origin {
@@ -40,45 +40,46 @@ enum class ShipClass {
   ERIDANUS,
 };
 
-struct LocationEvent : public Event {
-  static const EventType type = "LocationEvent"_type;
+struct LocationEvent : public game::Event {
+  static const game::EventType type = "LocationEvent"_type;
   Origin origin;
   sf::Vector2f pos;
   Ship *ship;
 };
 
-struct ShootEvent : public Event {
-  static const EventType type = "ShootEvent"_type;
+struct ShootEvent : public game::Event {
+  static const game::EventType type = "ShootEvent"_type;
   Origin origin;
   ShipClass shipClass;
   sf::Vector2f pos;
   sf::Vector2f velocity;
 };
 
-struct DeadEvent : public Event {
-  static const EventType type = "DeadEvent"_type;
+struct DeadEvent : public game::Event {
+  static const game::EventType type = "DeadEvent"_type;
   Origin origin;
   ShipClass ship;
   sf::Vector2f pos;
 };
 
-struct ScoreEvent : public Event {
-  static const EventType type = "ScoreEvent"_type;
+struct ScoreEvent : public game::Event {
+  static const game::EventType type = "ScoreEvent"_type;
   unsigned int score;
 };
 
-struct RestartGameEvent : public Event {
-  static const EventType type = "RestartGameEvent"_type;
+struct RestartGameEvent : public game::Event {
+  static const game::EventType type = "RestartGameEvent"_type;
 };
 
-struct DropBonusEvent : public Event {
-  static const EventType type = "DropBonusEvent"_type;
+struct DropBonusEvent : public game::Event {
+  static const game::EventType type = "DropBonusEvent"_type;
   sf::Vector2f pos;
 };
 
-struct WinGameEvent : public Event {
-  static const EventType type = "WinGameEvent"_type;
+struct WinGameEvent : public game::Event {
+  static const game::EventType type = "WinGameEvent"_type;
   unsigned int bonusScore;
 };
+
 
 #endif // LOCAL_GAME_H

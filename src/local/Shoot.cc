@@ -64,7 +64,7 @@ std::unique_ptr<Shoot> makeSimplePlayerShoot(Origin origin, ShipClass shipClass,
 }
 
 
-void SingleShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
+void SingleShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) {
   ShootEvent shoot;
   shoot.origin = getOrigin();
   shoot.pos = pos;
@@ -77,7 +77,7 @@ void SingleShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, Ev
 
 static constexpr float CONE_ANGLE = 15; // in degrees
 
-void ConeShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
+void ConeShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) {
   ShootEvent shoot;
   shoot.origin = getOrigin();
   shoot.pos = pos;
@@ -98,7 +98,7 @@ void ConeShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, Even
 }
 
 
-void PeriodicShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
+void PeriodicShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) {
   m_elapsedTime -= dt;
 
   if (m_elapsedTime <= 0) {
@@ -108,7 +108,7 @@ void PeriodicShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, 
 }
 
 
-void DelayedShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
+void DelayedShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) {
   m_elapsedTime += dt;
 
   if (m_elapsedTime >= m_delay) {
@@ -117,7 +117,7 @@ void DelayedShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, E
 }
 
 
-void CountedShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
+void CountedShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) {
   if (m_count > 0) {
     getDecorated().shoot(dt, pos, dir, events);
     m_count--;
@@ -125,7 +125,7 @@ void CountedShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, E
 }
 
 
-void RegularShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, EventManager& events) {
+void RegularShoot::shoot(float dt, const sf::Vector2f& pos, sf::Vector2f& dir, game::EventManager& events) {
   m_elapsedTime += dt;
 
   // Update state of shoot

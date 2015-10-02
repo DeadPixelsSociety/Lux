@@ -26,11 +26,11 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Entity.h"
+#include <game/Entity.h>
 
 struct sp_port;
 
-class Sensor : public Entity {
+class Sensor : public game::Entity {
 public:
   static constexpr std::size_t SENSOR_W = 4;
   static constexpr std::size_t SENSOR_H = 4;

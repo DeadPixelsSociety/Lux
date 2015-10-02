@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-Particles::Particles(EventManager& events, Engine& engine)
+Particles::Particles(game::EventManager& events, Engine& engine)
 : m_engine(engine)
 {
   events.registerHandler<DeadEvent>(&Particles::onDeadEvent, this);
@@ -70,7 +70,7 @@ static constexpr float LIFETIME_MAX = 1.5f;
 static constexpr float LIFETIME_MIN = 0.1f;
 
 
-EventStatus Particles::onDeadEvent(EventType type, Event *event) {
+game::EventStatus Particles::onDeadEvent(game::EventType type, game::Event *event) {
   auto dead = static_cast<DeadEvent*>(event);
 
   ParticleSystem sys;
@@ -109,5 +109,5 @@ EventStatus Particles::onDeadEvent(EventType type, Event *event) {
   sys.lifetime = LIFETIME_MAX;
 
   m_particles_systems.push_back(sys);
-  return EventStatus::KEEP;
+  return game::EventStatus::KEEP;
 }
