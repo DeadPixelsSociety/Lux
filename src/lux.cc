@@ -25,6 +25,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "local/Action.h"
 #include "local/Bonus.h"
 #include "local/Bullets.h"
 #include "local/Camera.h"
@@ -54,6 +55,7 @@ int main() {
 
   sf::RenderWindow window;
   settings.applyTo(window);
+  window.setKeyRepeatEnabled(false);
 
   EventManager events;
 
@@ -74,6 +76,18 @@ int main() {
   Stars stars3(engine,  20, 1.0f, true);
 
   Scenario scenario(enemies, events, resources);
+
+  // add actions
+  ActionManager actions;
+
+  Action closeWindowAction("Close window");
+  closeWindowAction.addCloseControl();
+  closeWindowAction.addKeyControl(sf::Keyboard::Escape);
+  actions.addAction(closeWindowAction);
+
+  Action fullscreenAction("Fullscreen");
+  fullscreenAction.addKeyControl(sf::Keyboard::F);
+  actions.addAction(fullscreenAction);
 
   Group group;
   group.addEntity(sensor).addEntity(enemies).addEntity(hero);
@@ -96,12 +110,27 @@ int main() {
     sf::Event event;
 
     while (window.pollEvent(event)) {
+      actions.update(event);
       cameras.update(event);
       geometry.update(event);
+    }
 
-      if (event.type == sf::Event::Closed) {
-        window.close();
-      }
+    if (closeWindowAction.isActive()) {
+      window.close();
+    }
+
+    if (fullscreenAction.isActive()) {
+      settings.toggleFullscreen();
+      settings.applyTo(window);
+      auto sz = window.getSize();
+
+      // fake resize event (not sent when going fullscreen before SFML 2.3.1)
+      sf::Event event;
+      event.type = sf::Event::Resized;
+      event.size.width = sz.x;
+      event.size.height = sz.y;
+      cameras.update(event);
+      geometry.update(event);
     }
 
     // update
@@ -119,6 +148,8 @@ int main() {
 
 
     window.display();
+
+    actions.reset();
   }
 
   return 0;
