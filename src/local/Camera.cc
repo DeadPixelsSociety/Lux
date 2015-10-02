@@ -44,6 +44,8 @@ SceneCamera::SceneCamera(float width, const sf::Vector2f& center)
 
 FixedRatioCamera::FixedRatioCamera(float width, float height, const sf::Vector2f& center)
 : SceneCamera(width, center)
+, m_areaWidth(width)
+, m_areaHeight(height)
 , m_ratio(width / height)
 , m_view(center, { width, height })
 {
@@ -57,22 +59,24 @@ void FixedRatioCamera::update(sf::Event& event) {
   float w = static_cast<float>(event.size.width);
   float h = static_cast<float>(event.size.height);
 
-  float r = w / h / m_ratio;
+  float ratioEvent = w / h;
 
   sf::FloatRect vp;
-
-  if (r < 1.0f) {
+  if (ratioEvent < m_ratio) {
     vp.left = 0.0f;
-    vp.width = 1.0;
+    vp.width = 1.0f;
 
-    vp.top = (1 - r) / m_ratio;
+    float r = (m_areaHeight * (w / m_areaWidth)) / h;
+    vp.top = (1.0f - r) / 2.0f;
     vp.height = r;
-  } else {
+  }
+  else {
     vp.top = 0.0f;
     vp.height = 1.0f;
 
-    vp.left = (1 - 1 / r) / m_ratio;
-    vp.width = 1 / r;
+    float r = (m_areaWidth * (h / m_areaHeight)) / w;
+    vp.left = (1.0f - r) / 2.0f;
+    vp.width = r;
   }
 
   m_view.setViewport(vp);

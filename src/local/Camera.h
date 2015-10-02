@@ -82,6 +82,8 @@ public:
   virtual void configure(sf::RenderWindow& window) override;
 
 private:
+  float m_areaWidth;
+  float m_areaHeight;
   float m_ratio;
   sf::View m_view;
 };
