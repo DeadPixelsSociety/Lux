@@ -21,8 +21,13 @@
 
 #include <cstddef>
 #include <cstdint>
+
+#include <config.h>
+#ifndef LUX_MOUSE_CONTROL
 #include <mutex>
 #include <thread>
+#endif // LUX_MOUSE_CONTROL
+
 
 #include <SFML/Graphics.hpp>
 
@@ -32,14 +37,23 @@ struct sp_port;
 
 class Sensor : public game::Entity {
 public:
+#ifndef LUX_MOUSE_CONTROL
   static constexpr std::size_t SENSOR_W = 4;
   static constexpr std::size_t SENSOR_H = 4;
+#else
+  static constexpr std::size_t SENSOR_W = 8;
+  static constexpr std::size_t SENSOR_H = 6;
+#endif // LUX_MOUSE_CONTROL
 
+#ifndef LUX_MOUSE_CONTROL
   Sensor();
   ~Sensor();
 
   Sensor(const Sensor&) = delete;
   Sensor& operator=(const Sensor&) = delete;
+#else
+  Sensor(sf::Window& window);
+#endif // LUX_MOUSE_CONTROL
 
 
   virtual void update(float dt) override;
@@ -49,6 +63,7 @@ public:
   sf::Vector2f getCenter() const;
 
 private:
+#ifndef LUX_MOUSE_CONTROL
   sp_port *m_port;
 
   std::thread m_thread;
@@ -60,6 +75,10 @@ private:
   std::size_t m_index;
 
   uint16_t values[SENSOR_H][SENSOR_W];
+#else
+  uint8_t values[SENSOR_H][SENSOR_W];
+  sf::Window& m_window;
+#endif // LUX_MOUSE_CONTROL
 };
 
 #endif // LOCAL_SENSOR_H

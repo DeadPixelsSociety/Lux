@@ -73,7 +73,11 @@ int main() {
   BonusManager bonus(events, resources, engine);
   mainEntities.addEntity(bonus);
 
+#ifndef LUX_MOUSE_CONTROL
   Sensor sensor;
+#else
+  Sensor sensor(window);
+#endif // LUX_MOUSE_CONTROL
   mainEntities.addEntity(sensor);
 
   EnemyManager enemies(engine, events, resources);

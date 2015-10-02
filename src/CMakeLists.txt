@@ -2,32 +2,32 @@ cmake_minimum_required(VERSION 2.8)
 
 project(LUX)
 
+option(LUX_MOUSE_CONTROL "Control the game with mouse" ON)
+
 include(GNUInstallDirs)
 
-find_package(Threads)
-
 find_package(PkgConfig REQUIRED)
-
 pkg_check_modules(SFML2 REQUIRED sfml-graphics>=2.1 sfml-audio>=2.1)
-
 find_package(Boost REQUIRED COMPONENTS filesystem system)
 
-find_path(LIBSERIALPORT_INCLUDE_DIR libserialport.h
-  PATH_SUFFIXES include)
-
 # Search for the library
-find_library(LIBSERIALPORT_LIBRARIES NAMES serialport
-  PATH_SUFFIXES lib)
+if (NOT LUX_MOUSE_CONTROL)
+  find_package(Threads)
 
+  find_path(LIBSERIALPORT_INCLUDE_DIR libserialport.h
+    PATH_SUFFIXES include)
+  find_library(LIBSERIALPORT_LIBRARIES NAMES serialport
+    PATH_SUFFIXES lib)
 
+  include_directories(${LIBSERIALPORT_INCLUDE_DIR})
+endif (NOT LUX_MOUSE_CONTROL)
 
 add_definitions(-Wall -g -O2)
 add_definitions(-std=c++11)
 
 include_directories(${SFML2_INCLUDE_DIRS})
-include_directories(${LIBSERIALPORT_INCLUDE_DIR})
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -59,11 +59,16 @@ add_executable(lux
 )
 
 target_link_libraries(lux
-  ${CMAKE_THREAD_LIBS_INIT}
   ${SFML2_LIBRARIES}
   ${Boost_LIBRARIES}
-  ${LIBSERIALPORT_LIBRARIES}
 )
+
+if (NOT LUX_MOUSE_CONTROL)
+  target_link_libraries(lux
+    ${CMAKE_THREAD_LIBS_INIT}
+    ${LIBSERIALPORT_LIBRARIES}
+  )
+endif (NOT LUX_MOUSE_CONTROL)
 
 install(
   DIRECTORY "${CMAKE_SOURCE_DIR}/share/lux"
@@ -74,4 +79,3 @@ install(
   TARGETS lux
   RUNTIME DESTINATION games
 )
-

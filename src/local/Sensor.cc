@@ -22,6 +22,10 @@
 #include <cmath>
 #include <cstdio>
 
+static constexpr float AREA_WIDTH = 800;
+static constexpr float AREA_HEIGHT = 600;
+
+#ifndef LUX_MOUSE_CONTROL
 #include <libserialport.h>
 
 static void printError(sp_return ret) {
@@ -152,9 +156,6 @@ Sensor::~Sensor() {
   sp_free_port(m_port);
 }
 
-static constexpr float AREA_WIDTH = 800;
-static constexpr float AREA_HEIGHT = 600;
-
 void Sensor::update(float dt) {
   Buffer buf;
 
@@ -172,13 +173,37 @@ void Sensor::update(float dt) {
     uint16_t val = static_cast<uint16_t>(buf[2 * index]) + (static_cast<uint16_t>(buf[2 * index + 1]) << 8);
     values[j][i] = val;
   }
+}
 
+void Sensor::render(sf::RenderWindow& window) {
+//  float w = (AREA_WIDTH / SENSOR_W);
+//  float h = (AREA_HEIGHT / SENSOR_H);
+//
+//  for (std::size_t j = 0; j < SENSOR_H; ++j) {
+//    for (std::size_t i = 0; i < SENSOR_W; ++i) {
+//      float x = i * w;
+//      float y = j * h;
+//
+//      sf::RectangleShape shape({ w, h });
+//      shape.setFillColor(sf::Color(0xFF, 0xFF, 0xFF, values[j][i] / 4));
+//      shape.setPosition(x, y);
+//      window.draw(shape);
+//    }
+//  }
+}
 
-#if 0
+#else // ifdef LUX_MOUSE_CONTROL
+
+Sensor::Sensor(sf::Window& window) 
+: m_window(window) {
+
+}
+
+void Sensor::update(float dt) {
   auto pos = sf::Mouse::getPosition(m_window);
 
-  int w = (WINDOW_W / SENSOR_W);
-  int h = (WINDOW_H / SENSOR_H);
+  int w = (AREA_WIDTH / SENSOR_W);
+  int h = (AREA_HEIGHT / SENSOR_H);
 
   for (std::size_t j = 0; j < SENSOR_H; ++j) {
     for (std::size_t i = 0; i < SENSOR_W; ++i) {
@@ -186,8 +211,8 @@ void Sensor::update(float dt) {
       int y = j * h + h / 2;
 
       double dist = std::hypot(pos.x - x, pos.y - y);
-      double value = 1023.0 * std::exp(-dist * dist * 0.00001);
-      assert(0.0 <= value && value <= 1023.0);
+      double value = 127.0 * std::exp(-dist * dist * 0.00001);
+      assert(0.0 <= value && value <= 127.0);
 
       values[j][i] = static_cast<uint8_t>(value);
 
@@ -198,30 +223,28 @@ void Sensor::update(float dt) {
   }
 
 //     std::cout << '\n';
-
-#endif
-
 }
-
 
 void Sensor::render(sf::RenderWindow& window) {
-  float w = (AREA_WIDTH / SENSOR_W);
-  float h = (AREA_HEIGHT / SENSOR_H);
-
-  for (std::size_t j = 0; j < SENSOR_H; ++j) {
-    for (std::size_t i = 0; i < SENSOR_W; ++i) {
-      float x = i * w;
-      float y = j * h;
-
-      sf::RectangleShape shape({ w, h });
-      shape.setFillColor(sf::Color(0xFF, 0xFF, 0xFF, values[j][i] / 4));
-      shape.setPosition(x, y);
-      window.draw(shape);
-    }
-  }
+//   float w = (WINDOW_W / SENSOR_W);
+//   float h = (WINDOW_H / SENSOR_H);
+//
+//   for (std::size_t j = 0; j < SENSOR_H; ++j) {
+//     for (std::size_t i = 0; i < SENSOR_W; ++i) {
+//       float x = i * w;
+//       float y = j * h;
+//
+//       sf::RectangleShape shape({ w, h });
+//       shape.setFillColor(sf::Color(0xFF, 0xFF, 0xFF, values[j][i] * 2));
+//       shape.setPosition(x, y);
+//       window.draw(shape);
+//     }
+//   }
 
 
 }
+
+#endif // LUX_MOUSE_CONTROL
 
 sf::Vector2f Sensor::getCenter() const {
   float w = (AREA_WIDTH / SENSOR_W);
@@ -247,4 +270,6 @@ sf::Vector2f Sensor::getCenter() const {
   pos.y /= total;
   return pos;
 }
+
+
 
