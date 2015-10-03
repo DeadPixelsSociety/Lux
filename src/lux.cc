@@ -37,6 +37,7 @@
 #include "local/Bullets.h"
 #include "local/Enemy.h"
 #include "local/Hero.h"
+#include "local/HudRender.h"
 #include "local/Particles.h"
 #include "local/Random.h"
 #include "local/Scenario.h"
@@ -109,6 +110,9 @@ int main() {
 
   Scenario scenario(enemies, events, resources);
   hudEntities.addEntity(scenario);
+
+  HudRender hudRender(events, resources, geometry);
+  hudEntities.addEntity(hudRender);
 
   // add actions
   game::ActionManager actions;

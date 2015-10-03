@@ -38,6 +38,7 @@ add_executable(lux
   local/Bullets.cc
   local/Enemy.cc
   local/Hero.cc
+  local/HudRender.cc
   local/Particles.cc
   local/Scenario.cc
   local/Sensor.cc

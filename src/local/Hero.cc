@@ -18,7 +18,6 @@
  */
 #include "Hero.h"
 
-
 static constexpr float SHOOT_PERIOD = 0.4f;
 static constexpr float SHOOT_VELOCITY = -400.0f;
 
@@ -40,6 +39,10 @@ void Hero::update(float dt) {
   m_events.triggerEvent(&scoreEvent);
 
   if (isDamaged()) {
+    LifeEvent lifeEvent;
+    lifeEvent.life = 0.0f;
+    m_events.triggerEvent(&lifeEvent);
+
     DeadEvent dead;
     dead.origin = Origin::HERO;
     dead.ship = ShipClass::ANTLIA;
@@ -49,22 +52,15 @@ void Hero::update(float dt) {
     return;
   }
 
+  LifeEvent lifeEvent;
+  lifeEvent.life = getStructureHealthPercentage();
+  m_events.triggerEvent(&lifeEvent);
+
   m_elapsedTime += dt;
 
   sf::Vector2f dir(0.0f, SHOOT_VELOCITY);
   m_shoot->shoot(dt, m_pos, dir, m_events);
 }
-
-static constexpr float HEALTH_WIDTH = 200.0f;
-static constexpr float HEALTH_HEIGHT = 5.0f;
-static constexpr float HEALTH_THICKNESS = 1.0f;
-static constexpr float HEALTH_PADDING = 40.0f;
-
-static constexpr float AREA_WIDTH = 800;
-static constexpr float AREA_HEIGHT = 600;
-
-static constexpr float SCORE_PADDING_WIDTH = AREA_WIDTH - 150.0f;
-
 
 void Hero::render(sf::RenderWindow& window) {
   if (isDamaged()) {
@@ -78,32 +74,6 @@ void Hero::render(sf::RenderWindow& window) {
   sprite.setPosition(m_pos);
   sprite.setRotation(-90.0f);
   window.draw(sprite);
-
-  sf::RectangleShape rectangleShape({ HEALTH_WIDTH, HEALTH_HEIGHT });
-  rectangleShape.setOrigin(HEALTH_WIDTH / 2, HEALTH_HEIGHT / 2);
-  rectangleShape.setPosition(AREA_WIDTH / 2, AREA_HEIGHT - HEALTH_PADDING);
-  rectangleShape.setOutlineColor(sf::Color::White);
-  rectangleShape.setOutlineThickness(HEALTH_THICKNESS);
-  rectangleShape.setFillColor(sf::Color::Transparent);
-  window.draw(rectangleShape);
-
-  sf::RectangleShape healthRectangle({ HEALTH_WIDTH * getStructureHealthPercentage(), HEALTH_HEIGHT });
-  healthRectangle.setOrigin(0.0f, HEALTH_HEIGHT / 2);
-  healthRectangle.setPosition(AREA_WIDTH / 2 - HEALTH_WIDTH / 2, AREA_HEIGHT - HEALTH_PADDING);
-  healthRectangle.setFillColor(sf::Color::Red);
-  window.draw(healthRectangle);
-
-  sf::Text text;
-  text.setFont(*m_font);
-  text.setString("Score : " + std::to_string(m_score));
-  text.setCharacterSize(24);
-  text.setColor(sf::Color::White);
-
-  // FixMe: fix the vertical align
-  text.setOrigin(text.getLocalBounds().width / 2.0f, text.getLocalBounds().height / 2.0f);
-  text.setPosition(SCORE_PADDING_WIDTH, AREA_HEIGHT - HEALTH_PADDING - text.getLocalBounds().height - 5.0f);
-
-  window.draw(text);
 }
 
 game::EventStatus Hero::onDeadEvent(game::EventType type, game::Event *event) {

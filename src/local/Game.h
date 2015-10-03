@@ -81,5 +81,10 @@ struct WinGameEvent : public game::Event {
   unsigned int bonusScore;
 };
 
+struct LifeEvent : public game::Event {
+  static const game::EventType type = "LifeEvent"_type;
+  float life;
+};
+
 
 #endif // LOCAL_GAME_H
