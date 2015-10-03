@@ -63,6 +63,14 @@ int main() {
   game::ResourceManager resources;
   resources.addSearchDir(GAME_DATADIR);
 
+  // Preload data 
+  {
+    Enemy e2(ShipClass::BOOTES, { 0.0f, 0.0f }, { 0.0f, 0.0f }, 1.0f, engine, events, resources);
+    Enemy e3(ShipClass::CYGNUS, { 0.0f, 0.0f }, { 0.0f, 0.0f }, 1.0f, engine, events, resources);
+    Enemy e4(ShipClass::DRACO, { 0.0f, 0.0f }, { 0.0f, 0.0f }, 1.0f, engine, events, resources);
+    Enemy e5(ShipClass::ERIDANUS, { 0.0f, 0.0f }, { 0.0f, 0.0f }, 1.0f, engine, events, resources);
+  }
+
   // entities
 
   game::EntityManager mainEntities;
