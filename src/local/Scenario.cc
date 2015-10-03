@@ -51,10 +51,24 @@ static Scenario::Wave wave04 {
   }
 };
 
+// Line
+static Scenario::Wave wave05 {
+  4.0f,
+  {
+    { ShipClass::BOOTES, { 0.2f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::BOOTES, { 0.3f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::BOOTES, { 0.4f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::BOOTES, { 0.5f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::BOOTES, { 0.6f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::BOOTES, { 0.7f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::BOOTES, { 0.8f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+  }
+};
+
 static Scenario::Wave wave10 {
   4.0f,
   {
-    { ShipClass::CYGNUS, { 0.3f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::CYGNUS, { 0.5f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
   }
 };
 
@@ -106,8 +120,27 @@ static Scenario::Wave wave15 {
   }
 };
 
-// cross
+// V squad
+static Scenario::Wave wave16 {
+  8.0f,
+  {
+    { ShipClass::CYGNUS, { 0.50f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::CYGNUS, { 0.35f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.3f },
+    { ShipClass::CYGNUS, { 0.65f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.3f },
+    { ShipClass::CYGNUS, { 0.20f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.6f },
+    { ShipClass::CYGNUS, { 0.80f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.6f },
+  }
+};
+
 static Scenario::Wave wave20 {
+  4.0f,
+  {
+    { ShipClass::DRACO, { 0.5f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+  }
+};
+
+// cross
+static Scenario::Wave wave21 {
   4.0f,
   {
     { ShipClass::DRACO, { 0.1f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
@@ -115,8 +148,102 @@ static Scenario::Wave wave20 {
   }
 };
 
+// alternate left/right
+static Scenario::Wave wave22 {
+  6.0f,
+  {
+    { ShipClass::DRACO, { 0.3f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::DRACO, { 0.7f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 1.0f },
+    { ShipClass::DRACO, { 0.3f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 2.0f },
+    { ShipClass::DRACO, { 0.7f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 3.0f },
+  }
+};
+
+// anti-diagonal
+static Scenario::Wave wave23 {
+  6.0f,
+  {
+    { ShipClass::DRACO, { 0.95f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::DRACO, { 0.95f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.5f },
+    { ShipClass::DRACO, { 0.95f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 1.0f },
+    { ShipClass::DRACO, { 0.95f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 1.5f },
+  }
+};
+
+// alternate left/right
+static Scenario::Wave wave24 {
+  6.0f,
+  {
+    { ShipClass::DRACO, { 0.3f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::DRACO, { 0.7f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 1.0f },
+    { ShipClass::DRACO, { 0.3f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 2.0f },
+    { ShipClass::DRACO, { 0.7f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 3.0f },
+  }
+};
+
 // double stairs of death
+static Scenario::Wave wave25 {
+  4.0f,
+  {
+    { ShipClass::DRACO, { 0.2f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::DRACO, { 0.5f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::DRACO, { 0.4f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.5f },
+    { ShipClass::DRACO, { 0.7f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.5f },
+    { ShipClass::DRACO, { 0.6f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 1.0f },
+    { ShipClass::DRACO, { 0.9f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 1.0f },
+  }
+};
+
+static Scenario::Wave wave30 {
+  4.0f,
+  {
+    { ShipClass::ERIDANUS, { 0.5f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+  }
+};
+
+// diagonal
+static Scenario::Wave wave31 {
+  4.0f,
+  {
+    { ShipClass::ERIDANUS, { 0.05f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.15f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+  }
+};
+
+// cross
 static Scenario::Wave wave32 {
+  4.0f,
+  {
+    { ShipClass::ERIDANUS, { 0.1f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.9f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+  }
+};
+
+// diagonal and anti-diagonal
+static Scenario::Wave wave33 {
+  5.0f,
+  {
+    { ShipClass::ERIDANUS, { 0.05f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.15f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.85f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.5f },
+    { ShipClass::ERIDANUS, { 0.95f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { -AREA_HEIGHT / 3.0f, AREA_HEIGHT / 3.0f }, 0.5f },
+  }
+};
+
+// V squad
+static Scenario::Wave wave34 {
+  8.0f,
+  {
+    { ShipClass::ERIDANUS, { 0.50f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
+    { ShipClass::ERIDANUS, { 0.35f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.3f },
+    { ShipClass::ERIDANUS, { 0.65f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.3f },
+    { ShipClass::ERIDANUS, { 0.20f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.6f },
+    { ShipClass::ERIDANUS, { 0.80f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.6f },
+  }
+};
+
+// double stairs of death
+static Scenario::Wave wave35 {
   4.0f,
   {
     { ShipClass::ERIDANUS, { 0.2f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
@@ -129,7 +256,7 @@ static Scenario::Wave wave32 {
 };
 
 // super 7 squad
-static Scenario::Wave wave33 {
+static Scenario::Wave wave36 {
   4.0f,
   {
     { ShipClass::ERIDANUS, { 0.2f * AREA_WIDTH, -Enemy::ENEMY_HEIGHT }, { 0.0f, AREA_HEIGHT / 3.0f }, 0.0f },
@@ -175,6 +302,7 @@ Scenario::Scenario(EnemyManager& manager, game::EventManager& events, game::Reso
   m_waves.push_back(wave02);
   m_waves.push_back(wave03);
   m_waves.push_back(wave04);
+  m_waves.push_back(wave05);
 
   m_waves.push_back(wave10);
   m_waves.push_back(wave11);
@@ -182,11 +310,25 @@ Scenario::Scenario(EnemyManager& manager, game::EventManager& events, game::Reso
   m_waves.push_back(wave13);
   m_waves.push_back(wave14);
   m_waves.push_back(wave15);
+  m_waves.push_back(wave16);
 
   m_waves.push_back(wave20);
+  m_waves.push_back(wave21);
+  m_waves.push_back(wave22);
+  m_waves.push_back(wave23);
+  m_waves.push_back(wave24);
+  m_waves.push_back(wave25);
 
+  m_waves.push_back(wave30);
+  m_waves.push_back(wave31);
   m_waves.push_back(wave32);
+  m_waves.push_back(wave01);
   m_waves.push_back(wave33);
+  m_waves.push_back(wave02);
+  m_waves.push_back(wave34);
+  m_waves.push_back(wave12);
+  m_waves.push_back(wave35);
+  m_waves.push_back(wave36);
 
   m_waves.push_back(wave0);
 
