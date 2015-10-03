@@ -280,7 +280,7 @@ static Scenario::Wave wave36 {
 // };
 
 
-Scenario::Scenario(EnemyManager& manager, game::EventManager& events, game::ResourceManager &resources)
+Scenario::Scenario(EnemyManager& manager, game::EventManager& events, game::ResourceManager &resources, game::WindowGeometry &geometry)
 : m_manager(manager)
 , m_events(events)
 , m_elapsedTime(0)
@@ -290,6 +290,7 @@ Scenario::Scenario(EnemyManager& manager, game::EventManager& events, game::Reso
 , m_win(true)
 , m_highScore({{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}})
 , m_updateScore(true)
+, m_geometry(geometry)
 {
   m_events.registerHandler<ScoreEvent>(&Scenario::onScoreEvent, this);
   m_events.registerHandler<DeadEvent>(&Scenario::onDeadEvent, this);
@@ -408,11 +409,11 @@ void Scenario::render(sf::RenderWindow& window) {
   text.setFont(*m_font);
   std::string message;
   if (m_win) {
-    message = "Bravo joueur #" + std::to_string(m_currentPlayer) + " ! Vous avez fini le jeu.\n";
+    message = "Bravo joueur #" + std::to_string(m_currentPlayer) + ", vous avez fini le jeu.\n";
     message += "Vous gagnez un bonus de " + std::to_string(WIN_BONUS_SCORE) + "\n";
   }
   else {
-    message = "Dommage joueur #" + std::to_string(m_currentPlayer) + " ! Vous avez perdu le jeu.\n";
+    message = "Dommage joueur #" + std::to_string(m_currentPlayer) + ", vous avez perdu le jeu.\n";
   }
 
   text.setString(message + "Votre score est de : " + std::to_string(m_currentScore) + "\nLa nouvelle partie commence dans : " + std::to_string(static_cast<int>(MENU_TIME - m_elapsedTime)));
@@ -427,8 +428,8 @@ void Scenario::render(sf::RenderWindow& window) {
   }
 
   sf::FloatRect textRect = text.getLocalBounds();
-  text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-  text.setPosition(AREA_WIDTH / 2.0f, AREA_HEIGHT / 2.0f);
+  //text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+  text.setPosition(m_geometry.getXCentered(textRect.left + textRect.width), m_geometry.getYCentered(textRect.top + textRect.height));
 
   window.draw(text);
 }

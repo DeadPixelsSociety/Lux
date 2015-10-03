@@ -108,7 +108,7 @@ int main() {
 
   game::EntityManager hudEntities;
 
-  Scenario scenario(enemies, events, resources);
+  Scenario scenario(enemies, events, resources, geometry);
   hudEntities.addEntity(scenario);
 
   HudRender hudRender(events, resources, geometry);

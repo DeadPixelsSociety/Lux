@@ -22,6 +22,7 @@
 #include <vector>
 
 #include <game/Entity.h>
+#include <game/WindowGeometry.h>
 
 #include "Enemy.h"
 #include "Game.h"
@@ -29,7 +30,7 @@
 
 class Scenario : public game::Entity {
 public:
-  Scenario(EnemyManager& manager, game::EventManager& events, game::ResourceManager &resources);
+  Scenario(EnemyManager& manager, game::EventManager& events, game::ResourceManager &resources, game::WindowGeometry &geometry);
 
   virtual void update(float dt) override;
   virtual void render(sf::RenderWindow& window) override;
@@ -86,6 +87,8 @@ private:
   bool m_win;
   std::vector<Score> m_highScore;
   bool m_updateScore;
+  
+  game::WindowGeometry &m_geometry;
 };
 
 
