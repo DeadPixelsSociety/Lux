@@ -118,19 +118,19 @@ game::EventStatus Hero::onDeadEvent(game::EventType type, game::Event *event) {
     break;
 
     case ShipClass::BOOTES:
-      m_score += 10;
+      m_score += 15;
     break;
 
     case ShipClass::CYGNUS:
-      m_score += 50;
+      m_score += 45;
     break;
 
     case ShipClass::DRACO:
-      m_score += 200;
+      m_score += 110;
     break;
 
     case ShipClass::ERIDANUS:
-      m_score += 500;
+      m_score += 250;
     break;
 
     default:
