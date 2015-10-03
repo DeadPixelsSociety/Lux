@@ -30,6 +30,7 @@ static constexpr float BONUS_FREQUENCY = 0.50f;
 
 Enemy::Enemy(ShipClass ship, const sf::Vector2f& pos, const sf::Vector2f& vel, float health, Engine& engine, game::EventManager& events, game::ResourceManager &resources)
 : Ship(health)
+, m_shipClass(ship)
 , m_pos(pos)
 , m_vel(vel)
 , m_engine(engine)
@@ -86,7 +87,7 @@ void Enemy::update(float dt) {
   if (isDamaged()) {
     DeadEvent dead;
     dead.origin = Origin::ENEMY;
-    dead.ship = ShipClass::BOOTES;
+    dead.ship = m_shipClass;
     dead.pos = m_pos;
     m_events.triggerEvent(&dead);
     kill();
