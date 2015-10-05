@@ -38,6 +38,7 @@
 #include "local/Enemy.h"
 #include "local/Hero.h"
 #include "local/HudRender.h"
+#include "local/Logos.h"
 #include "local/Particles.h"
 #include "local/Random.h"
 #include "local/Scenario.h"
@@ -114,6 +115,9 @@ int main() {
   HudRender hudRender(events, resources, geometry);
   hudEntities.addEntity(hudRender);
 
+  Logos logos(resources, geometry);
+  hudEntities.addEntity(logos);
+
   // add actions
   game::ActionManager actions;
 
@@ -176,11 +180,11 @@ int main() {
     // render
     window.clear(sf::Color::Black);
 
-    mainCamera.configure(window);
-    mainEntities.render(window);
-
     hudCamera.configure(window);
     hudEntities.render(window);
+
+    mainCamera.configure(window);
+    mainEntities.render(window);
 
     window.display();
 

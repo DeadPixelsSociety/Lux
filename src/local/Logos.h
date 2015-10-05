@@ -17,28 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOCAL_HUD_RENDER_H
-#define LOCAL_HUD_RENDER_H
+#ifndef LOCAL_LOGOS_H
+#define LOCAL_LOGOS_H
 
 #include <game/Entity.h>
-#include <game/EventManager.h>
 #include <game/ResourceManager.h>
 #include <game/WindowGeometry.h>
 
-class HudRender : public game::Entity {
+class Logos : public game::Entity {
 public:
-  HudRender(game::EventManager &events, game::ResourceManager &resources, game::WindowGeometry &geometry);
+  Logos(game::ResourceManager &resources, game::WindowGeometry &geometry);
 
   virtual void render(sf::RenderWindow& window) override;
 
-  game::EventStatus onScoreEvent(game::EventType type, game::Event *event);
-  game::EventStatus onLifeEvent(game::EventType type, game::Event *event);
-
 private:
   game::WindowGeometry &m_geometry;
-  unsigned int m_score;
-  float m_life;
-  sf::Font *m_font;
+  sf::Texture *m_dpsTexture;
+  sf::Texture *m_fcecTexture;
+  sf::Texture *m_ufrTexture;
+  sf::Texture *m_ufcTexture;
 };
 
-#endif // LOCAL_HUD_RENDER_H
+#endif // LOCAL_LOGOS_H
